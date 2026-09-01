@@ -51,10 +51,10 @@ html, body { margin:0; padding:0; background:#FBFAF8; -webkit-font-smoothing:ant
 :focus-visible { outline: 2px solid #AB0520; outline-offset: 3px; }
 
 /* Hover states, lifted from the design's style-hover attributes. */
-.hv-1:hover { color:var(--accent, #AB0520) !important; }
-.hv-2:hover { background:var(--accent, #AB0520) !important; color:#fff !important; }
-.hv-3:hover { border-color:var(--accent, #AB0520) !important; color:var(--accent, #AB0520) !important; }
-.hv-4:hover { background:var(--accent, #AB0520) !important; }
+.hv-1:hover { background:var(--accent, #AB0520) !important; }
+.hv-2:hover { color:var(--accent, #AB0520) !important; }
+.hv-3:hover { background:var(--accent, #AB0520) !important; color:#fff !important; }
+.hv-4:hover { border-color:var(--accent, #AB0520) !important; color:var(--accent, #AB0520) !important; }
 .hv-5:hover { background:var(--accent, #AB0520) !important; border-color:var(--accent, #AB0520) !important; color:#fff !important; }
 .hv-6:hover { color:#EF6275 !important; }
 .hv-7:hover { background:rgba(255,255,255,.12) !important; color:#EF6275 !important; }

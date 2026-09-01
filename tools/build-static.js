@@ -29,6 +29,14 @@ const HAS_HERO_VIDEO = false; // heroVideoId defaults to '' -> the iframe branch
 const SHOW_FOUNDATION = true;
 const CAROUSEL_SECONDS = 4.5;
 
+// The design now owns the blog toggle. Its default is false, so the design and
+// this generator agree without either having to be told about the other.
+const SHOW_BLOG = false;
+
+// Empty in the design, which falls back to '#'. A CTA linking to '#' is a dead
+// button on a live site, so the whole link is dropped until there is a real URL.
+const EVENTBRITE_URL = '';
+
 /**
  * Pages built but not linked, or not built at all.
  *
@@ -38,7 +46,7 @@ const CAROUSEL_SECONDS = 4.5;
  * drawer and footer. The old Squarespace /blog URLs are redirected to the home
  * page in netlify.toml rather than to a page that no longer exists.
  */
-const HIDDEN_PAGES = ['blog'];
+const HIDDEN_PAGES = SHOW_BLOG ? [] : ['blog'];
 
 const SITE_URL = 'https://rickyhunley.com';
 
@@ -154,6 +162,27 @@ const HREF_FOR = {
 
 const src = fs.readFileSync(SRC, 'utf8');
 
+/**
+ * Icon links from the design's <helmet>.
+ *
+ * This generator writes its own <head> rather than copying the helmet, so
+ * anything the design adds there is dropped unless it is picked up explicitly —
+ * the favicon arrived that way and would otherwise have vanished without a
+ * trace. Only icon-ish rels are taken; the font and preconnect links are
+ * already emitted below, and copying them would duplicate them.
+ *
+ * A link whose file is missing is skipped, so a referenced-but-absent icon
+ * gives no icon rather than a 404 on every page.
+ */
+const iconLinks = (src.match(/<link\b[^>]*>/g) || [])
+  .filter((tag) => /rel="(icon|shortcut icon|apple-touch-icon|manifest)"/.test(tag))
+  .filter((tag) => {
+    const href = (tag.match(/href="([^"]+)"/) || [])[1];
+    if (!href || /^https?:/.test(href)) return true;
+    return fs.existsSync(path.join(ROOT, href.replace(/^\//, '')));
+  })
+  .map((tag) => tag.replace(/\s*\/>$/, '>'));
+
 // ---------------------------------------------------------------------------
 // 1. Carve the source into shared chrome + one block per page.
 // ---------------------------------------------------------------------------
@@ -222,6 +251,23 @@ function transform(html) {
     out = out.replace(
       /<sc-if value="\{\{ showFoundation \}\}"[^>]*>([\s\S]*?)<\/sc-if>/g,
       '$1'
+    );
+  }
+
+  // The design's own blog toggle, wrapping the nav links to /blog.
+  out = SHOW_BLOG
+    ? out.replace(/<sc-if value="\{\{ showBlog \}\}"[^>]*>([\s\S]*?)<\/sc-if>/g, '$1')
+    : out.replace(/<sc-if value="\{\{ showBlog \}\}"[\s\S]*?<\/sc-if>/g, '');
+
+  // The Eventbrite CTA. With no URL set the design falls back to '#', which on
+  // a live site is a button that does nothing — so the link is removed instead,
+  // leaving the copy around it ("Dates … are announced each season") intact.
+  if (EVENTBRITE_URL) {
+    out = out.replace(/\{\{ eventbriteUrl \}\}/g, EVENTBRITE_URL);
+  } else {
+    out = out.replace(
+      /\s*<a href="\{\{ eventbriteUrl \}\}"[^>]*>[\s\S]*?<\/a>/g,
+      ''
     );
   }
 
@@ -363,7 +409,7 @@ function page(meta, content) {
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${SITE_URL}/${meta.image}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+${iconLinks.map((l) => `${l}\n`).join('')}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/site.css">

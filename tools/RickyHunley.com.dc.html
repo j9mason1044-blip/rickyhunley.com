@@ -8,6 +8,8 @@
 <body>
 <x-dc>
 <helmet>
+<link rel="icon" type="image/png" href="assets/favicon.png" />
+<link rel="apple-touch-icon" href="assets/favicon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
@@ -50,15 +52,17 @@
 
   <header style="position:sticky; top:0; z-index:50; background:rgba(251,250,248,.92); backdrop-filter:blur(10px); border-bottom:1px solid #E6E2DA">
     <div style="max-width:1280px; margin:0 auto; padding:14px 40px; min-height:78px; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap">
-      <a href="#" onClick="{{ nav.home }}" style="display:flex; align-items:center; text-decoration:none" style-hover="color:var(--accent, #AB0520)">
-        <span style="font-family:Archivo, sans-serif; font-weight:800; font-size:20px; letter-spacing:0.06em; text-transform:uppercase; color:#0C234B">Ricky Hunley</span>
+      <a href="#" onClick="{{ nav.home }}" aria-label="Ricky Hunley — home" style="display:flex; align-items:center; text-decoration:none">
+        <div style="width:200px; height:26px; background:#0C234B; mask:url(assets/rh-logo-horizontal.svg) no-repeat left center/contain; -webkit-mask:url(assets/rh-logo-horizontal.svg) no-repeat left center/contain; transition:background .3s ease" style-hover="background:var(--accent, #AB0520)"></div>
       </a>
       <nav data-r="desktopnav" style="display:flex; align-items:center; gap:22px; flex-wrap:wrap; row-gap:10px">
         <a href="#" onClick="{{ nav.about }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">About</a>
         <a href="#" onClick="{{ nav.speaking }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">Speaking</a>
         <a href="#" onClick="{{ nav.huddle }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">The Huddle</a>
         <a href="#" onClick="{{ nav.news }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">News</a>
+        <sc-if value="{{ showBlog }}" hint-placeholder-val="{{ false }}">
         <a href="#" onClick="{{ nav.blog }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">Blog</a>
+        </sc-if>
         <a href="#" onClick="{{ nav.contact }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">Contact</a>
         <a href="mailto:connect@rickyhunley.com" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:13px 22px" style-hover="background:var(--accent, #AB0520); color:#fff">Book Ricky</a>
       </nav>
@@ -78,7 +82,9 @@
         <a href="#" onClick="{{ nav.huddle }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">The Huddle</a>
         <a href="#" onClick="{{ nav.community }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Community</a>
         <a href="#" onClick="{{ nav.news }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">News</a>
+        <sc-if value="{{ showBlog }}" hint-placeholder-val="{{ false }}">
         <a href="#" onClick="{{ nav.blog }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Blog</a>
+        </sc-if>
         <a href="#" onClick="{{ nav.contact }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Contact</a>
         <a href="mailto:connect@rickyhunley.com" style="margin-top:22px; text-align:center; font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:19px 24px" style-hover="background:var(--accent, #AB0520)">Book Ricky</a>
       </div>
@@ -577,6 +583,10 @@
             <img src="assets/f101-d.jpg" alt="Football 101 crowd" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
         </div>
+        <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:44px">
+          <a href="{{ eventbriteUrl }}" target="_blank" rel="noreferrer" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:18px 30px" style-hover="background:var(--accent, #AB0520)">Get tickets on Eventbrite</a>
+          <span style="font-size:17px; line-height:1.6; color:#5C6270">Dates for the next session are announced each season.</span>
+        </div>
       </div>
     </section>
   </div>
@@ -757,9 +767,9 @@
   <footer style="background:#08182F; color:#fff">
     <div style="max-width:1280px; margin:0 auto; padding:80px 40px 40px; display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:56px">
       <div>
-        <div style="display:flex; align-items:center">
-          <span style="font-family:Archivo, sans-serif; font-weight:800; font-size:17px; letter-spacing:0.06em; text-transform:uppercase; color:#fff">Ricky Hunley</span>
-        </div>
+        <a href="#" onClick="{{ nav.home }}" aria-label="Ricky Hunley — home" style="display:flex; align-items:center; text-decoration:none">
+          <div style="width:168px; height:66px; background:#fff; mask:url(assets/rh-logo-vertical.svg) no-repeat left center/contain; -webkit-mask:url(assets/rh-logo-vertical.svg) no-repeat left center/contain; transition:background .3s ease" style-hover="background:var(--accent, #AB0520)"></div>
+        </a>
         <p style="margin:24px 0 0; font-size:17px; line-height:1.7; color:#93A0B6; max-width:38ch">College Football Hall of Famer, NFL veteran, coach and community leader. Tucson, Arizona.</p>
         <div style="display:flex; gap:12px; margin-top:26px">
           <a href="https://www.instagram.com/hunley.ricky" target="_blank" rel="noreferrer" aria-label="Ricky Hunley on Instagram" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" style-hover="background:var(--accent, #AB0520); border-color:var(--accent, #AB0520); color:#fff">
@@ -780,7 +790,9 @@
         <a href="#" onClick="{{ nav.huddle }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">The Hunley Huddle</a>
         <a href="#" onClick="{{ nav.community }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">Community</a>
         <a href="#" onClick="{{ nav.news }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">News</a>
+        <sc-if value="{{ showBlog }}" hint-placeholder-val="{{ false }}">
         <a href="#" onClick="{{ nav.blog }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">Blog</a>
+        </sc-if>
         <a href="#" onClick="{{ nav.contact }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">Contact</a>
       </div>
       <div style="display:flex; flex-direction:column; gap:14px">
@@ -797,7 +809,7 @@
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;heroVideoId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;reelUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://youtu.be/tGlJqTsDWkE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;showFoundation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;carouselSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4.5,&quot;min&quot;:2,&quot;max&quot;:12,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;About page&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#AB0520&quot;,&quot;options&quot;:[&quot;#AB0520&quot;,&quot;#0C234B&quot;,&quot;#8C6A1E&quot;,&quot;#1F5C4A&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroVideoId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;reelUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://youtu.be/tGlJqTsDWkE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;showFoundation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;carouselSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4.5,&quot;min&quot;:2,&quot;max&quot;:12,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;About page&quot;},&quot;eventbriteUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;The Huddle&quot;},&quot;showBlog&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Pages&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#AB0520&quot;,&quot;options&quot;:[&quot;#AB0520&quot;,&quot;#0C234B&quot;,&quot;#8C6A1E&quot;,&quot;#1F5C4A&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;}}">
 class Component extends DCLogic {
   state = { page: 'home', videoFailed: false, menuOpen: false, tick: 0 };
   go(p) {
@@ -840,6 +852,7 @@ class Component extends DCLogic {
   }
   renderVals() {
     const p = this.state.page;
+    const showBlog = this.props.showBlog ?? false;
     const A = this.slides(0), B = this.slides(1), C = this.slides(2);
     return {
       a0: A[0], a1: A[1], a2: A[2],
@@ -854,12 +867,14 @@ class Component extends DCLogic {
       hasHeroVideo: !!(this.props.heroVideoId || '').trim(),
       heroVideoSrc: this.heroSrc(),
       showFoundation: this.props.showFoundation ?? true,
+      eventbriteUrl: (this.props.eventbriteUrl || '').trim() || '#',
       isHome: p === 'home',
       isAbout: p === 'about',
       isSpeaking: p === 'speaking',
       isHuddle: p === 'huddle',
       isNews: p === 'news',
-      isBlog: p === 'blog',
+      showBlog: showBlog,
+      isBlog: p === 'blog' && showBlog,
       isCommunity: p === 'community',
       isContact: p === 'contact',
       nav: {

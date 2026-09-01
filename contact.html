@@ -23,30 +23,32 @@
 <div style="--accent: #AB0520; background:#FBFAF8; color:#12161F; font-family:'Source Serif 4', Georgia, serif; overflow-x:hidden">
 <header style="position:sticky; top:0; z-index:50; background:rgba(251,250,248,.92); backdrop-filter:blur(10px); border-bottom:1px solid #E6E2DA">
     <div style="max-width:1280px; margin:0 auto; padding:14px 40px; min-height:78px; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap">
-      <a href="/" style="display:flex; align-items:center; text-decoration:none" class="hv-1">
-        <span style="font-family:Archivo, sans-serif; font-weight:800; font-size:20px; letter-spacing:0.06em; text-transform:uppercase; color:#0C234B">Ricky Hunley</span>
+      <a href="/" aria-label="Ricky Hunley — home" style="display:flex; align-items:center; text-decoration:none">
+        <div style="width:200px; height:26px; background:#0C234B; mask:url(assets/rh-logo-horizontal.svg) no-repeat left center/contain; -webkit-mask:url(assets/rh-logo-horizontal.svg) no-repeat left center/contain; transition:background .3s ease" class="hv-1"></div>
       </a>
       <nav data-r="desktopnav" style="display:flex; align-items:center; gap:22px; flex-wrap:wrap; row-gap:10px">
-        <a href="/about.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">About</a>
-        <a href="/speaking.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">Speaking</a>
-        <a href="/huddle.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">The Huddle</a>
-        <a href="/news.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">News</a>
-        <a href="/contact.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">Contact</a>
-        <a href="mailto:connect@rickyhunley.com" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:13px 22px" class="hv-2">Book Ricky</a>
+        <a href="/about.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-2">About</a>
+        <a href="/speaking.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-2">Speaking</a>
+        <a href="/huddle.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-2">The Huddle</a>
+        <a href="/news.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-2">News</a>
+        
+        <a href="/contact.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-2">Contact</a>
+        <a href="mailto:connect@rickyhunley.com" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:13px 22px" class="hv-3">Book Ricky</a>
       </nav>
-      <button data-r="burger" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu" style="display:none; align-items:center; justify-content:center; width:48px; height:48px; padding:0; background:transparent; border:1px solid #D8D3C9; color:#0C234B; cursor:pointer" class="hv-3">
+      <button data-r="burger" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu" style="display:none; align-items:center; justify-content:center; width:48px; height:48px; padding:0; background:transparent; border:1px solid #D8D3C9; color:#0C234B; cursor:pointer" class="hv-4">
         <svg data-menu-icon="open" hidden width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M1 1 17 17M17 1 1 17"></path></svg>
         <svg data-menu-icon="closed" width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M0 1h20M0 7h20M0 13h20"></path></svg>
       </button>
     </div>
     <div hidden id="mobile-menu" data-r="drawer" style="border-top:1px solid #E6E2DA; padding:6px 24px 26px; display:flex; flex-direction:column">
-        <a href="/about.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">About</a>
-        <a href="/speaking.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">Speaking</a>
-        <a href="/huddle.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">The Huddle</a>
-        <a href="/community.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">Community</a>
-        <a href="/news.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">News</a>
-        <a href="/contact.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">Contact</a>
-        <a href="mailto:connect@rickyhunley.com" style="margin-top:22px; text-align:center; font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:19px 24px" class="hv-4">Book Ricky</a>
+        <a href="/about.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-2">About</a>
+        <a href="/speaking.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-2">Speaking</a>
+        <a href="/huddle.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-2">The Huddle</a>
+        <a href="/community.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-2">Community</a>
+        <a href="/news.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-2">News</a>
+        
+        <a href="/contact.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-2">Contact</a>
+        <a href="mailto:connect@rickyhunley.com" style="margin-top:22px; text-align:center; font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:19px 24px" class="hv-1">Book Ricky</a>
       </div>
   </header>
   <main id="main">
@@ -87,9 +89,9 @@
 <footer style="background:#08182F; color:#fff">
     <div style="max-width:1280px; margin:0 auto; padding:80px 40px 40px; display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:56px">
       <div>
-        <div style="display:flex; align-items:center">
-          <span style="font-family:Archivo, sans-serif; font-weight:800; font-size:17px; letter-spacing:0.06em; text-transform:uppercase; color:#fff">Ricky Hunley</span>
-        </div>
+        <a href="/" aria-label="Ricky Hunley — home" style="display:flex; align-items:center; text-decoration:none">
+          <div style="width:168px; height:66px; background:#fff; mask:url(assets/rh-logo-vertical.svg) no-repeat left center/contain; -webkit-mask:url(assets/rh-logo-vertical.svg) no-repeat left center/contain; transition:background .3s ease" class="hv-1"></div>
+        </a>
         <p style="margin:24px 0 0; font-size:17px; line-height:1.7; color:#93A0B6; max-width:38ch">College Football Hall of Famer, NFL veteran, coach and community leader. Tucson, Arizona.</p>
         <div style="display:flex; gap:12px; margin-top:26px">
           <a href="https://www.instagram.com/hunley.ricky" target="_blank" rel="noreferrer" aria-label="Ricky Hunley on Instagram" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" class="hv-5">
@@ -110,6 +112,7 @@
         <a href="/huddle.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">The Hunley Huddle</a>
         <a href="/community.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">Community</a>
         <a href="/news.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">News</a>
+        
         <a href="/contact.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">Contact</a>
       </div>
       <div style="display:flex; flex-direction:column; gap:14px">

@@ -77,6 +77,15 @@ for (const file of pages) {
     ...(html.match(/(?:src|href)="(\/(?:assets|uploads|css|js)\/[^"]+)"/g) || []),
   ].map((s) => s.replace(/^(?:src|href)="/, '').replace(/"$/, ''));
 
+  // CSS mask/background urls inside inline styles. The header and footer logos
+  // are drawn this way, and a missing file there shows as nothing at all rather
+  // than a broken-image icon — so it needs checking as much as any <img>.
+  for (const m of html.match(/(?:-webkit-)?(?:mask|background-image)\s*:\s*url\(([^)]+)\)/g) || []) {
+    const url = m.replace(/.*url\(/, '').replace(/\)$/, '').replace(/^['"]|['"]$/g, '');
+    if (/^(data:|https?:)/.test(url)) continue;
+    refs.push(url);
+  }
+
   for (const ref of new Set(refs)) {
     const rel = ref.startsWith('/') ? ref.slice(1) : ref;
     if (!fs.existsSync(path.join(ROOT, rel))) fail(file, `missing file: ${ref}`);

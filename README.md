@@ -52,6 +52,8 @@ node tools/check.js          # structural check on what came out
 | `style-hover="color:…"` | a `.hv-N` class in `css/site.css` |
 | `{{ accent }}`, `{{ reelUrl }}` | their default prop values |
 | `menuOpen` / `toggleMenu` | `data-menu-toggle`, driven by `js/site.js` |
+| `showBlog`, `showFoundation` | resolved from their prop defaults |
+| `{{ eventbriteUrl }}` | the real URL, or the whole link dropped if unset |
 | `{{ a0 }}`…`{{ c2 }}` carousel | opening opacities + `data-slide`, ditto |
 
 Every inline style value is carried across untouched — the generator never
@@ -73,6 +75,9 @@ untouched after a design update, check that first.
 not published. A hidden page is not generated, is deleted from disk if a
 previous build made it, is dropped from the sitemap, and has every navigation
 link to it stripped from the header, mobile drawer and footer.
+
+`SHOW_BLOG` mirrors the design's own `showBlog` prop, so the two agree without
+either needing to know about the other.
 
 The **blog** is currently hidden. Its three posts are the design's samples — the
 page says so on its face — and the content now lives in Sanity. `/blog`,
@@ -101,6 +106,18 @@ web-sized, compressed versions. Two things worth knowing:
 Photographs the design stored as PNG are written as JPEG instead (a few hundred
 KB rather than several MB, and none of them has transparency). `build-static.js`
 rewrites those references via `ASSET_RENAMES`.
+
+**`assets/favicon.png` is missing.** The design references it from `<helmet>`.
+It comes back from the API whole, but only as base64 inside a tool result, and
+transcribing 14 KB of that by hand corrupted the PNG — a truncated `caBX` chunk,
+which ffmpeg refuses. Drop the real `favicon.png` into `assets/` and re-run
+`build-static.js`. The generator emits the icon links only when the file is
+present, so until then there is no favicon rather than a 404 on every page.
+
+Worth knowing generally: the generator writes its own `<head>` rather than
+copying the design's `<helmet>`, so **anything new added to the helmet is
+silently dropped unless `build-static.js` is taught to pick it up.** Icon links
+are handled; a future `<meta>` or stylesheet would not be.
 
 **`assets/denver.jpg` is stale.** The design now points at a `denver.png` that
 carries C2PA metadata saying Claude produced or modified it — so it was made
