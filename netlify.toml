@@ -5,6 +5,23 @@
 
 # Netlify serves /about for /about.html on its own; nothing to configure.
 
+# The publish directory is the repo root, so everything in the repo is a URL
+# unless it is blocked here. The generator, its copy of the design source and
+# the developer README have no business being served from the live domain.
+# `force` is required: without it Netlify serves the real file and ignores the
+# rule, because a redirect does not shadow an existing file by default.
+[[redirects]]
+  from = "/tools/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
