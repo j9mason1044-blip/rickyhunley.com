@@ -22,6 +22,78 @@
   status = 404
   force = true
 
+# Old Squarespace URLs. rickyhunley.com ran on Squarespace until this site
+# replaced it, and none of its paths match. Without these, every existing link,
+# bookmark and indexed result 404s on the day of the cutover.
+#
+# Taken from the Squarespace sitemap. /gallery has no equivalent here and goes
+# to the home page; /privacypolicy and /terms are deliberately absent — see the
+# README, they need real pages rather than a redirect to somewhere wrong.
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/story"
+  to = "/about.html"
+  status = 301
+
+[[redirects]]
+  from = "/1984"
+  to = "/about.html"
+  status = 301
+
+[[redirects]]
+  from = "/speaking"
+  to = "/speaking.html"
+  status = 301
+
+[[redirects]]
+  from = "/hunley-huddle"
+  to = "/huddle.html"
+  status = 301
+
+[[redirects]]
+  from = "/press"
+  to = "/news.html"
+  status = 301
+
+[[redirects]]
+  from = "/eventsblog"
+  to = "/news.html"
+  status = 301
+
+[[redirects]]
+  from = "/eventsblog/*"
+  to = "/news.html"
+  status = 301
+
+[[redirects]]
+  from = "/blog"
+  to = "/blog.html"
+  status = 301
+
+[[redirects]]
+  from = "/personal-blog"
+  to = "/blog.html"
+  status = 301
+
+[[redirects]]
+  from = "/personal-blog/*"
+  to = "/blog.html"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 301
+
+[[redirects]]
+  from = "/gallery"
+  to = "/"
+  status = 301
+
 [[headers]]
   for = "/*"
   [headers.values]

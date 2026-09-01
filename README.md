@@ -109,9 +109,40 @@ If the master is ever recut, replace it in Dropbox and re-run
 
 ## Deploying
 
-Netlify, publishing the repository root. `netlify.toml` sets the cache headers
-(a year on `assets/`, a week on `css/` and `js/`) and a small security header
-block. There is no build command.
+Netlify, publishing the repository root, branch `main`. No build command.
+`netlify.toml` carries everything: cache headers (a year on `assets/` and
+`uploads/`, a week on `css/` and `js/`), a small security header block, 404s for
+`tools/` and the README so they are not served from the live domain, and the
+redirects below.
+
+### The domain, and the site it replaces
+
+`rickyhunley.com` is **already live on Squarespace** and its DNS is at GoDaddy
+(`ns29/ns30.domaincontrol.com`). The handoff plan assumed a fresh domain bought
+through Netlify; that is not the situation.
+
+**Do not move the nameservers to Netlify.** The domain carries live email — MX
+points at Microsoft 365 (`rickyhunley-com.mail.protection.outlook.com`) with a
+GoDaddy SPF record. Moving nameservers moves *all* DNS, and unless every MX and
+TXT record is recreated first, his email stops. Change only the website's
+A/CNAME records at GoDaddy and leave the rest alone.
+
+The Squarespace site uses completely different paths, so `netlify.toml` 301s
+them to their equivalents here (`/story` → `/about.html`, `/press` →
+`/news.html`, `/hunley-huddle` → `/huddle.html`, and so on, taken from its
+sitemap). Two of its pages have no equivalent and are deliberately **not**
+redirected:
+
+- `/privacypolicy` and `/terms`. Sending them somewhere wrong is worse than a
+  404, and they matter more once the contact form and analytics land. They need
+  real pages.
+
+`/gallery` goes to the home page for want of anywhere better.
+
+Its `/eventsblog` and `/personal-blog` posts are all Squarespace demo content
+("blog-post-title-one-…"), so nothing real appears to be lost — but confirm
+that before cancelling the subscription, and cancel only after the new site is
+verified live on the domain.
 
 ## What this is not, yet
 
