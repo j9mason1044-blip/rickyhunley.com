@@ -25,8 +25,9 @@ const { execFileSync } = require('child_process');
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'assets');
 
-const PHOTOS =
-  'D:/Dropbox/J9 Brandworks Projects/Ricky Hunley/Ricky Hunley Working/Ricky Hunley Photos';
+const WORKING =
+  'D:/Dropbox/J9 Brandworks Projects/Ricky Hunley/Ricky Hunley Working';
+const PHOTOS = `${WORKING}/Ricky Hunley Photos`;
 
 // `width` is the maximum width of the generated file. Full-bleed heroes get
 // more pixels than images that sit inside the 1280px container.
@@ -61,6 +62,38 @@ const IMAGES = [
 // Small enough that the design project serves them intact, and they have no
 // larger original worth going back to.
 const FROM_DESIGN_PROJECT = ['ua-1983.jpg', 'hunley-huddle-logo.png'];
+
+/**
+ * The home page hero loop. The master is 17.5 MB, far too much to stream behind
+ * a hero, so it is re-encoded down to roughly 4 MB.
+ *
+ * The source is soft, grainy 1980s broadcast footage and it plays under a
+ * `grayscale(0.35) contrast(1.05) brightness(0.72)` filter, so it tolerates
+ * aggressive compression — the artefacts land in grain that is already there.
+ *
+ *   -an                    the element is muted and the master's audio track is
+ *                          silent anyway; dropping it also avoids iOS refusing
+ *                          to autoplay
+ *   -movflags +faststart   moov atom first, so playback can start before the
+ *                          whole file has arrived
+ *   -maxrate / -bufsize    stops busy passages spiking the bitrate
+ */
+const VIDEO = {
+  out: 'uploads/RH-Hero-3.mp4',
+  src: `${WORKING}/RH-Hero-3.mp4`,
+  args: [
+    '-c:v', 'libx264',
+    '-crf', '34',
+    '-preset', 'slow',
+    '-profile:v', 'main',
+    '-level', '4.0',
+    '-pix_fmt', 'yuv420p',
+    '-maxrate', '1200k',
+    '-bufsize', '2400k',
+    '-movflags', '+faststart',
+    '-an',
+  ],
+};
 
 fs.mkdirSync(OUT, { recursive: true });
 
@@ -107,6 +140,24 @@ for (const img of IMAGES) {
   built++;
 }
 
+if (fs.existsSync(VIDEO.src)) {
+  const dest = path.join(ROOT, VIDEO.out);
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  execFileSync(
+    'ffmpeg',
+    ['-y', '-loglevel', 'error', '-i', VIDEO.src, ...VIDEO.args, dest],
+    { stdio: ['ignore', 'ignore', 'inherit'] }
+  );
+  const srcMb = fs.statSync(VIDEO.src).size / 1048576;
+  const outMb = fs.statSync(dest).size / 1048576;
+  console.log(
+    `${VIDEO.out.padEnd(24)} ${srcMb.toFixed(1)} -> ${outMb.toFixed(1)} MB`
+  );
+  built++;
+} else {
+  missing.push(VIDEO.out);
+}
+
 for (const name of FROM_DESIGN_PROJECT) {
   if (fs.existsSync(path.join(OUT, name))) {
     console.log(`${name.padEnd(24)} (from the design project, unchanged)`);
@@ -115,7 +166,7 @@ for (const name of FROM_DESIGN_PROJECT) {
   }
 }
 
-console.log(`\nbuilt ${built} images`);
+console.log(`\nbuilt ${built} files`);
 if (missing.length) {
   console.log(`MISSING: ${missing.join(', ')}`);
   process.exitCode = 1;
