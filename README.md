@@ -1,6 +1,6 @@
 # rickyhunley.com
 
-The Ricky Hunley website: eight static pages, no build step, no framework.
+The Ricky Hunley website: seven static pages, no build step, no framework.
 
 Open `index.html` in a browser and it works. Push to the `main` branch and
 Netlify publishes it. That is the whole deployment story for now.
@@ -11,11 +11,11 @@ Netlify publishes it. That is the whole deployment story for now.
 
 ```
 index.html  about.html  speaking.html  huddle.html
-news.html   blog.html   community.html  contact.html
+news.html   community.html  contact.html
 404.html
 
 css/site.css     the design's global rules, plus the hover states
-js/site.js       hero video fade-in (see "The hero video" below)
+js/site.js       hero video fade-in, mobile menu, About page carousel
 assets/          web-sized photography
 uploads/         the hero video, re-encoded for the web
 netlify.toml     publish directory, cache and security headers
@@ -39,12 +39,11 @@ variable. A copy sits at `tools/RickyHunley.com.dc.html`.
 and regenerate:
 
 ```bash
-node tools/build-static.js   # design file -> the eight pages + css + sitemap
+node tools/build-static.js   # design file -> the pages + css + sitemap
 node tools/check.js          # structural check on what came out
 ```
 
-`build-static.js` resolves the four things a Design Component uses that a
-browser does not understand:
+`build-static.js` resolves what a Design Component does that a browser does not:
 
 | In the design | In the output |
 |---|---|
@@ -52,10 +51,32 @@ browser does not understand:
 | `onClick="{{ nav.about }}"` | `href="/about.html"` |
 | `style-hover="color:…"` | a `.hv-N` class in `css/site.css` |
 | `{{ accent }}`, `{{ reelUrl }}` | their default prop values |
+| `menuOpen` / `toggleMenu` | `data-menu-toggle`, driven by `js/site.js` |
+| `{{ a0 }}`…`{{ c2 }}` carousel | opening opacities + `data-slide`, ditto |
 
 Every inline style value is carried across untouched — the generator never
 adjusts spacing, size or colour. Read it before changing it; the transforms are
 order-dependent.
+
+**One trap worth knowing about.** The design's responsive rules select on inline
+styles by substring, e.g. `[style*="margin: 0px auto"]`. That spelling is what a
+browser produces when it re-serialises a style attribute, which is what the
+Design Component runtime ends up with — but static HTML keeps the author's
+literal `margin:0 auto`. Left alone, those selectors match nothing and the
+entire mobile layout silently does nothing. `build-static.js` rewrites them to
+the authored spelling when it emits `css/site.css`. If mobile ever looks
+untouched after a design update, check that first.
+
+### Hidden pages
+
+`HIDDEN_PAGES` in `build-static.js` lists pages that exist in the design but are
+not published. A hidden page is not generated, is deleted from disk if a
+previous build made it, is dropped from the sitemap, and has every navigation
+link to it stripped from the header, mobile drawer and footer.
+
+The **blog** is currently hidden. Its three posts are the design's samples — the
+page says so on its face — and the content now lives in Sanity. `/blog`,
+`/blog.html` and the old Squarespace blog URLs all 301 to the home page.
 
 ## Images
 
@@ -77,9 +98,16 @@ web-sized, compressed versions. Two things worth knowing:
   their originals by EXIF (photographer + capture time) and exact pixel
   dimensions. The table in `build-assets.js` is that mapping; keep it current.
 
-Three photographs the design stored as PNG are written as JPEG instead
-(a few hundred KB rather than several MB, and none of them had transparency).
-`build-static.js` rewrites those references.
+Photographs the design stored as PNG are written as JPEG instead (a few hundred
+KB rather than several MB, and none of them has transparency). `build-static.js`
+rewrites those references via `ASSET_RENAMES`.
+
+**`assets/denver.jpg` is stale.** The design now points at a `denver.png` that
+carries C2PA metadata saying Claude produced or modified it — so it was made
+during a design session, is over the 192 KiB ceiling, and has no Dropbox
+original to rebuild from. The file in `assets/` is the *older* denver photo,
+which the new alt text ("at the Hula Bowl") no longer describes. Drop the real
+`denver.png` into `assets/` and re-run both build scripts.
 
 ## The hero video
 
@@ -117,9 +145,10 @@ redirects below.
 
 ### The domain, and the site it replaces
 
-`rickyhunley.com` is **already live on Squarespace** and its DNS is at GoDaddy
-(`ns29/ns30.domaincontrol.com`). The handoff plan assumed a fresh domain bought
-through Netlify; that is not the situation.
+`rickyhunley.com` runs on Netlify as of 2026-09-01, replacing a Squarespace
+site. **DNS stays at GoDaddy** (`ns29/ns30.domaincontrol.com`) — only the apex
+A record and the `www` CNAME were repointed. The handoff plan assumed a fresh
+domain bought through Netlify; that was never the situation.
 
 **Do not move the nameservers to Netlify.** The domain carries live email — MX
 points at Microsoft 365 (`rickyhunley-com.mail.protection.outlook.com`) with a
@@ -157,14 +186,11 @@ Known gaps to close before calling it finished:
 
 - The booking CTAs are `mailto:` links, not a form. No submission log, and no
   `source_page` field, so there is no record of which page produced an inquiry.
-- The eight meta descriptions in `tools/build-static.js` are placeholders
+- The meta descriptions in `tools/build-static.js` are placeholders
   written to be reasonable, not final. They are the ad copy in a search result
   and deserve a pass by hand.
 - No JSON-LD. The `Person` block is the highest-value markup on a site like
   this and is worth adding even before the CMS.
-- The mobile treatment is a small `@media` block at the foot of `css/site.css`
-  that collapses the grids and tightens the gutters. The design is authored at
-  desktop width and has not been laid out for small screens.
 - `assets/hunley-huddle-logo.png` is 395px wide and is displayed at container
   width on `/huddle`. There is an `.ai` vector original in Dropbox
   (`Hunley Huddle Logos/`) worth exporting larger.

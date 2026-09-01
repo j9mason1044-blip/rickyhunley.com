@@ -5,6 +5,33 @@ html, body { margin:0; padding:0; background:#FBFAF8; -webkit-font-smoothing:ant
   a:hover { color:#AB0520; }
   ::selection { background:#0C234B; color:#fff; }
 
+  /* Mobile: collapse the fixed-column desktop grids. Overrides inline styles, so !important. */
+  @media (max-width: 900px) {
+    [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    [style*="gap:80px"], [style*="gap:72px"], [style*="gap:64px"], [style*="gap:56px"] { gap: 40px !important; }
+    [style*="margin:0 auto"] { padding-left: 24px !important; padding-right: 24px !important; }
+    [style*="padding:130px 40px"], [style*="padding:120px 40px"], [style*="padding:110px 40px"],
+    [style*="padding:100px 40px"], [style*="padding:80px 40px"], [style*="padding:72px 40px"],
+    [style*="padding:40px 40px"] { padding-top: 66px !important; padding-bottom: 66px !important; }
+    [data-r="keep2"] { grid-template-columns: 1fr 1fr !important; }
+    [data-r="stats"] { grid-template-columns: 1fr 1fr !important; }
+    [data-r="stats"] > div { padding: 22px 14px 22px 0 !important; border-right: none !important; border-top: 1px solid rgba(255,255,255,.14) !important; }
+    [data-r="stats"] > div:nth-child(4) { border-bottom: 1px solid rgba(255,255,255,.14) !important; }
+    [data-r="labelrow"] { gap: 16px !important; }
+    [data-r="newsrow"] { gap: 10px !important; }
+    [data-r="newsrow"] > span:last-child { text-align: left !important; }
+    [data-r="logo"] { max-width: 210px !important; }
+    [data-r="hero"] { height: auto !important; min-height: 88vh !important; }
+    [data-r="herobody"] { position: relative !important; inset: auto !important; min-height: 88vh !important; padding-top: 96px !important; box-sizing: border-box !important; }
+    [data-r="desktopnav"] { display: none !important; }
+    [data-r="burger"] { display: flex !important; }
+  }
+  @media (min-width: 901px) { [data-r="drawer"] { display: none !important; } }
+  @media (max-width: 620px) {
+    [style*="margin:0 auto"] { padding-left: 20px !important; padding-right: 20px !important; }
+    [data-r="keep2"] { gap: 8px !important; }
+  }
+
 .skip-link {
   position: absolute;
   left: -9999px;
@@ -26,31 +53,17 @@ html, body { margin:0; padding:0; background:#FBFAF8; -webkit-font-smoothing:ant
 /* Hover states, lifted from the design's style-hover attributes. */
 .hv-1:hover { color:var(--accent, #AB0520); }
 .hv-2:hover { background:var(--accent, #AB0520); color:#fff; }
-.hv-3:hover { background:var(--accent, #AB0520); border-color:var(--accent, #AB0520); color:#fff; }
-.hv-4:hover { color:#EF6275; }
-.hv-5:hover { background:rgba(255,255,255,.12); color:#EF6275; }
-.hv-6:hover { filter:grayscale(0.2) contrast(1.02); opacity:0.95; }
-.hv-7:hover { filter:none; mix-blend-mode:normal; opacity:1; }
-.hv-8:hover { background:var(--accent, #AB0520); }
-.hv-9:hover { border-color:#0C234B; color:var(--accent, #AB0520); }
-.hv-10:hover { background:rgba(255,255,255,.06); color:#EF6275; }
-.hv-11:hover { background:#fff; color:var(--accent, #AB0520); }
+.hv-3:hover { border-color:var(--accent, #AB0520); color:var(--accent, #AB0520); }
+.hv-4:hover { background:var(--accent, #AB0520); }
+.hv-5:hover { background:var(--accent, #AB0520); border-color:var(--accent, #AB0520); color:#fff; }
+.hv-6:hover { color:#EF6275; }
+.hv-7:hover { background:rgba(255,255,255,.12); color:#EF6275; }
+.hv-8:hover { filter:grayscale(0.2) contrast(1.02); opacity:0.95; }
+.hv-9:hover { filter:none; mix-blend-mode:normal; opacity:1; }
+.hv-10:hover { border-color:#0C234B; color:var(--accent, #AB0520); }
+.hv-11:hover { background:rgba(255,255,255,.06); color:#EF6275; }
+.hv-12:hover { background:#fff; color:var(--accent, #AB0520); }
 
-/* The design is authored at desktop width; these keep it usable below 900px
-   without changing any desktop value. */
-@media (max-width: 900px) {
-  main section > div[style*="grid-template-columns"],
-  main section[style*="grid-template-columns"],
-  footer > div[style*="grid-template-columns"] {
-    grid-template-columns: 1fr !important;
-    gap: 48px !important;
-  }
-  main section[style*="padding:130px"],
-  main section > div[style*="padding:110px"],
-  main section > div[style*="padding:130px"] {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-  }
-  header > div,
-  footer > div { padding-left: 24px !important; padding-right: 24px !important; }
-}
+/* The mobile menu's drawer and icons carry inline display values, which beat
+   the [hidden] rule in the user-agent stylesheet. This puts it back. */
+[hidden] { display: none !important; }

@@ -26,26 +26,38 @@
       <a href="/" style="display:flex; align-items:center; text-decoration:none" class="hv-1">
         <span style="font-family:Archivo, sans-serif; font-weight:800; font-size:20px; letter-spacing:0.06em; text-transform:uppercase; color:#0C234B">Ricky Hunley</span>
       </a>
-      <nav style="display:flex; align-items:center; gap:22px; flex-wrap:wrap; row-gap:10px">
+      <nav data-r="desktopnav" style="display:flex; align-items:center; gap:22px; flex-wrap:wrap; row-gap:10px">
         <a href="/about.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">About</a>
         <a href="/speaking.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">Speaking</a>
         <a href="/huddle.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">The Huddle</a>
         <a href="/news.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">News</a>
-        <a href="/blog.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">Blog</a>
         <a href="/contact.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" class="hv-1">Contact</a>
         <a href="mailto:connect@rickyhunley.com" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:13px 22px" class="hv-2">Book Ricky</a>
       </nav>
+      <button data-r="burger" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu" style="display:none; align-items:center; justify-content:center; width:48px; height:48px; padding:0; background:transparent; border:1px solid #D8D3C9; color:#0C234B; cursor:pointer" class="hv-3">
+        <svg data-menu-icon="open" hidden width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M1 1 17 17M17 1 1 17"></path></svg>
+        <svg data-menu-icon="closed" width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M0 1h20M0 7h20M0 13h20"></path></svg>
+      </button>
     </div>
+    <div hidden id="mobile-menu" data-r="drawer" style="border-top:1px solid #E6E2DA; padding:6px 24px 26px; display:flex; flex-direction:column">
+        <a href="/about.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">About</a>
+        <a href="/speaking.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">Speaking</a>
+        <a href="/huddle.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">The Huddle</a>
+        <a href="/community.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">Community</a>
+        <a href="/news.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">News</a>
+        <a href="/contact.html" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" class="hv-1">Contact</a>
+        <a href="mailto:connect@rickyhunley.com" style="margin-top:22px; text-align:center; font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:19px 24px" class="hv-4">Book Ricky</a>
+      </div>
   </header>
   <main id="main">
 
   <div>
-    <section style="position:relative; height:88vh; min-height:620px; background:#0C234B; overflow:hidden">
+    <section data-r="hero" style="position:relative; height:88vh; min-height:620px; background:#0C234B; overflow:hidden">
       <img src="assets/hero-asu.jpg" alt="Ricky Hunley celebrating with the team at Arizona State" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 74%; filter:grayscale(0.35) contrast(1.05) brightness(0.72)" />
       <video data-hero-video src="uploads/RH-Hero-3.mp4" autoplay muted loop playsinline style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:grayscale(0.35) contrast(1.05) brightness(0.72); opacity:0; transition:opacity 1.4s ease"></video>
       
-      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,35,75,.55) 0%, rgba(12,35,75,.15) 40%, rgba(12,35,75,.92) 100%)"></div>
-      <div style="position:absolute; inset:0; display:flex; align-items:flex-end">
+      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,35,75,.44) 0%, rgba(12,35,75,.10) 40%, rgba(12,35,75,.82) 100%)"></div>
+      <div data-r="herobody" style="position:absolute; inset:0; display:flex; align-items:flex-end">
         <div style="max-width:1280px; margin:0 auto; padding:0 40px 76px; width:100%; box-sizing:border-box">
           <div style="display:flex; align-items:center; gap:14px; margin-bottom:26px">
             <span style="width:34px; height:2px; background:var(--accent, #AB0520)"></span>
@@ -55,14 +67,14 @@
           <p style="margin:28px 0 0; font-size:20px; line-height:1.6; color:#D8D4CC; max-width:56ch">Linebacker. NFL veteran. Coach. Mentor. For nearly five decades, since he first ran onto the field in Tucson in 1980, Ricky Hunley has led on the field and served far beyond it, and he is still in the game.</p>
           <div style="display:flex; gap:14px; flex-wrap:wrap; margin-top:38px">
             <a href="mailto:connect@rickyhunley.com" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; background:#fff; padding:18px 30px" class="hv-2">Book Ricky to speak</a>
-            <a href="/huddle.html" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; border:1px solid rgba(255,255,255,.45); padding:18px 30px" class="hv-5">Join the Hunley Huddle</a>
+            <a href="/huddle.html" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; border:1px solid rgba(255,255,255,.45); padding:18px 30px" class="hv-7">Join the Hunley Huddle</a>
           </div>
         </div>
       </div>
     </section>
 
     <section style="background:#0C234B; border-top:1px solid rgba(255,255,255,.12)">
-      <div style="max-width:1280px; margin:0 auto; padding:0 40px; display:grid; grid-template-columns:repeat(5, 1fr)">
+      <div data-r="stats" style="max-width:1280px; margin:0 auto; padding:0 40px; display:grid; grid-template-columns:repeat(5, 1fr)">
         <div style="padding:38px 28px 38px 0; border-right:1px solid rgba(255,255,255,.14)">
           <div style="font-family:Archivo, sans-serif; font-weight:800; font-size:38px; letter-spacing:-0.03em; color:#fff">2×</div>
           <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:#9FA9BC; margin-top:8px">Consensus All-American</div>
@@ -98,8 +110,8 @@
           </div>
           <p style="margin:0; font-size:18.5px; line-height:1.7; color:#5C6270; max-width:42ch">The story in his own words: Petersburg, Tucson, the league, and the work he does now.</p>
         </div>
-        <a href="https://www.youtube.com/watch?v=RK45X4F-g9o" target="_blank" rel="noreferrer" style="position:relative; display:block; background:#0C234B; aspect-ratio:16/9; overflow:hidden" class="hv-1">
-          <img src="assets/practice.jpg" alt="Ricky Hunley film still" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(0.9); mix-blend-mode:screen; opacity:0.86; transition:all .6s ease" class="hv-6" />
+        <a href="https://youtu.be/tGlJqTsDWkE" target="_blank" rel="noreferrer" style="position:relative; display:block; background:#0C234B; aspect-ratio:16/9; overflow:hidden" class="hv-1">
+          <img src="assets/practice.jpg" alt="Ricky Hunley film still" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(0.9); mix-blend-mode:screen; opacity:0.86; transition:all .6s ease" class="hv-8" />
           <span style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:96px; height:96px; border-radius:50%; background:rgba(255,255,255,.94); display:flex; align-items:center; justify-content:center">
             <span style="width:0; height:0; margin-left:7px; border-top:15px solid transparent; border-bottom:15px solid transparent; border-left:24px solid #0C234B"></span>
           </span>
@@ -110,7 +122,7 @@
 
     <section style="max-width:1280px; margin:0 auto; padding:130px 40px; display:grid; grid-template-columns:0.9fr 1.1fr; gap:80px; align-items:center">
       <div style="position:relative; background:#0C234B; aspect-ratio:4/5; overflow:hidden">
-        <img src="assets/headshot.jpg" alt="Ricky Hunley today" style="width:100%; height:100%; object-fit:cover; object-position:50% 22%; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-7" />
+        <img src="assets/headshot.jpg" alt="Ricky Hunley today" style="width:100%; height:100%; object-fit:cover; object-position:50% 22%; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-9" />
       </div>
       <div>
         <div style="display:flex; align-items:center; gap:14px; margin-bottom:24px">
@@ -157,8 +169,8 @@
           </div>
         </div>
         <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:48px; align-items:center">
-          <a href="mailto:connect@rickyhunley.com" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:18px 30px" class="hv-8">Book Ricky</a>
-          <a href="/speaking.html" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; border:1px solid #C9C4B9; padding:18px 30px" class="hv-9">See speaking details</a>
+          <a href="mailto:connect@rickyhunley.com" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:18px 30px" class="hv-4">Book Ricky</a>
+          <a href="/speaking.html" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; border:1px solid #C9C4B9; padding:18px 30px" class="hv-10">See speaking details</a>
         </div>
       </div>
     </section>
@@ -171,23 +183,27 @@
           <p style="margin:26px 0 0; font-size:19px; line-height:1.7; color:#C6CCD8; max-width:50ch">Tune in before every University of Arizona football game as UA legends Ricky and LaMonte Hunley team up with veteran Arizona sports journalist Steve Rivera to break down the matchup and share stories from decades in the game.</p>
           <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:36px">
             <a href="/huddle.html" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; background:#fff; padding:17px 28px" class="hv-2">All episodes</a>
-            <a href="https://www.instagram.com/hunleyhuddle" target="_blank" rel="noreferrer" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; border:1px solid rgba(255,255,255,.4); padding:17px 28px" class="hv-5">@hunleyhuddle</a>
+            <a href="https://www.instagram.com/hunleyhuddle" target="_blank" rel="noreferrer" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; border:1px solid rgba(255,255,255,.4); padding:17px 28px" class="hv-7">@hunleyhuddle</a>
           </div>
         </div>
         <div style="display:flex; flex-direction:column">
-          <a href="https://podcasts.apple.com/us/podcast/eye-on-the-ball/id1532309071?i=1000737944104" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" class="hv-10">
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:22px">
+            <span style="width:28px; height:2px; background:var(--accent, #AB0520)"></span>
+            <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#93A0B6">Listen to the latest episodes</span>
+          </div>
+          <a href="https://podcasts.apple.com/us/podcast/eye-on-the-ball/id1532309071?i=1000737944104" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" class="hv-11">
             <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 8</span>
             <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Nick Foles &amp; Willie Tuitama</span>
           </a>
-          <a href="https://podcasts.apple.com/us/podcast/eye-on-the-ball/id1532309071?i=1000735891033" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" class="hv-10">
+          <a href="https://podcasts.apple.com/us/podcast/eye-on-the-ball/id1532309071?i=1000735891033" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" class="hv-11">
             <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 7</span>
             <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Rob Gronkowski</span>
           </a>
-          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-6-brad-anderson-299997314/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" class="hv-10">
+          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-6-brad-anderson-299997314/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" class="hv-11">
             <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 6</span>
             <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Brad Anderson</span>
           </a>
-          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-5-lance-briggs-298567369/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); border-bottom:1px solid rgba(255,255,255,.18); color:#fff" class="hv-10">
+          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-5-lance-briggs-298567369/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); border-bottom:1px solid rgba(255,255,255,.18); color:#fff" class="hv-11">
             <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 5</span>
             <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Lance Briggs</span>
           </a>
@@ -197,18 +213,18 @@
 
     <section style="max-width:1280px; margin:0 auto; padding:120px 40px">
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center">
-        <div style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1.25fr 1fr; gap:12px; aspect-ratio:8/9">
+        <div data-r="keep2" style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1.25fr 1fr; gap:12px; aspect-ratio:8/9">
           <div style="position:relative; background:#0C234B; overflow:hidden">
-            <img src="assets/f101-a.jpg" alt="Football 101 attendees" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-7" />
+            <img src="assets/f101-a.jpg" alt="Football 101 attendees" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-9" />
           </div>
           <div style="position:relative; background:#0C234B; overflow:hidden">
-            <img src="assets/f101-b.jpg" alt="Football 101 session" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-7" />
+            <img src="assets/f101-b.jpg" alt="Football 101 session" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-9" />
           </div>
           <div style="position:relative; background:#0C234B; overflow:hidden">
-            <img src="assets/f101-d.jpg" alt="Football 101 crowd" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-7" />
+            <img src="assets/f101-d.jpg" alt="Football 101 crowd" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-9" />
           </div>
           <div style="position:relative; background:#0C234B; overflow:hidden">
-            <img src="assets/f101-c.jpg" alt="Football 101 on the field" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-7" />
+            <img src="assets/f101-c.jpg" alt="Football 101 on the field" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" class="hv-9" />
           </div>
         </div>
         <div>
@@ -256,15 +272,15 @@
         <a href="/news.html" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:#0C234B" class="hv-1">All news →</a>
       </div>
       <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:#E6E2DA; border:1px solid #E6E2DA">
-        <a href="https://tucson.com/sports/arizonawildcats/football/article_a61f0047-da5e-40ac-9208-745d46d73aee.html" target="_blank" rel="noreferrer" style="background:#FBFAF8; padding:38px 30px 44px; display:block" class="hv-11">
+        <a href="https://tucson.com/sports/arizonawildcats/football/article_a61f0047-da5e-40ac-9208-745d46d73aee.html" target="_blank" rel="noreferrer" style="background:#FBFAF8; padding:38px 30px 44px; display:block" class="hv-12">
           <div style="font-family:Archivo, sans-serif; font-size:11px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent, #AB0520)">Tucson.com</div>
           <h3 style="margin:20px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:22px; line-height:1.22; letter-spacing:-0.02em; color:#0C234B">Arizona's Ricky Hunley, key figure in the bizarre 1984 NFL Draft</h3>
         </a>
-        <a href="https://footballfoundation.org/honorees/ricky-hunley-1997" target="_blank" rel="noreferrer" style="background:#FBFAF8; padding:38px 30px 44px; display:block" class="hv-11">
+        <a href="https://footballfoundation.org/honorees/ricky-hunley-1997" target="_blank" rel="noreferrer" style="background:#FBFAF8; padding:38px 30px 44px; display:block" class="hv-12">
           <div style="font-family:Archivo, sans-serif; font-size:11px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent, #AB0520)">National Football Foundation</div>
           <h3 style="margin:20px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:22px; line-height:1.22; letter-spacing:-0.02em; color:#0C234B">Ricky Hunley: College Football Hall of Fame</h3>
         </a>
-        <a href="https://arizonawildcatsreport.substack.com/p/top-50-football-players-in-arizona" target="_blank" rel="noreferrer" style="background:#FBFAF8; padding:38px 30px 44px; display:block" class="hv-11">
+        <a href="https://arizonawildcatsreport.substack.com/p/top-50-football-players-in-arizona" target="_blank" rel="noreferrer" style="background:#FBFAF8; padding:38px 30px 44px; display:block" class="hv-12">
           <div style="font-family:Archivo, sans-serif; font-size:11px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--accent, #AB0520)">AG's Wildcat Report</div>
           <h3 style="margin:20px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:22px; line-height:1.22; letter-spacing:-0.02em; color:#0C234B">Top 50 players in Arizona history: No. 1, Ricky Hunley</h3>
         </a>
@@ -280,35 +296,31 @@
         </div>
         <p style="margin:24px 0 0; font-size:17px; line-height:1.7; color:#93A0B6; max-width:38ch">College Football Hall of Famer, NFL veteran, coach and community leader. Tucson, Arizona.</p>
         <div style="display:flex; gap:12px; margin-top:26px">
-          <a href="https://www.instagram.com/hunley.ricky" target="_blank" rel="noreferrer" aria-label="Ricky Hunley on Instagram" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" class="hv-3">
+          <a href="https://www.instagram.com/hunley.ricky" target="_blank" rel="noreferrer" aria-label="Ricky Hunley on Instagram" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" class="hv-5">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle></svg>
           </a>
-          <a href="https://www.instagram.com/hunleyhuddle" target="_blank" rel="noreferrer" aria-label="The Hunley Huddle on Instagram" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" class="hv-3">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle></svg>
-          </a>
-          <a href="/huddle.html" aria-label="The Hunley Huddle podcast" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" class="hv-3">
+          <a href="/huddle.html" aria-label="The Hunley Huddle podcast" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" class="hv-5">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 15.5a3.5 3.5 0 0 0 3.5-3.5V6a3.5 3.5 0 0 0-7 0v6a3.5 3.5 0 0 0 3.5 3.5Z"></path><path d="M5 11.5v.8a7 7 0 0 0 14 0v-.8"></path><path d="M12 19.3V22"></path></svg>
           </a>
-          <a href="mailto:connect@rickyhunley.com" aria-label="Email Ricky Hunley" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" class="hv-3">
+          <a href="mailto:connect@rickyhunley.com" aria-label="Email Ricky Hunley" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" class="hv-5">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="1.5"></rect><path d="m3.6 6.2 8.4 6.4 8.4-6.4"></path></svg>
           </a>
         </div>
       </div>
       <div style="display:flex; flex-direction:column; gap:14px">
         <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:#5E6C85; margin-bottom:6px">Explore</div>
-        <a href="/about.html" style="font-size:16.5px; color:#DCE0E8" class="hv-4">About</a>
-        <a href="/speaking.html" style="font-size:16.5px; color:#DCE0E8" class="hv-4">Speaking</a>
-        <a href="/huddle.html" style="font-size:16.5px; color:#DCE0E8" class="hv-4">The Hunley Huddle</a>
-        <a href="/community.html" style="font-size:16.5px; color:#DCE0E8" class="hv-4">Community</a>
-        <a href="/news.html" style="font-size:16.5px; color:#DCE0E8" class="hv-4">News</a>
-        <a href="/blog.html" style="font-size:16.5px; color:#DCE0E8" class="hv-4">Blog</a>
-        <a href="/contact.html" style="font-size:16.5px; color:#DCE0E8" class="hv-4">Contact</a>
+        <a href="/about.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">About</a>
+        <a href="/speaking.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">Speaking</a>
+        <a href="/huddle.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">The Hunley Huddle</a>
+        <a href="/community.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">Community</a>
+        <a href="/news.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">News</a>
+        <a href="/contact.html" style="font-size:16.5px; color:#DCE0E8" class="hv-6">Contact</a>
       </div>
       <div style="display:flex; flex-direction:column; gap:14px">
         <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:#5E6C85; margin-bottom:6px">Connect</div>
-        <a href="mailto:connect@rickyhunley.com" style="font-size:16.5px; color:#DCE0E8" class="hv-4">connect@rickyhunley.com</a>
-        <a href="https://www.instagram.com/hunley.ricky" target="_blank" rel="noreferrer" style="font-size:16.5px; color:#DCE0E8" class="hv-4">Instagram @hunley.ricky</a>
-        <a href="https://www.instagram.com/hunleyhuddle" target="_blank" rel="noreferrer" style="font-size:16.5px; color:#DCE0E8" class="hv-4">@hunleyhuddle</a>
+        <a href="mailto:connect@rickyhunley.com" style="font-size:16.5px; color:#DCE0E8" class="hv-6">connect@rickyhunley.com</a>
+        <a href="https://www.instagram.com/hunley.ricky" target="_blank" rel="noreferrer" style="font-size:16.5px; color:#DCE0E8" class="hv-6">Instagram @hunley.ricky</a>
+        <a href="https://www.instagram.com/hunleyhuddle" target="_blank" rel="noreferrer" style="font-size:16.5px; color:#DCE0E8" class="hv-6">@hunleyhuddle</a>
       </div>
     </div>
     <div style="max-width:1280px; margin:0 auto; padding:28px 40px 44px; border-top:1px solid rgba(255,255,255,.12); display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap">

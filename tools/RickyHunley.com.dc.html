@@ -16,6 +16,33 @@
   a { color:#0C234B; text-decoration:none; }
   a:hover { color:#AB0520; }
   ::selection { background:#0C234B; color:#fff; }
+
+  /* Mobile: collapse the fixed-column desktop grids. Overrides inline styles, so !important. */
+  @media (max-width: 900px) {
+    [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    [style*="gap: 80px"], [style*="gap: 72px"], [style*="gap: 64px"], [style*="gap: 56px"] { gap: 40px !important; }
+    [style*="margin: 0px auto"] { padding-left: 24px !important; padding-right: 24px !important; }
+    [style*="padding: 130px 40px"], [style*="padding: 120px 40px"], [style*="padding: 110px 40px"],
+    [style*="padding: 100px 40px"], [style*="padding: 80px 40px"], [style*="padding: 72px 40px"],
+    [style*="padding: 40px 40px"] { padding-top: 66px !important; padding-bottom: 66px !important; }
+    [data-r="keep2"] { grid-template-columns: 1fr 1fr !important; }
+    [data-r="stats"] { grid-template-columns: 1fr 1fr !important; }
+    [data-r="stats"] > div { padding: 22px 14px 22px 0 !important; border-right: none !important; border-top: 1px solid rgba(255,255,255,.14) !important; }
+    [data-r="stats"] > div:nth-child(4) { border-bottom: 1px solid rgba(255,255,255,.14) !important; }
+    [data-r="labelrow"] { gap: 16px !important; }
+    [data-r="newsrow"] { gap: 10px !important; }
+    [data-r="newsrow"] > span:last-child { text-align: left !important; }
+    [data-r="logo"] { max-width: 210px !important; }
+    [data-r="hero"] { height: auto !important; min-height: 88vh !important; }
+    [data-r="herobody"] { position: relative !important; inset: auto !important; min-height: 88vh !important; padding-top: 96px !important; box-sizing: border-box !important; }
+    [data-r="desktopnav"] { display: none !important; }
+    [data-r="burger"] { display: flex !important; }
+  }
+  @media (min-width: 901px) { [data-r="drawer"] { display: none !important; } }
+  @media (max-width: 620px) {
+    [style*="margin: 0px auto"] { padding-left: 20px !important; padding-right: 20px !important; }
+    [data-r="keep2"] { gap: 8px !important; }
+  }
 </style>
 </helmet>
 <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#0C234B"/><rect x="30" y="30" width="40" height="40" rx="4" fill="#AB0520"/><text x="50" y="58" font-family="Archivo, sans-serif" font-size="22" font-weight="800" fill="#FFFFFF" text-anchor="middle">RH</text></svg></template>
@@ -26,7 +53,7 @@
       <a href="#" onClick="{{ nav.home }}" style="display:flex; align-items:center; text-decoration:none" style-hover="color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-weight:800; font-size:20px; letter-spacing:0.06em; text-transform:uppercase; color:#0C234B">Ricky Hunley</span>
       </a>
-      <nav style="display:flex; align-items:center; gap:22px; flex-wrap:wrap; row-gap:10px">
+      <nav data-r="desktopnav" style="display:flex; align-items:center; gap:22px; flex-wrap:wrap; row-gap:10px">
         <a href="#" onClick="{{ nav.about }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">About</a>
         <a href="#" onClick="{{ nav.speaking }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">Speaking</a>
         <a href="#" onClick="{{ nav.huddle }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">The Huddle</a>
@@ -35,12 +62,32 @@
         <a href="#" onClick="{{ nav.contact }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">Contact</a>
         <a href="mailto:connect@rickyhunley.com" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:13px 22px" style-hover="background:var(--accent, #AB0520); color:#fff">Book Ricky</a>
       </nav>
+      <button data-r="burger" onClick="{{ toggleMenu }}" aria-label="Menu" style="display:none; align-items:center; justify-content:center; width:48px; height:48px; padding:0; background:transparent; border:1px solid #D8D3C9; color:#0C234B; cursor:pointer" style-hover="border-color:var(--accent, #AB0520); color:var(--accent, #AB0520)">
+        <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+          <svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M1 1 17 17M17 1 1 17"></path></svg>
+        </sc-if>
+        <sc-if value="{{ menuClosed }}" hint-placeholder-val="{{ true }}">
+          <svg width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M0 1h20M0 7h20M0 13h20"></path></svg>
+        </sc-if>
+      </button>
     </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div data-r="drawer" style="border-top:1px solid #E6E2DA; padding:6px 24px 26px; display:flex; flex-direction:column">
+        <a href="#" onClick="{{ nav.about }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">About</a>
+        <a href="#" onClick="{{ nav.speaking }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Speaking</a>
+        <a href="#" onClick="{{ nav.huddle }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">The Huddle</a>
+        <a href="#" onClick="{{ nav.community }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Community</a>
+        <a href="#" onClick="{{ nav.news }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">News</a>
+        <a href="#" onClick="{{ nav.blog }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Blog</a>
+        <a href="#" onClick="{{ nav.contact }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Contact</a>
+        <a href="mailto:connect@rickyhunley.com" style="margin-top:22px; text-align:center; font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:19px 24px" style-hover="background:var(--accent, #AB0520)">Book Ricky</a>
+      </div>
+    </sc-if>
   </header>
 
   <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
   <div>
-    <section style="position:relative; height:88vh; min-height:620px; background:#0C234B; overflow:hidden">
+    <section data-r="hero" style="position:relative; height:88vh; min-height:620px; background:#0C234B; overflow:hidden">
       <img src="assets/hero-asu.jpg" alt="Ricky Hunley celebrating with the team at Arizona State" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 74%; filter:grayscale(0.35) contrast(1.05) brightness(0.72)" />
       <video ref="{{ heroVideoRef }}" src="uploads/RH-Hero-3.mp4" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:grayscale(0.35) contrast(1.05) brightness(0.72); opacity:0; transition:opacity 1.4s ease"></video>
       <sc-if value="{{ hasHeroVideo }}" hint-placeholder-val="{{ false }}">
@@ -48,8 +95,8 @@
           <iframe src="{{ heroVideoSrc }}" title="Ricky Hunley reel" allow="autoplay; encrypted-media" frameBorder="0" style="position:absolute; top:50%; left:50%; width:100vw; height:56.25vw; min-height:100%; min-width:177.78vh; transform:translate(-50%,-50%); border:0; filter:grayscale(0.35) contrast(1.05) brightness(0.72)"></iframe>
         </div>
       </sc-if>
-      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,35,75,.55) 0%, rgba(12,35,75,.15) 40%, rgba(12,35,75,.92) 100%)"></div>
-      <div style="position:absolute; inset:0; display:flex; align-items:flex-end">
+      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,35,75,.44) 0%, rgba(12,35,75,.10) 40%, rgba(12,35,75,.82) 100%)"></div>
+      <div data-r="herobody" style="position:absolute; inset:0; display:flex; align-items:flex-end">
         <div style="max-width:1280px; margin:0 auto; padding:0 40px 76px; width:100%; box-sizing:border-box">
           <div style="display:flex; align-items:center; gap:14px; margin-bottom:26px">
             <span style="width:34px; height:2px; background:var(--accent, #AB0520)"></span>
@@ -66,7 +113,7 @@
     </section>
 
     <section style="background:#0C234B; border-top:1px solid rgba(255,255,255,.12)">
-      <div style="max-width:1280px; margin:0 auto; padding:0 40px; display:grid; grid-template-columns:repeat(5, 1fr)">
+      <div data-r="stats" style="max-width:1280px; margin:0 auto; padding:0 40px; display:grid; grid-template-columns:repeat(5, 1fr)">
         <div style="padding:38px 28px 38px 0; border-right:1px solid rgba(255,255,255,.14)">
           <div style="font-family:Archivo, sans-serif; font-weight:800; font-size:38px; letter-spacing:-0.03em; color:#fff">2×</div>
           <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase; color:#9FA9BC; margin-top:8px">Consensus All-American</div>
@@ -179,6 +226,10 @@
           </div>
         </div>
         <div style="display:flex; flex-direction:column">
+          <div style="display:flex; align-items:center; gap:14px; margin-bottom:22px">
+            <span style="width:28px; height:2px; background:var(--accent, #AB0520)"></span>
+            <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#93A0B6">Listen to the latest episodes</span>
+          </div>
           <a href="https://podcasts.apple.com/us/podcast/eye-on-the-ball/id1532309071?i=1000737944104" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" style-hover="background:rgba(255,255,255,.06); color:#EF6275">
             <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 8</span>
             <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Nick Foles &amp; Willie Tuitama</span>
@@ -201,7 +252,7 @@
 
     <section style="max-width:1280px; margin:0 auto; padding:120px 40px">
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center">
-        <div style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1.25fr 1fr; gap:12px; aspect-ratio:8/9">
+        <div data-r="keep2" style="display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1.25fr 1fr; gap:12px; aspect-ratio:8/9">
           <div style="position:relative; background:#0C234B; overflow:hidden">
             <img src="assets/f101-a.jpg" alt="Football 101 attendees" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
@@ -293,27 +344,27 @@
 
     <section style="max-width:1120px; margin:0 auto; padding:110px 40px 40px">
       <p style="margin:0 0 72px; font-size:23px; line-height:1.62; color:#0C234B; max-width:60ch; font-weight:600">Ricky Cardell Hunley (born November 11, 1961) is a legendary figure in American football. As a standout linebacker for the University of Arizona in the early 1980s, Hunley made a name for himself before continuing his impressive career in the National Football League for seven seasons during the 1980s and early 1990s.</p>
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:56px; padding-bottom:64px; border-bottom:1px solid #E6E2DA">
+      <div data-r="labelrow" style="display:grid; grid-template-columns:200px 1fr; gap:56px; padding-bottom:64px; border-bottom:1px solid #E6E2DA">
         <h2 style="margin:0; font-family:Archivo, sans-serif; font-weight:700; font-size:15px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Early life &amp; college career</h2>
         <div>
           <p style="margin:0; font-size:19.5px; line-height:1.75; color:#2A2F3A">Born in Petersburg, Virginia, Ricky Hunley was one of nine siblings raised by Scarlette Hunley. He attended Petersburg High School, where he excelled as an athlete in both football and baseball. His talent on the baseball field caught the attention of the Pittsburgh Pirates, who drafted him in 1980. However, Hunley chose to pursue football and enrolled at the University of Arizona.</p>
           <p style="margin:22px 0 0; font-size:19.5px; line-height:1.75; color:#2A2F3A">At Arizona, he became the first Wildcat to earn consensus All-American honors twice, in 1982 and 1983. His exceptional performance led to his induction into the College Football Hall of Fame in 1998.</p>
         </div>
       </div>
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:56px; padding:64px 0; border-bottom:1px solid #E6E2DA">
+      <div data-r="labelrow" style="display:grid; grid-template-columns:200px 1fr; gap:56px; padding:64px 0; border-bottom:1px solid #E6E2DA">
         <h2 style="margin:0; font-family:Archivo, sans-serif; font-weight:700; font-size:15px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Professional career</h2>
         <div>
           <p style="margin:0; font-size:19.5px; line-height:1.75; color:#2A2F3A">Hunley was selected seventh overall in the 1984 NFL Draft. He played for the Denver Broncos (1984 to 1987), competing in two Super Bowls during his time with the team. He also played for the Phoenix Cardinals (1988) and Los Angeles Raiders (1989 to 1990). During his career, Hunley served as Vice President and Executive Board Member for the NFL Players Association from 1988 to 1991.</p>
         </div>
       </div>
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:56px; padding:64px 0; border-bottom:1px solid #E6E2DA">
+      <div data-r="labelrow" style="display:grid; grid-template-columns:200px 1fr; gap:56px; padding:64px 0; border-bottom:1px solid #E6E2DA">
         <h2 style="margin:0; font-family:Archivo, sans-serif; font-weight:700; font-size:15px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Coaching career</h2>
         <div>
           <p style="margin:0; font-size:19.5px; line-height:1.75; color:#2A2F3A">Upon retiring as a player, Hunley moved into coaching. His coaching career includes stints at various colleges and NFL teams, including the University of Southern California, the University of Missouri, the University of Florida, and the Washington Redskins. He served on the board of the Black Coaches Association from 1998 to 2002.</p>
           <p style="margin:22px 0 0; font-size:19.5px; line-height:1.75; color:#2A2F3A">Hunley returned to the University of Arizona in 2021 as the defensive line coach before taking on his current role as the Executive Director of Player Relations and External Development at his alma mater.</p>
         </div>
       </div>
-      <div style="display:grid; grid-template-columns:200px 1fr; gap:56px; padding:64px 0">
+      <div data-r="labelrow" style="display:grid; grid-template-columns:200px 1fr; gap:56px; padding:64px 0">
         <h2 style="margin:0; font-family:Archivo, sans-serif; font-weight:700; font-size:15px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Philanthropic activities</h2>
         <div>
           <p style="margin:0; font-size:19.5px; line-height:1.75; color:#2A2F3A">In addition to his coaching career, Hunley donates his time and resources to a wide range of philanthropic causes. He is a strong supporter of Easter Seals of Southern Arizona, which provides services to children and adults with disabilities, and the Boys and Girls Club of Tucson. His support of the American Heart Association earned him recognition as a 2025 Person of Impact, and his advocacy for the Arizona Diaper Bank danced his way to a victory in the 2024 Dancing with Our Stars competition.</p>
@@ -335,21 +386,27 @@
           <div style="display:flex; justify-content:space-between; gap:24px; padding:20px 0; border-top:1px solid #E6E2DA"><span style="font-size:18px; color:#2A2F3A">Virginia Sports Hall of Fame inductee, individual and team</span><span style="font-family:Archivo, sans-serif; font-weight:700; font-size:15px; color:#0C234B">2018 · 2025</span></div>
           <div style="display:flex; justify-content:space-between; gap:24px; padding:20px 0; border-top:1px solid #E6E2DA"><span style="font-size:18px; color:#2A2F3A">First-team All-Pac-10</span><span style="font-family:Archivo, sans-serif; font-weight:700; font-size:15px; color:#0C234B">1981 · 1982 · 1983</span></div>
           <div style="display:flex; justify-content:space-between; gap:24px; padding:20px 0; border-top:1px solid #E6E2DA"><span style="font-size:18px; color:#2A2F3A">State of Arizona Sports Hall of Fame inductee</span><span style="font-family:Archivo, sans-serif; font-weight:700; font-size:15px; color:#0C234B">2025</span></div>
-          <div style="display:flex; justify-content:space-between; gap:24px; padding:20px 0; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA"><span style="font-size:18px; color:#2A2F3A">Petersburg High School Hall of Fame, individual and 1979 state championship team</span><span style="font-family:Archivo, sans-serif; font-weight:700; font-size:15px; color:#0C234B">1997 · 2025</span></div>
+          <div style="display:flex; justify-content:space-between; gap:24px; padding:20px 0; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA"><span style="font-size:18px; color:#2A2F3A">Petersburg High School Hall of Fame, individual<br />and 1979 state championship team</span><span style="font-family:Archivo, sans-serif; font-weight:700; font-size:15px; color:#0C234B">1997 · 2025</span></div>
           <div style="display:flex; justify-content:space-between; gap:24px; padding:20px 0; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA"><span style="font-size:18px; color:#2A2F3A">Arizona Wildcats jersey No. 89 retired</span><span style="font-family:Archivo, sans-serif; font-weight:700; font-size:15px; color:#0C234B">Retired</span></div>
         </div>
       </div>
     </section>
 
-    <section style="max-width:1280px; margin:0 auto; padding:100px 40px 120px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px">
+    <section data-r="keep2" style="max-width:1280px; margin:0 auto; padding:100px 40px 120px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px">
       <div style="position:relative; background:#0C234B; aspect-ratio:4/5; overflow:hidden">
-        <img src="assets/ua-1983.jpg" alt="1983 All-America team" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
+        <img src="assets/ua-1983.jpg" alt="1983 All-America team" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ a0 }}" />
+        <img src="assets/mag-cover-82.jpg" alt="Ricky Hunley on a 1982 magazine cover" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ a1 }}" />
+        <img src="assets/rhunley1.jpg" alt="Ricky Hunley in an Arizona uniform" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ a2 }}" />
       </div>
       <div style="position:relative; background:#0C234B; aspect-ratio:4/5; overflow:hidden">
-        <img src="assets/denver.jpg" alt="Denver Broncos" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
+        <img src="assets/denver.png" alt="Ricky Hunley at the Hula Bowl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ b0 }}" />
+        <img src="assets/sideline.jpg" alt="Ricky Hunley on the sideline" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ b1 }}" />
+        <img src="assets/coaching.jpg" alt="Ricky Hunley coaching" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ b2 }}" />
       </div>
       <div style="position:relative; background:#0C234B; aspect-ratio:4/5; overflow:hidden">
-        <img src="assets/family.jpg" alt="Ricky with his daughters" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
+        <img src="assets/family.jpg" alt="Ricky with his daughters" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ c0 }}" />
+        <img src="assets/banquet.jpg" alt="Ricky Hunley at an awards banquet" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ c1 }}" />
+        <img src="assets/hunley-portrait-2013.png" alt="Ricky Hunley portrait" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ c2 }}" />
       </div>
     </section>
   </div>
@@ -405,7 +462,7 @@
           </div>
           <p style="margin:34px 0 0; font-size:18px; line-height:1.7; color:#5C6270">Interested in booking Ricky for your next event? Email <a href="mailto:connect@rickyhunley.com" style="color:var(--accent, #AB0520); border-bottom:1px solid rgba(171,5,32,.35)" style-hover="color:var(--accent, #AB0520)">connect@rickyhunley.com</a>.</p>
         </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+        <div data-r="keep2" style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
           <div style="position:relative; background:#0C234B; aspect-ratio:3/4; overflow:hidden">
             <img src="assets/speaking-2.jpg" alt="Ricky presenting" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
@@ -424,7 +481,7 @@
       <img src="assets/huddle-prescott.png" alt="Ricky Hunley speaking on a Wildcats panel" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:60% 30%; filter:grayscale(1) contrast(1.08) brightness(1.02); mix-blend-mode:screen; opacity:0.55" />
       <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,35,75,.55) 0%, rgba(12,35,75,.72) 60%, rgba(12,35,75,.94) 100%)"></div>
       <div style="position:relative; width:100%; max-width:1280px; margin:0 auto; padding:72px 40px; display:grid; grid-template-columns:276px 1fr; gap:64px; align-items:center">
-        <img src="assets/hunley-huddle-logo.png" alt="The Hunley Huddle" style="width:100%; height:auto; display:block; filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)" />
+        <img src="assets/hunley-huddle-logo.png" alt="The Hunley Huddle" data-r="logo" style="width:100%; height:auto; display:block; filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)" />
         <div>
           <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#93A0B6">Radio show, events &amp; podcast</div>
           <h1 style="margin:22px 0 0; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(38px, 4.8vw, 68px); line-height:1.0; letter-spacing:-0.035em; color:#fff; max-width:24ch">Where football, brotherhood and community converge</h1>
@@ -488,6 +545,13 @@
         <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Chuck Cecil</span>
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">Apple Podcasts</span>
       </a>
+      <div style="display:flex; align-items:center; gap:18px; flex-wrap:wrap; margin-top:44px">
+        <span style="font-size:18px; line-height:1.6; color:#5C6270">New episodes and behind-the-scenes on Instagram.</span>
+        <a href="https://www.instagram.com/hunleyhuddle" target="_blank" rel="noreferrer" style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; border:1px solid #C9C4B9; padding:15px 22px" style-hover="border-color:var(--accent, #AB0520); color:var(--accent, #AB0520)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle></svg>
+          @hunleyhuddle
+        </a>
+      </div>
     </section>
 
     <section style="background:#fff; border-top:1px solid #E6E2DA">
@@ -499,7 +563,7 @@
           </div>
           <p style="margin:0; font-size:18.5px; line-height:1.7; color:#5C6270; max-width:46ch">Interactive, unintimidating, and genuinely fun: the fundamentals of football broken down by a Hall of Famer for fans of every level.</p>
         </div>
-        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px">
+        <div data-r="keep2" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px">
           <div style="position:relative; background:#0C234B; aspect-ratio:3/4; overflow:hidden">
             <img src="assets/f101-a.jpg" alt="Football 101 guests" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
@@ -526,47 +590,47 @@
       <p style="margin:26px 0 0; font-size:19.5px; line-height:1.68; color:#3E434E; max-width:56ch">From national headlines to local community events, where Ricky has been written about, interviewed, and celebrated.</p>
     </section>
     <section style="max-width:1280px; margin:0 auto; padding:40px 40px 120px">
-      <a href="https://tucson.com/sports/arizonawildcats/football/article_a61f0047-da5e-40ac-9208-745d46d73aee.html" target="_blank" rel="noreferrer" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://tucson.com/sports/arizonawildcats/football/article_a61f0047-da5e-40ac-9208-745d46d73aee.html" target="_blank" rel="noreferrer" data-r="newsrow" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Tucson.com</span>
         <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.25">Arizona's Ricky Hunley key figure in bizarre 1984 NFL Draft</span>
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#9B9689; text-align:right">Read →</span>
       </a>
-      <a href="https://footballfoundation.org/honorees/ricky-hunley-1997" target="_blank" rel="noreferrer" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://footballfoundation.org/honorees/ricky-hunley-1997" target="_blank" rel="noreferrer" data-r="newsrow" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Football Foundation</span>
         <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.25">Ricky Hunley: Hall of Fame honoree</span>
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#9B9689; text-align:right">Read →</span>
       </a>
-      <a href="https://www.azdesertswarm.com/football/2021/10/7/22712997/arizona-wildcats-football-chuck-cecil-ricky-hunley-uofa-history" target="_blank" rel="noreferrer" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://www.azdesertswarm.com/football/2021/10/7/22712997/arizona-wildcats-football-chuck-cecil-ricky-hunley-uofa-history" target="_blank" rel="noreferrer" data-r="newsrow" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">AZ Desert Swarm</span>
         <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.25">How Ricky Hunley and Chuck Cecil got to the UofA</span>
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#9B9689; text-align:right">Read →</span>
       </a>
-      <a href="https://tucson.com/sports/arizonawildcats/football/hansens-hundred-no-14-ricky-hunley-was-face-of-ua-football-as-wildcats-started-ascent/article_3f7b6f9e-2f3e-11ec-9a4e-7b5f3b4f6e2f.html" target="_blank" rel="noreferrer" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://tucson.com/sports/arizonawildcats/football/hansens-hundred-no-14-ricky-hunley-was-face-of-ua-football-as-wildcats-started-ascent/article_3f7b6f9e-2f3e-11ec-9a4e-7b5f3b4f6e2f.html" target="_blank" rel="noreferrer" data-r="newsrow" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Greg Hansen</span>
         <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.25">Hansen's Hundred, No. 14: Ricky Hunley was the face of UA football</span>
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#9B9689; text-align:right">Read →</span>
       </a>
-      <a href="https://tucson.com/sports/arizonawildcats/football/greg-hansen-arizona-legend-ricky-hunley-knows-reality-of-racism/article_3f7b6f9e-2f3e-11ec-9a4e-7b5f3b4f6e2f.html" target="_blank" rel="noreferrer" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://tucson.com/sports/arizonawildcats/football/greg-hansen-arizona-legend-ricky-hunley-knows-reality-of-racism/article_3f7b6f9e-2f3e-11ec-9a4e-7b5f3b4f6e2f.html" target="_blank" rel="noreferrer" data-r="newsrow" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Greg Hansen</span>
         <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.25">Arizona legend Ricky Hunley knows the reality of racism</span>
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#9B9689; text-align:right">Read →</span>
       </a>
-      <a href="https://arizonawildcatsreport.substack.com/p/top-50-football-players-in-arizona" target="_blank" rel="noreferrer" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://arizonawildcatsreport.substack.com/p/top-50-football-players-in-arizona" target="_blank" rel="noreferrer" data-r="newsrow" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Wildcat Report</span>
         <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.25">Top 50 football players in Arizona history: No. 1, Ricky Hunley</span>
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#9B9689; text-align:right">Read →</span>
       </a>
-      <a href="https://arizonawildcats.com/honors/hall-of-fame/ricky-hunley/1997" target="_blank" rel="noreferrer" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://arizonawildcats.com/honors/hall-of-fame/ricky-hunley/1997" target="_blank" rel="noreferrer" data-r="newsrow" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Arizona Athletics</span>
         <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.25">Ricky Hunley, Arizona Sports Hall of Fame</span>
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#9B9689; text-align:right">Read →</span>
       </a>
-      <a href="https://www.youtube.com/watch?v=RK45X4F-g9o" target="_blank" rel="noreferrer" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://www.youtube.com/watch?v=RK45X4F-g9o" target="_blank" rel="noreferrer" data-r="newsrow" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Video</span>
         <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.25">Life Along the Streetcar: Ricky Hunley's journey to greatness</span>
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#9B9689; text-align:right">Watch →</span>
       </a>
-      <a href="https://tucson.com/sports/subscriber/article_157336e4-f37c-4292-9a4d-afe42d116237.html" target="_blank" rel="noreferrer" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://tucson.com/sports/subscriber/article_157336e4-f37c-4292-9a4d-afe42d116237.html" target="_blank" rel="noreferrer" data-r="newsrow" style="display:grid; grid-template-columns:200px 1fr 120px; gap:32px; align-items:baseline; padding:32px 8px; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Greg Hansen</span>
         <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.25">The Mount Rushmore of Arizona football</span>
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#9B9689; text-align:right">Read →</span>
@@ -581,6 +645,7 @@
       <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent, #AB0520)">Blog</div>
       <h1 style="margin:24px 0 0; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(42px, 5.2vw, 72px); line-height:0.98; letter-spacing:-0.035em; color:#0C234B; max-width:14ch">Insights from Ricky Hunley</h1>
       <p style="margin:26px 0 0; font-size:19.5px; line-height:1.68; color:#3E434E; max-width:56ch">Reflections on leadership, mentorship, sports culture and personal growth. A deeper look at the values behind the work.</p>
+      <img src="assets/rh-autograph.svg" alt="Ricky Hunley signature" style="width:300px; max-width:70%; height:auto; display:block; margin:52px 0 0; opacity:0.82" />
     </section>
     <section style="max-width:1280px; margin:0 auto; padding:0 40px 40px; display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:#E6E2DA; border:1px solid #E6E2DA">
       <article style="background:#FBFAF8; padding:44px 34px 52px">
@@ -671,7 +736,7 @@
 
     <section style="background:#fff; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA">
       <div style="max-width:1280px; margin:0 auto; padding:100px 40px; display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+        <div data-r="keep2" style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
           <div style="position:relative; background:#0C234B; aspect-ratio:4/5; overflow:hidden">
             <img src="assets/f101-b.jpg" alt="Community session" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
@@ -698,9 +763,6 @@
         <p style="margin:24px 0 0; font-size:17px; line-height:1.7; color:#93A0B6; max-width:38ch">College Football Hall of Famer, NFL veteran, coach and community leader. Tucson, Arizona.</p>
         <div style="display:flex; gap:12px; margin-top:26px">
           <a href="https://www.instagram.com/hunley.ricky" target="_blank" rel="noreferrer" aria-label="Ricky Hunley on Instagram" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" style-hover="background:var(--accent, #AB0520); border-color:var(--accent, #AB0520); color:#fff">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle></svg>
-          </a>
-          <a href="https://www.instagram.com/hunleyhuddle" target="_blank" rel="noreferrer" aria-label="The Hunley Huddle on Instagram" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" style-hover="background:var(--accent, #AB0520); border-color:var(--accent, #AB0520); color:#fff">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle></svg>
           </a>
           <a href="#" onClick="{{ nav.huddle }}" aria-label="The Hunley Huddle podcast" style="width:42px; height:42px; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,.24); color:#DCE0E8" style-hover="background:var(--accent, #AB0520); border-color:var(--accent, #AB0520); color:#fff">
@@ -735,15 +797,24 @@
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;heroVideoId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;reelUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://www.youtube.com/watch?v=RK45X4F-g9o&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;showFoundation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#AB0520&quot;,&quot;options&quot;:[&quot;#AB0520&quot;,&quot;#0C234B&quot;,&quot;#8C6A1E&quot;,&quot;#1F5C4A&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroVideoId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;reelUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://youtu.be/tGlJqTsDWkE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;showFoundation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;carouselSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4.5,&quot;min&quot;:2,&quot;max&quot;:12,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;About page&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#AB0520&quot;,&quot;options&quot;:[&quot;#AB0520&quot;,&quot;#0C234B&quot;,&quot;#8C6A1E&quot;,&quot;#1F5C4A&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;}}">
 class Component extends DCLogic {
-  state = { page: 'home', videoFailed: false };
+  state = { page: 'home', videoFailed: false, menuOpen: false, tick: 0 };
   go(p) {
     return (e) => {
       if (e && e.preventDefault) e.preventDefault();
-      this.setState({ page: p });
+      this.setState({ page: p, menuOpen: false });
       if (typeof window !== 'undefined') window.scrollTo(0, 0);
     };
+  }
+  componentDidMount() {
+    const ms = Math.max(1500, (this.props.carouselSeconds ?? 4.5) * 1000);
+    this._rot = setInterval(() => this.setState(st => ({ tick: (st.tick || 0) + 1 })), ms);
+  }
+  componentWillUnmount() { clearInterval(this._rot); }
+  slides(offset) {
+    const active = ((this.state.tick || 0) + offset) % 3;
+    return { 0: active === 0 ? 0.94 : 0, 1: active === 1 ? 0.94 : 0, 2: active === 2 ? 0.94 : 0 };
   }
   heroVideoRef = (el) => {
     if (!el) return;
@@ -769,10 +840,17 @@ class Component extends DCLogic {
   }
   renderVals() {
     const p = this.state.page;
+    const A = this.slides(0), B = this.slides(1), C = this.slides(2);
     return {
+      a0: A[0], a1: A[1], a2: A[2],
+      b0: B[0], b1: B[1], b2: B[2],
+      c0: C[0], c1: C[1], c2: C[2],
       accent: this.props.accentColor ?? '#AB0520',
+      menuOpen: this.state.menuOpen,
+      menuClosed: !this.state.menuOpen,
+      toggleMenu: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState(st => ({ menuOpen: !st.menuOpen })); },
       heroVideoRef: this.heroVideoRef,
-      reelUrl: this.props.reelUrl ?? 'https://www.youtube.com/watch?v=RK45X4F-g9o',
+      reelUrl: this.props.reelUrl ?? 'https://youtu.be/tGlJqTsDWkE',
       hasHeroVideo: !!(this.props.heroVideoId || '').trim(),
       heroVideoSrc: this.heroSrc(),
       showFoundation: this.props.showFoundation ?? true,

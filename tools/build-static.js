@@ -24,9 +24,21 @@ const SRC = path.join(__dirname, 'RickyHunley.com.dc.html');
 
 // Prop defaults, read off the `data-props` block and renderVals() in the source.
 const ACCENT = '#AB0520';
-const REEL_URL = 'https://www.youtube.com/watch?v=RK45X4F-g9o';
+const REEL_URL = 'https://youtu.be/tGlJqTsDWkE';
 const HAS_HERO_VIDEO = false; // heroVideoId defaults to '' -> the iframe branch is dead
 const SHOW_FOUNDATION = true;
+const CAROUSEL_SECONDS = 4.5;
+
+/**
+ * Pages built but not linked, or not built at all.
+ *
+ * The blog is hidden for now: its three posts are the design's samples and the
+ * page says so. Hiding it means the page is not generated, it is dropped from
+ * the sitemap, and every navigation link to it is removed — header, mobile
+ * drawer and footer. The old Squarespace /blog URLs are redirected to the home
+ * page in netlify.toml rather than to a page that no longer exists.
+ */
+const HIDDEN_PAGES = ['blog'];
 
 const SITE_URL = 'https://rickyhunley.com';
 
@@ -40,6 +52,8 @@ const ASSET_RENAMES = {
   'assets/speaking-glendale.png': 'assets/speaking-glendale.jpg',
   'assets/huddle-prescott.png': 'assets/huddle-prescott.jpg',
   'assets/contact-nogales.png': 'assets/contact-nogales.jpg',
+  'assets/denver.png': 'assets/denver.jpg',
+  'assets/hunley-portrait-2013.png': 'assets/hunley-portrait-2013.jpg',
 };
 
 /**
@@ -233,6 +247,51 @@ function transform(html) {
   out = out.replace(/\s+loop="\{\{ true \}\}"/g, ' loop');
   out = out.replace(/\s+playsInline="\{\{ true \}\}"/g, ' playsinline');
 
+  // --- the About page carousel ---------------------------------------------
+  // Three columns of three stacked images, crossfading on a timer. In the
+  // design a `tick` in component state drives nine opacity values; here the
+  // opacities are baked in at tick 0 and js/site.js advances them.
+  //
+  // Column A starts on its first image, B on its second, C on its third — the
+  // stagger comes from the design's slides(offset) and is preserved by
+  // computing the same thing rather than by copying the numbers out.
+  out = out.replace(
+    /<img\b[^>]*opacity:\s*\{\{ ([abc])([0-2]) \}\}[^>]*>/g,
+    (tag, col, idx) => {
+      const offset = { a: 0, b: 1, c: 2 }[col];
+      const active = offset % 3; // tick starts at 0
+      const opacity = Number(idx) === active ? 0.94 : 0;
+      return tag
+        .replace(`{{ ${col}${idx} }}`, String(opacity))
+        .replace('<img ', `<img data-slide="${col}${idx}" `);
+    }
+  );
+
+  // --- the mobile menu -------------------------------------------------------
+  // The burger holds both icons; the design switches between them on state.
+  // Both are emitted and js/site.js toggles `hidden`.
+  out = out.replace(
+    /<sc-if value="\{\{ menuOpen \}\}"[^>]*>\s*(<svg[\s\S]*?<\/svg>)\s*<\/sc-if>/g,
+    (_, svg) => svg.replace('<svg ', '<svg data-menu-icon="open" hidden ')
+  );
+  out = out.replace(
+    /<sc-if value="\{\{ menuClosed \}\}"[^>]*>\s*(<svg[\s\S]*?<\/svg>)\s*<\/sc-if>/g,
+    (_, svg) => svg.replace('<svg ', '<svg data-menu-icon="closed" ')
+  );
+
+  // The drawer itself: rendered, hidden, and toggled by the same script. It is
+  // also display:none above 900px via the design's own stylesheet.
+  out = out.replace(
+    /<sc-if value="\{\{ menuOpen \}\}"[^>]*>\s*(<div data-r="drawer"[\s\S]*?<\/div>)\s*<\/sc-if>/g,
+    (_, div) => div.replace('<div ', '<div hidden ')
+  );
+
+  out = out.replace(
+    /onClick="\{\{ toggleMenu \}\}"/g,
+    'data-menu-toggle aria-expanded="false" aria-controls="mobile-menu"'
+  );
+  out = out.replace('<div hidden data-r="drawer"', '<div hidden id="mobile-menu" data-r="drawer"');
+
   // Photographs re-encoded from PNG to JPEG by tools/build-assets.js.
   for (const [from, to] of Object.entries(ASSET_RENAMES)) {
     out = out.split(from).join(to);
@@ -255,6 +314,15 @@ function transform(html) {
 
   // Fold the data-hv marker into a real class attribute.
   out = out.replace(/ data-hv="([^"]+)"/g, ' class="$1"');
+
+  // Navigation links to hidden pages, wherever they appear.
+  for (const key of HIDDEN_PAGES) {
+    const href = HREF_FOR[key];
+    out = out.replace(
+      new RegExp(`\\s*<a href="${href}"[^>]*>[\\s\\S]*?</a>`, 'g'),
+      ''
+    );
+  }
 
   return out;
 }
@@ -315,7 +383,20 @@ ${footerHtml}
 `;
 }
 
-for (const meta of PAGES) {
+const BUILT = PAGES.filter((p) => !HIDDEN_PAGES.includes(p.key));
+
+// Remove any page that has since been hidden. Without this the last build's
+// file stays on disk, gets committed, and Netlify keeps serving it — unlinked
+// and out of the sitemap, but still public.
+for (const meta of PAGES.filter((p) => HIDDEN_PAGES.includes(p.key))) {
+  const stale = path.join(ROOT, meta.file);
+  if (fs.existsSync(stale)) {
+    fs.unlinkSync(stale);
+    console.log(`removed ${meta.file} (hidden)`);
+  }
+}
+
+for (const meta of BUILT) {
   const content = transform(extractBlock(meta.flag));
   fs.writeFileSync(path.join(ROOT, meta.file), page(meta, content), 'utf8');
 }
@@ -355,7 +436,7 @@ fs.writeFileSync(
 // sitemap.xml — the eight real pages, 404 excluded.
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${PAGES.map(
+${BUILT.map(
   (p) =>
     `  <url><loc>${
       p.key === 'home' ? `${SITE_URL}/` : `${SITE_URL}/${p.file}`
@@ -371,7 +452,24 @@ fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
 // ---------------------------------------------------------------------------
 
 const helmetMatch = src.match(/<helmet>[\s\S]*?<style>([\s\S]*?)<\/style>/);
-const helmetCss = helmetMatch ? helmetMatch[1].trim() : '';
+const rawHelmetCss = helmetMatch ? helmetMatch[1].trim() : '';
+
+/**
+ * The design's responsive rules target inline styles by substring, e.g.
+ * `[style*="margin: 0px auto"]`. That spelling is what the *browser* produces
+ * when it re-serialises a style attribute, which is what the Design Component
+ * runtime ends up with. Static HTML keeps the author's literal spelling —
+ * `margin:0 auto` — so those selectors would match nothing here and the whole
+ * mobile layout would silently do nothing.
+ *
+ * Rewriting the selectors to the authored spelling is the fix. `\b0px\b` is
+ * deliberate: a blunt "0px" -> "0" would corrupt `130px` into `13 0`.
+ */
+const helmetCss = rawHelmetCss.replace(
+  /\[style\*="([^"]+)"\]/g,
+  (_, value) =>
+    `[style*="${value.replace(/:\s+/g, ':').replace(/\b0px\b/g, '0')}"]`
+);
 
 const hoverCss = [...hoverRules.entries()]
   .map(([css, cls]) => {
@@ -410,29 +508,14 @@ ${helmetCss}
 /* Hover states, lifted from the design's style-hover attributes. */
 ${hoverCss}
 
-/* The design is authored at desktop width; these keep it usable below 900px
-   without changing any desktop value. */
-@media (max-width: 900px) {
-  main section > div[style*="grid-template-columns"],
-  main section[style*="grid-template-columns"],
-  footer > div[style*="grid-template-columns"] {
-    grid-template-columns: 1fr !important;
-    gap: 48px !important;
-  }
-  main section[style*="padding:130px"],
-  main section > div[style*="padding:110px"],
-  main section > div[style*="padding:130px"] {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-  }
-  header > div,
-  footer > div { padding-left: 24px !important; padding-right: 24px !important; }
-}
+/* The mobile menu's drawer and icons carry inline display values, which beat
+   the [hidden] rule in the user-agent stylesheet. This puts it back. */
+[hidden] { display: none !important; }
 `;
 
 fs.mkdirSync(path.join(ROOT, 'css'), { recursive: true });
 fs.writeFileSync(path.join(ROOT, 'css', 'site.css'), css, 'utf8');
 
 console.log(
-  `wrote ${PAGES.length} pages + css/site.css (${hoverRules.size} hover rules)`
+  `wrote ${BUILT.length} pages + css/site.css (${hoverRules.size} hover rules)`
 );

@@ -39,8 +39,20 @@ const IMAGES = [
 
   // About
   { out: 'hunley-ricky-3.jpg', src: `${PHOTOS}/Hunley, Ricky-3.jpg`, width: 2400 },
-  { out: 'denver.jpg', src: `${PHOTOS}/Ricky Denver.jpg`, width: 1400 },
   { out: 'family.jpg', src: `${PHOTOS}/Ricky Leadership Presentation Images/Ricky and Girls.jpeg`, width: 1400 },
+
+  // About — the three crossfading columns. Each cell is roughly 420px wide at
+  // the 1280px container, so 900 covers it on a high-density screen.
+  //
+  // These were matched to their originals the same way as everything else:
+  // sideline and banquet by the photographer and shoot in their EXIF, the rest
+  // by exact pixel dimensions.
+  { out: 'mag-cover-82.jpg', src: `${PHOTOS}/Copy of Ricky Hunley 82 mg cover.JPG`, width: 900 },
+  { out: 'rhunley1.jpg', src: `${PHOTOS}/rhunley1.jpg`, width: 900 },
+  { out: 'sideline.jpg', src: `${PHOTOS}/230916 FB vs. UTEP_Mike Christy160.jpg`, width: 900 },
+  { out: 'coaching.jpg', src: `${PHOTOS}/Ricky Coaching Picture.jpg`, width: 900 },
+  { out: 'banquet.jpg', src: `${PHOTOS}/231203 FB Banquet_Ary Frank377.jpg`, width: 900 },
+  { out: 'hunley-portrait-2013.jpg', src: `${PHOTOS}/2013-11-15 22.22.50.png`, width: 900 },
 
   // Speaking
   { out: 'speaking-2.jpg', src: `${PHOTOS}/Ricky Leadership Presentation Images/IMG_3631.jpg`, width: 1600 },
@@ -62,6 +74,18 @@ const IMAGES = [
 // Small enough that the design project serves them intact, and they have no
 // larger original worth going back to.
 const FROM_DESIGN_PROJECT = ['ua-1983.jpg', 'hunley-huddle-logo.png'];
+
+/**
+ * Assets that exist only inside the design project, above the API's 192 KiB
+ * ceiling, and with no original in Dropbox to rebuild them from.
+ *
+ * `denver.png` carries C2PA metadata saying Claude produced or modified it, so
+ * it was made during a design session rather than shot — there is nothing to go
+ * back to. The file currently in assets/ is the *older* denver photo from the
+ * previous design, which the new alt text ("at the Hula Bowl") no longer
+ * describes. Drop the real denver.png into assets/ and re-run to fix it.
+ */
+const UNRESOLVED = ['denver.jpg'];
 
 /**
  * The home page hero loop. The master is 17.5 MB, far too much to stream behind
@@ -143,17 +167,29 @@ for (const img of IMAGES) {
 if (fs.existsSync(VIDEO.src)) {
   const dest = path.join(ROOT, VIDEO.out);
   fs.mkdirSync(path.dirname(dest), { recursive: true });
-  execFileSync(
-    'ffmpeg',
-    ['-y', '-loglevel', 'error', '-i', VIDEO.src, ...VIDEO.args, dest],
-    { stdio: ['ignore', 'ignore', 'inherit'] }
-  );
-  const srcMb = fs.statSync(VIDEO.src).size / 1048576;
-  const outMb = fs.statSync(dest).size / 1048576;
-  console.log(
-    `${VIDEO.out.padEnd(24)} ${srcMb.toFixed(1)} -> ${outMb.toFixed(1)} MB`
-  );
-  built++;
+
+  // Re-encoding produces a byte-different 4.3 MB file every run, which would
+  // add a fresh blob to git history on every rebuild. Skip when the output is
+  // already newer than the master.
+  const upToDate =
+    fs.existsSync(dest) &&
+    fs.statSync(dest).mtimeMs >= fs.statSync(VIDEO.src).mtimeMs;
+
+  if (upToDate) {
+    console.log(`${VIDEO.out.padEnd(24)} up to date, skipped`);
+  } else {
+    execFileSync(
+      'ffmpeg',
+      ['-y', '-loglevel', 'error', '-i', VIDEO.src, ...VIDEO.args, dest],
+      { stdio: ['ignore', 'ignore', 'inherit'] }
+    );
+    const srcMb = fs.statSync(VIDEO.src).size / 1048576;
+    const outMb = fs.statSync(dest).size / 1048576;
+    console.log(
+      `${VIDEO.out.padEnd(24)} ${srcMb.toFixed(1)} -> ${outMb.toFixed(1)} MB`
+    );
+    built++;
+  }
 } else {
   missing.push(VIDEO.out);
 }
@@ -164,6 +200,15 @@ for (const name of FROM_DESIGN_PROJECT) {
   } else {
     missing.push(name);
   }
+}
+
+for (const name of UNRESOLVED) {
+  const p = path.join(OUT, name);
+  console.log(
+    `${name.padEnd(24)} ${
+      fs.existsSync(p) ? 'STALE — see UNRESOLVED in this file' : 'MISSING'
+    }`
+  );
 }
 
 console.log(`\nbuilt ${built} files`);

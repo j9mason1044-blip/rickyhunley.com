@@ -75,19 +75,27 @@
   to = "/news.html"
   status = 301
 
+# The blog is hidden for now, so its own URL and the Squarespace ones that used
+# to point at it all go to the home page. /blog.html is listed because the page
+# was briefly live before being hidden.
 [[redirects]]
   from = "/blog"
-  to = "/blog.html"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/blog.html"
+  to = "/"
   status = 301
 
 [[redirects]]
   from = "/personal-blog"
-  to = "/blog.html"
+  to = "/"
   status = 301
 
 [[redirects]]
   from = "/personal-blog/*"
-  to = "/blog.html"
+  to = "/"
   status = 301
 
 [[redirects]]
