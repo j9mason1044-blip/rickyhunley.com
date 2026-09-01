@@ -4,3 +4,7 @@ node_modules/
 
 # Migration working notes, not part of the site
 dns-snapshot.md
+
+# Sanity Studio build output and local cache
+studio/dist/
+studio/.sanity/

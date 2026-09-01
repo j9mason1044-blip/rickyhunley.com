@@ -1,0 +1,25 @@
+{
+  "name": "rickyhunley-studio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sanity Studio for rickyhunley.com — the CMS Ricky logs into",
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "schema:deploy": "sanity schema deploy"
+  },
+  "dependencies": {
+    "@sanity/icons": "^5.2.1",
+    "@sanity/vision": "^6.12.0",
+    "react": "^19.2.2",
+    "react-dom": "^19.2.2",
+    "sanity": "^6.12.0",
+    "styled-components": "^6.1.15"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}
