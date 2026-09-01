@@ -138,10 +138,17 @@ If the master is ever recut, replace it in Dropbox and re-run
 ## Deploying
 
 Netlify, publishing the repository root, branch `main`. No build command.
-`netlify.toml` carries everything: cache headers (a year on `assets/` and
-`uploads/`, a week on `css/` and `js/`), a small security header block, 404s for
-`tools/` and the README so they are not served from the live domain, and the
-redirects below.
+`netlify.toml` carries everything: cache headers, a small security header
+block, 404s for `tools/`, `studio/` and the README so they are not served from
+the live domain, and the redirects below.
+
+**Cache lifetimes are deliberately short.** No filename here carries a content
+hash, so a long `max-age` strands returning visitors on stale files. That is not
+hypothetical — the hover states shipped broken, and the week-long `max-age` the
+stylesheet originally had would have kept them broken for a week for everyone
+who had already visited. `css/` and `js/` now revalidate every time (cheap, via
+ETag); `assets/` gets a day. Content-hashed filenames are the proper fix, and
+`build-static.js` already rewrites asset references so it could stamp them.
 
 ### The domain, and the site it replaces
 
