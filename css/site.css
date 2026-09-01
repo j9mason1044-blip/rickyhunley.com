@@ -51,18 +51,18 @@ html, body { margin:0; padding:0; background:#FBFAF8; -webkit-font-smoothing:ant
 :focus-visible { outline: 2px solid #AB0520; outline-offset: 3px; }
 
 /* Hover states, lifted from the design's style-hover attributes. */
-.hv-1:hover { color:var(--accent, #AB0520); }
-.hv-2:hover { background:var(--accent, #AB0520); color:#fff; }
-.hv-3:hover { border-color:var(--accent, #AB0520); color:var(--accent, #AB0520); }
-.hv-4:hover { background:var(--accent, #AB0520); }
-.hv-5:hover { background:var(--accent, #AB0520); border-color:var(--accent, #AB0520); color:#fff; }
-.hv-6:hover { color:#EF6275; }
-.hv-7:hover { background:rgba(255,255,255,.12); color:#EF6275; }
-.hv-8:hover { filter:grayscale(0.2) contrast(1.02); opacity:0.95; }
-.hv-9:hover { filter:none; mix-blend-mode:normal; opacity:1; }
-.hv-10:hover { border-color:#0C234B; color:var(--accent, #AB0520); }
-.hv-11:hover { background:rgba(255,255,255,.06); color:#EF6275; }
-.hv-12:hover { background:#fff; color:var(--accent, #AB0520); }
+.hv-1:hover { color:var(--accent, #AB0520) !important; }
+.hv-2:hover { background:var(--accent, #AB0520) !important; color:#fff !important; }
+.hv-3:hover { border-color:var(--accent, #AB0520) !important; color:var(--accent, #AB0520) !important; }
+.hv-4:hover { background:var(--accent, #AB0520) !important; }
+.hv-5:hover { background:var(--accent, #AB0520) !important; border-color:var(--accent, #AB0520) !important; color:#fff !important; }
+.hv-6:hover { color:#EF6275 !important; }
+.hv-7:hover { background:rgba(255,255,255,.12) !important; color:#EF6275 !important; }
+.hv-8:hover { filter:grayscale(0.2) contrast(1.02) !important; opacity:0.95 !important; }
+.hv-9:hover { filter:none !important; mix-blend-mode:normal !important; opacity:1 !important; }
+.hv-10:hover { border-color:#0C234B !important; color:var(--accent, #AB0520) !important; }
+.hv-11:hover { background:rgba(255,255,255,.06) !important; color:#EF6275 !important; }
+.hv-12:hover { background:#fff !important; color:var(--accent, #AB0520) !important; }
 
 /* The mobile menu's drawer and icons carry inline display values, which beat
    the [hidden] rule in the user-agent stylesheet. This puts it back. */

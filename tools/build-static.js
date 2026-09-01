@@ -471,13 +471,24 @@ const helmetCss = rawHelmetCss.replace(
     `[style*="${value.replace(/:\s+/g, ':').replace(/\b0px\b/g, '0')}"]`
 );
 
+/**
+ * Every declaration is forced with `!important`, and it has to be.
+ *
+ * The design styles everything inline, and an inline style beats a class
+ * selector no matter what — `:hover` does not change specificity. So
+ * `.hv-1:hover { color: … }` loses to the element's own `style="…color:#2A2F3A"`
+ * and the hover silently does nothing. The Design Component runtime does not
+ * hit this because `style-hover` swaps the inline style itself.
+ *
+ * These rules only ever fire on :hover, so the bluntness costs nothing.
+ */
 const hoverCss = [...hoverRules.entries()]
   .map(([css, cls]) => {
     const decls = css
       .split(';')
       .map((d) => d.trim())
       .filter(Boolean)
-      .map((d) => `${d};`)
+      .map((d) => (/!important$/.test(d) ? `${d};` : `${d} !important;`))
       .join(' ');
     return `.${cls}:hover { ${decls} }`;
   })

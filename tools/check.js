@@ -99,7 +99,20 @@ for (const file of pages) {
   }
 }
 for (const cls of used) {
-  if (!css.includes(`.${cls}:hover`)) fail('css/site.css', `no rule for .${cls}`);
+  const rule = css.match(new RegExp(`\\.${cls}:hover \\{([^}]*)\\}`));
+  if (!rule) {
+    fail('css/site.css', `no rule for .${cls}`);
+    continue;
+  }
+  // Every declaration must be !important. The design styles everything inline,
+  // and an inline style beats a class selector regardless of :hover — so a
+  // hover rule without !important silently does nothing at all. This is not a
+  // style preference; it is the difference between working and not.
+  for (const decl of rule[1].split(';').map((d) => d.trim()).filter(Boolean)) {
+    if (!/!important$/.test(decl)) {
+      fail('css/site.css', `.${cls}:hover — "${decl}" is not !important, so the inline style wins`);
+    }
+  }
 }
 
 console.log(
