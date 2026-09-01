@@ -1,0 +1,126 @@
+# rickyhunley.com
+
+The Ricky Hunley website: eight static pages, no build step, no framework.
+
+Open `index.html` in a browser and it works. Push to the `main` branch and
+Netlify publishes it. That is the whole deployment story for now.
+
+---
+
+## What is here
+
+```
+index.html  about.html  speaking.html  huddle.html
+news.html   blog.html   community.html  contact.html
+404.html
+
+css/site.css     the design's global rules, plus the hover states
+js/site.js       hero video fade-in (see "The hero video" below)
+assets/          web-sized photography
+netlify.toml     publish directory, cache and security headers
+sitemap.xml      generated; robots.txt points at it
+
+tools/           the generator and its source — not served
+```
+
+Every page carries its own copy of the header and footer. That is deliberate:
+it keeps the site dependency-free at the cost of a regeneration step when the
+chrome changes, and the generator handles that step.
+
+## Where the design lives
+
+The source of truth is the Claude Design project
+`77733798-2f10-4527-bde3-32f74d783698`, file `RickyHunley.com.dc.html` — a
+single Design Component holding all eight pages, switched by a `state.page`
+variable. A copy sits at `tools/RickyHunley.com.dc.html`.
+
+**Edit the design there, not the HTML here.** Then pull the updated file down
+and regenerate:
+
+```bash
+node tools/build-static.js   # design file -> the eight pages + css + sitemap
+node tools/check.js          # structural check on what came out
+```
+
+`build-static.js` resolves the four things a Design Component uses that a
+browser does not understand:
+
+| In the design | In the output |
+|---|---|
+| `<sc-if value="{{ isAbout }}">` | kept in `about.html`, dropped elsewhere |
+| `onClick="{{ nav.about }}"` | `href="/about.html"` |
+| `style-hover="color:…"` | a `.hv-N` class in `css/site.css` |
+| `{{ accent }}`, `{{ reelUrl }}` | their default prop values |
+
+Every inline style value is carried across untouched — the generator never
+adjusts spacing, size or colour. Read it before changing it; the transforms are
+order-dependent.
+
+## Images
+
+`assets/` is generated too:
+
+```bash
+node tools/build-assets.js   # requires ffmpeg on PATH
+```
+
+It reads the full-resolution originals out of Dropbox
+(`J9 Brandworks Projects/Ricky Hunley/…/Ricky Hunley Photos/`) and writes
+web-sized, compressed versions. Two things worth knowing:
+
+- **The design project's copies are the full camera files** — `hero-asu.jpg` is
+  4300×3370 — and the DesignSync API truncates anything over 256 KiB, so they
+  can be neither downloaded intact nor used as-is. Going back to the originals
+  is the only route.
+- **The filename mapping is not guessable.** The design assets were matched to
+  their originals by EXIF (photographer + capture time) and exact pixel
+  dimensions. The table in `build-assets.js` is that mapping; keep it current.
+
+Three photographs the design stored as PNG are written as JPEG instead
+(a few hundred KB rather than several MB, and none of them had transparency).
+`build-static.js` rewrites those references.
+
+## The hero video
+
+The home page hero is a still image with a muted video looping over it, faded
+in by `js/site.js` only once it is actually playing — so a blocked autoplay or a
+slow connection just shows the still.
+
+**The video file is not in this repo.** `uploads/RH-Hero-3.mp4` exists only
+inside the design project, where the API truncates it, and no copy was found in
+Dropbox. Until it turns up, `build-static.js` omits the `<video>` element
+entirely rather than ship a broken reference, and the hero renders as the still.
+
+To restore it: put `RH-Hero-3.mp4` in `uploads/` and re-run
+`node tools/build-static.js`. Nothing else needs changing.
+
+## Deploying
+
+Netlify, publishing the repository root. `netlify.toml` sets the cache headers
+(a year on `assets/`, a week on `css/` and `js/`) and a small security header
+block. There is no build command.
+
+## What this is not, yet
+
+`HANDOFF-PLAN.md` in the design project describes the intended end state:
+Astro for the templates, Sanity as the CMS Ricky actually logs into, Netlify
+Forms for booking inquiries, and JSON-LD `Person` markup for the knowledge
+panel. None of that is here. This is the design, faithfully, as files that
+deploy — the foundation that migration starts from, and a site that is live in
+the meantime.
+
+Known gaps to close before calling it finished:
+
+- The booking CTAs are `mailto:` links, not a form. No submission log, and no
+  `source_page` field, so there is no record of which page produced an inquiry.
+- The eight meta descriptions in `tools/build-static.js` are placeholders
+  written to be reasonable, not final. They are the ad copy in a search result
+  and deserve a pass by hand.
+- No JSON-LD. The `Person` block is the highest-value markup on a site like
+  this and is worth adding even before the CMS.
+- The mobile treatment is a small `@media` block at the foot of `css/site.css`
+  that collapses the grids and tightens the gutters. The design is authored at
+  desktop width and has not been laid out for small screens.
+- `assets/hunley-huddle-logo.png` is 395px wide and is displayed at container
+  width on `/huddle`. There is an `.ai` vector original in Dropbox
+  (`Hunley Huddle Logos/`) worth exporting larger.
