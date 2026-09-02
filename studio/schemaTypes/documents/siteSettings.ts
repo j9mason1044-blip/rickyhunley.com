@@ -5,9 +5,13 @@ import { CogIcon } from '@sanity/icons/Cog'
  * Site-wide values that appear in the header and footer of every page.
  * A singleton — enforced in structure/index.ts, not here.
  *
- * Field descriptions are written for Ricky, not for a developer. He is an
- * Administrator on the free plan (there is no Editor role), so the wording is
- * doing part of the job that permissions would otherwise do.
+ * Field descriptions are written for Ricky, not for a developer — every one of
+ * them says what the value does on the page, in the words he would use.
+ *
+ * (An earlier note here claimed the plan had no Editor role and that he would
+ * therefore be an Administrator. That is not the case: this project offers
+ * Editor to users, and it is what Ricky should have — content yes, project
+ * settings and members no.)
  */
 export const siteSettings = defineType({
   name: 'siteSettings',
