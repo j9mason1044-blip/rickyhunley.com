@@ -107,12 +107,21 @@ Photographs the design stored as PNG are written as JPEG instead (a few hundred
 KB rather than several MB, and none of them has transparency). `build-static.js`
 rewrites those references via `ASSET_RENAMES`.
 
-**`assets/favicon.png` is missing.** The design references it from `<helmet>`.
-It comes back from the API whole, but only as base64 inside a tool result, and
-transcribing 14 KB of that by hand corrupted the PNG — a truncated `caBX` chunk,
-which ffmpeg refuses. Drop the real `favicon.png` into `assets/` and re-run
-`build-static.js`. The generator emits the icon links only when the file is
-present, so until then there is no favicon rather than a 404 on every page.
+`assets/favicon.png` is the brand favicon (the "89" jersey mark), copied
+byte-for-byte from `Ricky Hunley Logo/Ricky Hunley Logotype/`. It is listed
+under `COPIES` rather than `IMAGES` because it has an alpha channel and is
+already small — re-encoding it would risk flattening the transparency for no
+gain.
+
+Two things about it that were not chosen here and are worth a conversation
+rather than a silent fix:
+
+- **Its background is `#1C0B36`, a dark purple — not the site's navy `#0C234B`.**
+  The rest of the brand is navy, so the tab icon is the one place the two
+  diverge.
+- **Its corners are fully transparent**, and iOS composites `apple-touch-icon`
+  transparency onto black. That lands very close to the artwork's own dark
+  purple, so it reads fine — but it is luck rather than design.
 
 Worth knowing generally: the generator writes its own `<head>` rather than
 copying the design's `<helmet>`, so **anything new added to the helmet is

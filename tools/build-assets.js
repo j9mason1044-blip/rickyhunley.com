@@ -76,6 +76,18 @@ const IMAGES = [
 const FROM_DESIGN_PROJECT = ['ua-1983.jpg', 'hunley-huddle-logo.png'];
 
 /**
+ * Copied byte-for-byte rather than re-encoded. These are brand files with an
+ * alpha channel; pushing them through ffmpeg risks flattening transparency or
+ * introducing artefacts for no gain, since they are already small.
+ */
+const COPIES = [
+  {
+    out: 'favicon.png',
+    src: `${WORKING}/Ricky Hunley Logo/Ricky Hunley Logotype/RICKY HUNLEY FAVICON.png`,
+  },
+];
+
+/**
  * Assets that exist only inside the design project, above the API's 192 KiB
  * ceiling, and with no original in Dropbox to rebuild them from.
  *
@@ -192,6 +204,18 @@ if (fs.existsSync(VIDEO.src)) {
   }
 } else {
   missing.push(VIDEO.out);
+}
+
+for (const copy of COPIES) {
+  if (!fs.existsSync(copy.src)) {
+    missing.push(copy.out);
+    continue;
+  }
+  const dest = path.join(OUT, copy.out);
+  fs.copyFileSync(copy.src, dest);
+  const kb = Math.round(fs.statSync(dest).size / 1024);
+  console.log(`${copy.out.padEnd(24)} copied verbatim  ${kb} KB`);
+  built++;
 }
 
 for (const name of FROM_DESIGN_PROJECT) {
