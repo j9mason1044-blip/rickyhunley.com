@@ -1,21 +1,30 @@
 #!/usr/bin/env node
 /**
- * One-off: lifts the blog out of the design file and into Sanity.
+ * SPENT. This ran once, on 2 Sep 2026, and should not run again.
  *
- * The twelve articles were written into `tools/RickyHunley.com.dc.html` as a
- * `posts = [...]` array, because at the time the design was the only place
- * content lived. From here Sanity owns them, and the design's array reverts to
- * what it should always have been — sample data for previewing the template.
+ * It lifted the twelve articles out of `tools/RickyHunley.com.dc.html`, where
+ * they lived as a `posts = [...]` array because the design was once the only
+ * place content existed. Sanity owns them now; the design's array is sample
+ * data for previewing the template, and nothing more.
  *
- * Writes NDJSON to stdout; nothing is sent anywhere. Feed it to the CLI:
+ * Why re-running is dangerous, and was not when it was written: the document
+ * IDs are derived from the design's slugs, so a second run *replaces* the
+ * documents rather than duplicating them. During the migration that was the
+ * point — it made the import idempotent. Now that Ricky writes in the Studio,
+ * the same property means a re-run silently overwrites everything he has
+ * written with whatever the design file still says. There is no merge; the
+ * design wins, and his work is gone.
  *
- *   node scripts/migrate-from-design.js > /tmp/blog.ndjson
- *   npx sanity documents create --replace /tmp/blog.ndjson
+ * Hence the guard below. It is kept rather than deleted because it documents
+ * how the content got its shape — the series grouping and the 01/03/04 lesson
+ * numbering were read out of the design's markup, not invented — and because
+ * it is the only record of which Dropbox original each cover came from.
  *
- * Safe to run twice: document IDs are derived from the design's slugs, so a
- * second run replaces rather than duplicates. That is the one place this breaks
- * Sanity's "let the system generate _id" rule, and it does so knowingly — a
- * migration that cannot be re-run without cleaning up after itself is worse.
+ * If you genuinely need to rebuild the blog from the design and accept losing
+ * every edit made in Sanity since:
+ *
+ *   node scripts/migrate-from-design.js --overwrite-sanity > blog.ndjson
+ *   npx sanity dataset import blog.ndjson --dataset production --replace
  */
 
 import fs from 'node:fs'
@@ -24,6 +33,15 @@ import crypto from 'node:crypto'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+if (!process.argv.includes('--overwrite-sanity')) {
+  process.stderr.write(
+    'This migration has already run. Re-importing its output would overwrite\n' +
+      'everything written in the Studio since, with no merge and no undo.\n\n' +
+      'If that is genuinely what you want, pass --overwrite-sanity.\n'
+  )
+  process.exit(1)
+}
 
 const DESIGN = path.join(__dirname, '..', '..', 'tools', 'RickyHunley.com.dc.html')
 const src = fs.readFileSync(DESIGN, 'utf8')
@@ -132,16 +150,25 @@ const dateFor = (index) =>
  *
  *   npx sanity assets upload --file <original> --filename <name>.jpg
  *
- * Alt text is carried over from the design's own markup rather than rewritten.
+ * Alt text is carried over from the design's own markup rather than rewritten,
+ * except where the photograph itself has since been changed.
  */
 const COVER = {
   leadership: {
+    // Ricky Coaching Picture.jpg
     ref: 'image-83381d833299ce6c098b4f3506fc1893a7ee03fe-1920x1484-jpg',
     alt: 'Ricky Hunley on the sideline with Arizona players during a game',
   },
   mentorship: {
-    ref: 'image-6ce248a40131f34e0ee0da3814478f8d5e17f691-5683x3776-jpg',
-    alt: 'Ricky Hunley speaking at a Wildcats community event',
+    // IMG_6558.HEIC, decoded to JPEG with ffmpeg — Sanity takes JPEG, and the
+    // HEIC is tiled HEVC that not everything downstream can read.
+    //
+    // Swapped in on 2 Sep 2026 for the WWT Tucson community photo that was here
+    // before. The post is about Scarlette Hunley and the standard she set, and
+    // this is the Hunley family at a Scarlette G. Hunley Scholarship Fund
+    // presentation in Petersburg — her name on the cheque behind them.
+    ref: 'image-b2b3f4737dfa34bb58a5f0fcf1e0da5c3ff0396b-4032x3024-jpg',
+    alt: 'The Hunley family gathered in Petersburg, Virginia for a Scarlette G. Hunley Scholarship Fund presentation',
   },
   theGame: {
     ref: 'image-5dc49758b29a526503c5b318b9b576a4bf405138-4656x3405-jpg',
