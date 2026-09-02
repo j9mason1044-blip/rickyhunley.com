@@ -14,14 +14,14 @@ index.html  about.html  speaking.html  huddle.html
 news.html   community.html  contact.html
 404.html
 
-css/site.css     the design's global rules, plus the hover states
-js/site.js       hero video fade-in, mobile menu, About page carousel
+css/site.<hash>.css   generated: the design's global rules + hover states
+js/site.<hash>.js     generated from tools/site.js
 assets/          web-sized photography
 uploads/         the hero video, re-encoded for the web
 netlify.toml     publish directory, cache and security headers
 sitemap.xml      generated; robots.txt points at it
 
-tools/           the generator and its source — not served
+tools/           the generator, the design source, and site.js — not served
 ```
 
 Every page carries its own copy of the header and footer. That is deliberate:
@@ -159,13 +159,13 @@ Netlify, publishing the repository root, branch `main`. No build command.
 block, 404s for `tools/`, `studio/` and the README so they are not served from
 the live domain, and the redirects below.
 
-**Cache lifetimes are deliberately short.** No filename here carries a content
-hash, so a long `max-age` strands returning visitors on stale files. That is not
-hypothetical — the hover states shipped broken, and the week-long `max-age` the
-stylesheet originally had would have kept them broken for a week for everyone
-who had already visited. `css/` and `js/` now revalidate every time (cheap, via
-ETag); `assets/` gets a day. Content-hashed filenames are the proper fix, and
-`build-static.js` already rewrites asset references so it could stamp them.
+**`css/` and `js/` filenames carry a content hash**, so new content is always a
+new URL and a cached copy can never go stale. That is what makes their one-year
+`immutable` cache correct. It is also the fix for a real failure: the stylesheet
+once shipped under a fixed URL with a week-long `max-age`, and phones that had
+fetched it kept rendering the site without its mobile layout for days after the
+fix was live — no request made, nothing the server could say. `assets/` is still
+unhashed and gets a day.
 
 ### The domain, and the site it replaces
 

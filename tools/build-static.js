@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(__dirname, 'RickyHunley.com.dc.html');
@@ -161,6 +162,10 @@ const HREF_FOR = {
 };
 
 const src = fs.readFileSync(SRC, 'utf8');
+
+// Filled in once the hashed files are written; page() reads them.
+let cssUrl;
+let jsUrl;
 
 /**
  * Icon links from the design's <helmet>.
@@ -412,7 +417,7 @@ function page(meta, content) {
 ${iconLinks.map((l) => `${l}\n`).join('')}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="${cssUrl}">
 </head>
 <body>
 <a href="#main" class="skip-link">Skip to content</a>
@@ -423,7 +428,7 @@ ${content.trimEnd()}
   </main>
 ${footerHtml}
 </div>
-<script src="/js/site.js" defer></script>
+<script src="${jsUrl}" defer></script>
 </body>
 </html>
 `;
@@ -442,10 +447,13 @@ for (const meta of PAGES.filter((p) => HIDDEN_PAGES.includes(p.key))) {
   }
 }
 
-for (const meta of BUILT) {
-  const content = transform(extractBlock(meta.flag));
-  fs.writeFileSync(path.join(ROOT, meta.file), page(meta, content), 'utf8');
-}
+// Transform every page first. This populates `hoverRules`, which the stylesheet
+// is built from — and the stylesheet has to exist before any page can be
+// written, because its filename carries a content hash that goes in the <head>.
+const rendered = BUILT.map((meta) => ({
+  meta,
+  content: transform(extractBlock(meta.flag)),
+}));
 
 // A 404 in the site's own clothes, using the same hero treatment as the
 // interior pages so a mistyped URL still looks like the site.
@@ -463,21 +471,17 @@ const notFound = `    <section style="position:relative; background:#0C234B; col
       </div>
     </section>`;
 
-fs.writeFileSync(
-  path.join(ROOT, '404.html'),
-  page(
-    {
-      key: '404',
-      file: '404.html',
-      title: 'Page not found',
-      description: 'That page has moved or never existed.',
-      image: 'assets/hero-asu.jpg',
-      noIndex: true,
-    },
-    notFound
-  ),
-  'utf8'
-);
+rendered.push({
+  meta: {
+    key: '404',
+    file: '404.html',
+    title: 'Page not found',
+    description: 'That page has moved or never existed.',
+    image: 'assets/hero-asu.jpg',
+    noIndex: true,
+  },
+  content: notFound,
+});
 
 // sitemap.xml — the eight real pages, 404 excluded.
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -570,9 +574,50 @@ ${hoverCss}
 [hidden] { display: none !important; }
 `;
 
-fs.mkdirSync(path.join(ROOT, 'css'), { recursive: true });
-fs.writeFileSync(path.join(ROOT, 'css', 'site.css'), css, 'utf8');
+// ---------------------------------------------------------------------------
+// 5. Write the stylesheet and script under content-hashed names, then the
+//    pages that point at them.
+//
+// The hash is the whole point. Without it, `css/site.css` is one URL forever,
+// and a browser that cached it under a long max-age keeps serving that copy
+// until the age expires — no request, no revalidation, nothing the server can
+// say. That is not hypothetical: the stylesheet went out once with a week-long
+// max-age, and phones that fetched it in that window kept rendering the site
+// without its mobile layout, days after the fix was live.
+//
+// A hashed filename makes new content a new URL, so a stale cache entry simply
+// cannot be matched against it — and it makes a year of `immutable` correct
+// rather than reckless, because the name changes whenever the bytes do.
+// ---------------------------------------------------------------------------
+
+const hashOf = (text) =>
+  crypto.createHash('sha256').update(text).digest('hex').slice(0, 8);
+
+/** Write `dir/name.<hash>.ext`, clear out earlier hashes, return the URL. */
+function writeHashed(dir, base, ext, contents) {
+  const outDir = path.join(ROOT, dir);
+  fs.mkdirSync(outDir, { recursive: true });
+
+  for (const stale of fs.readdirSync(outDir)) {
+    if (new RegExp(`^${base}\\.[0-9a-f]{8}\\.${ext}$`).test(stale)) {
+      fs.unlinkSync(path.join(outDir, stale));
+    }
+  }
+
+  const name = `${base}.${hashOf(contents)}.${ext}`;
+  fs.writeFileSync(path.join(outDir, name), contents, 'utf8');
+  return `/${dir}/${name}`;
+}
+
+cssUrl = writeHashed('css', 'site', 'css', css);
+
+const jsSource = fs.readFileSync(path.join(__dirname, 'site.js'), 'utf8');
+jsUrl = writeHashed('js', 'site', 'js', jsSource);
+
+for (const { meta, content } of rendered) {
+  fs.writeFileSync(path.join(ROOT, meta.file), page(meta, content), 'utf8');
+}
 
 console.log(
-  `wrote ${BUILT.length} pages + css/site.css (${hoverRules.size} hover rules)`
+  `wrote ${rendered.length} pages, ${cssUrl} (${hoverRules.size} hover rules), ${jsUrl}`
 );

@@ -99,7 +99,31 @@ for (const file of pages) {
 }
 
 // --- hover classes referenced in HTML must exist in the stylesheet --------
-const css = fs.readFileSync(path.join(ROOT, 'css', 'site.css'), 'utf8');
+// The stylesheet's filename carries a content hash, so find it rather than
+// assume it. Exactly one should exist; more than one means a stale build left
+// something behind that the pages no longer reference.
+const cssDir = path.join(ROOT, 'css');
+const cssFiles = fs.readdirSync(cssDir).filter((f) => f.endsWith('.css'));
+if (cssFiles.length !== 1) {
+  fail('css/', `expected exactly one stylesheet, found ${cssFiles.length}: ${cssFiles.join(', ')}`);
+}
+const cssName = `css/${cssFiles[0]}`;
+const css = fs.readFileSync(path.join(cssDir, cssFiles[0]), 'utf8');
+
+// Every page must point at the stylesheet and script that actually exist.
+const jsFiles = fs.readdirSync(path.join(ROOT, 'js')).filter((f) => f.endsWith('.js'));
+if (jsFiles.length !== 1) {
+  fail('js/', `expected exactly one script, found ${jsFiles.length}: ${jsFiles.join(', ')}`);
+}
+for (const file of pages) {
+  const html = fs.readFileSync(path.join(ROOT, file), 'utf8');
+  if (cssFiles[0] && !html.includes(`/css/${cssFiles[0]}`)) {
+    fail(file, `does not reference the current stylesheet (${cssFiles[0]})`);
+  }
+  if (jsFiles[0] && !html.includes(`/js/${jsFiles[0]}`)) {
+    fail(file, `does not reference the current script (${jsFiles[0]})`);
+  }
+}
 const used = new Set();
 for (const file of pages) {
   const html = fs.readFileSync(path.join(ROOT, file), 'utf8');
@@ -110,7 +134,7 @@ for (const file of pages) {
 for (const cls of used) {
   const rule = css.match(new RegExp(`\\.${cls}:hover \\{([^}]*)\\}`));
   if (!rule) {
-    fail('css/site.css', `no rule for .${cls}`);
+    fail(cssName, `no rule for .${cls}`);
     continue;
   }
   // Every declaration must be !important. The design styles everything inline,
@@ -119,7 +143,7 @@ for (const cls of used) {
   // style preference; it is the difference between working and not.
   for (const decl of rule[1].split(';').map((d) => d.trim()).filter(Boolean)) {
     if (!/!important$/.test(decl)) {
-      fail('css/site.css', `.${cls}:hover — "${decl}" is not !important, so the inline style wins`);
+      fail(cssName, `.${cls}:hover — "${decl}" is not !important, so the inline style wins`);
     }
   }
 }
