@@ -34,6 +34,12 @@ const singleton = (
     .title(title)
     .child(S.document().schemaType(type).documentId(type).title(title))
 
+/**
+ * Whether the page singletons are shown to Ricky. See the note beside them.
+ * They are built and valid; the site just does not read them yet.
+ */
+const PAGES_ARE_LIVE = false
+
 /** Types given an explicit item below, so the catch-all must skip them. */
 const HANDLED = [
   ...SINGLETON_TYPES,
@@ -94,26 +100,38 @@ export const structure: StructureResolver = (S) =>
       S.divider(),
 
       // One entry per page, in the order they appear in the site's navigation.
-      S.listItem()
-        .id('pages')
-        .title('Page text & photos')
-        .icon(DocumentsIcon)
-        .child(
-          S.list()
-            .title('Page text & photos')
-            .items([
-              singleton(S, 'homePage', 'Home'),
-              singleton(S, 'aboutPage', 'About'),
-              singleton(S, 'speakingPage', 'Speaking'),
-              singleton(S, 'huddlePage', 'The Hunley Huddle'),
-              singleton(S, 'communityPage', 'Community'),
-              singleton(S, 'newsPage', 'News'),
-              singleton(S, 'blogPage', 'Blog'),
-              singleton(S, 'contactPage', 'Contact'),
-            ])
-        ),
-
-      S.divider(),
+      //
+      // Hidden until the build reads them. The schemas are finished and the
+      // documents would save perfectly well, but `build-static.js` still takes
+      // page copy from the design — so every field here would accept an edit
+      // from Ricky and then do nothing to the site. A control that silently
+      // does nothing is worse than a missing one: he would edit the About page,
+      // see no change, and stop trusting the whole Studio.
+      //
+      // Flip this the day the build reads them, not before.
+      ...(PAGES_ARE_LIVE
+        ? [
+            S.listItem()
+              .id('pages')
+              .title('Page text & photos')
+              .icon(DocumentsIcon)
+              .child(
+                S.list()
+                  .title('Page text & photos')
+                  .items([
+                    singleton(S, 'homePage', 'Home'),
+                    singleton(S, 'aboutPage', 'About'),
+                    singleton(S, 'speakingPage', 'Speaking'),
+                    singleton(S, 'huddlePage', 'The Hunley Huddle'),
+                    singleton(S, 'communityPage', 'Community'),
+                    singleton(S, 'newsPage', 'News'),
+                    singleton(S, 'blogPage', 'Blog'),
+                    singleton(S, 'contactPage', 'Contact'),
+                  ])
+              ),
+            S.divider(),
+          ]
+        : []),
 
       S.listItem()
         .id('siteSettings')
