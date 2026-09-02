@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { renderBlogIndex, coverUrl } = require('./blog-index');
 
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(__dirname, 'RickyHunley.com.dc.html');
@@ -158,22 +159,41 @@ const HREF_FOR = {
 
 const src = fs.readFileSync(SRC, 'utf8');
 
+/**
+ * Article copy arrives as plain text — from the design's array, or as the text
+ * of a Portable Text span — and here it becomes markup. Defined this high up
+ * because reading the content is the first thing the build does.
+ */
+const escapeText = (s) =>
+  String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 /** `stayCourse` -> `stay-course`. The design's slugs are camelCase; URLs are not. */
 const kebab = (name) => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 
 /**
  * The blog's articles.
  *
- * In the design these are a single `posts = [...]` array on the component, and
- * the one `isPost` block is a template rendering whichever article
- * `state.post` names. Static HTML has no state, so the array is read out of
- * the source and the template is rendered once per article into
- * blog/<slug>.html.
+ * Sanity owns these. `tools/fetch-content.js` writes them to
+ * `tools/content.json`, and the design's own `posts = [...]` array is the
+ * fallback — which is also its remaining job: sample data, so the article
+ * template still renders in Claude Design when there is no CMS to ask.
  *
- * Reading the literal rather than restating it here is the point: the copy
- * keeps exactly one home, and an edit in the design lands on the next build.
+ * The fallback is not just politeness. It means the site can be rebuilt with no
+ * network, that a broken fetch cannot silently publish an empty blog, and that
+ * the design file stays a working preview of its own template.
  */
-function readPosts() {
+const CONTENT_FILE = path.join(__dirname, 'content.json');
+
+/** The design's `## ` / `> ` prefixes, in the shape the Sanity path produces. */
+function bodyFromDesign(paragraphs) {
+  return paragraphs.map((raw) => {
+    const kind = raw.startsWith('## ') ? 'h2' : raw.startsWith('> ') ? 'blockquote' : 'normal';
+    const text = raw.startsWith('## ') ? raw.slice(3) : raw.startsWith('> ') ? raw.slice(2) : raw;
+    return { kind, html: escapeText(text) };
+  });
+}
+
+function readDesignPosts() {
   const open = src.indexOf('  posts = [');
   if (open === -1) throw new Error('could not find the posts array');
   const close = src.indexOf("\n  ];", open);
@@ -183,21 +203,45 @@ function readPosts() {
   // eslint-disable-next-line no-eval -- an array literal out of a file we own.
   const posts = eval('(' + literal + ')');
   if (!Array.isArray(posts) || !posts.length) throw new Error('no posts parsed');
-  return posts.map((p) => ({ ...p, url: `/blog/${kebab(p.slug)}.html` }));
+
+  return posts.map((p) => ({
+    slug: kebab(p.slug),
+    designSlug: p.slug,
+    title: p.title,
+    dek: p.dek,
+    category: p.category,
+    seriesId: null,
+    numberInSeries: null,
+    cover: null,
+    body: bodyFromDesign(p.body),
+    url: `/blog/${kebab(p.slug)}.html`,
+  }));
 }
 
-const POSTS = SHOW_BLOG ? readPosts() : [];
+function readContent() {
+  if (!SHOW_BLOG) return { posts: [], series: [], fromSanity: false };
 
-/**
- * The three articles the index gives a photographic card to. A card's own
- * image is the better og:image for the article behind it, so it is reused
- * rather than defaulted to the page header.
- */
-const POST_IMAGE = {
-  leadership: 'assets/coaching-sm.jpg',
-  mentorship: 'assets/community-sm.jpg',
-  theGame: 'assets/practice-sm.jpg',
-};
+  if (fs.existsSync(CONTENT_FILE)) {
+    const content = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
+    if (content.posts?.length) {
+      return {
+        posts: content.posts.map((p) => ({ ...p, url: `/blog/${p.slug}.html` })),
+        series: content.series || [],
+        fetchedAt: content.fetchedAt,
+        fromSanity: true,
+      };
+    }
+  }
+
+  console.warn(
+    'tools/content.json is absent or empty — building the blog from the ' +
+      "design's sample posts. Run `node tools/fetch-content.js` for the real ones."
+  );
+  return { posts: readDesignPosts(), series: [], fromSanity: false };
+}
+
+const CONTENT = readContent();
+const POSTS = CONTENT.posts;
 
 // Filled in once the hashed files are written; page() reads them.
 let cssUrl;
@@ -332,7 +376,11 @@ function transform(html) {
   out = out.replace(
     /href="#"\s+onClick="\{\{ open\.(\w+) \}\}"/g,
     (_, slug) => {
-      const post = POSTS.find((p) => p.slug === slug);
+      // The design writes camelCase slugs; Sanity's are kebab-case. Match on
+      // either, so this works whichever source the posts came from.
+      const post = POSTS.find(
+        (p) => p.designSlug === slug || p.slug === kebab(slug)
+      );
       if (!post) throw new Error(`blog link to an unknown post: ${slug}`);
       return `href="${post.url}"`;
     }
@@ -425,9 +473,9 @@ function transform(html) {
 const headerHtml = transform(header);
 const footerHtml = transform(footer);
 
-/** Article copy is plain text in the design's data; here it becomes markup. */
-const escapeText = (s) =>
-  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/** Site-relative paths become absolute; a Sanity CDN URL already is. */
+const absoluteUrl = (ref) =>
+  /^https?:/.test(ref) ? ref : `${SITE_URL}/${ref.replace(/^\//, '')}`;
 
 const escapeAttr = (s) =>
   s
@@ -456,7 +504,7 @@ function page(meta, content) {
 <meta property="og:title" content="${escapeAttr(fullTitle)}">
 <meta property="og:description" content="${escapeAttr(meta.description)}">
 <meta property="og:url" content="${canonical}">
-<meta property="og:image" content="${SITE_URL}/${meta.image}">
+<meta property="og:image" content="${absoluteUrl(meta.image)}">
 <meta name="twitter:card" content="summary_large_image">
 ${iconLinks.map((l) => `${l}\n`).join('')}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -502,19 +550,23 @@ function renderPost(post) {
     return m[1].trim();
   };
 
-  const body = variant('isBody');
-  const sub = variant('isSub');
-  const quote = variant('isQuote');
+  // The design's three variants, keyed by the `kind` both content sources emit.
+  // A kind with no variant falls back to a paragraph rather than disappearing:
+  // an unrenderable block is a bug worth seeing on the page, not one worth
+  // hiding by dropping the sentence Ricky wrote.
+  const VARIANT = {
+    normal: variant('isBody'),
+    h2: variant('isSub'),
+    blockquote: variant('isQuote'),
+  };
 
   const paras = post.body
-    .map((text) => {
-      const [tpl_, plain] =
-        text.startsWith('## ') ? [sub, text.slice(3)]
-        : text.startsWith('> ') ? [quote, text.slice(2)]
-        : [body, text];
-      return tpl_.split('{{ para.text }}').join(escapeText(plain));
-    })
-    .join("\n      ");
+    .map((block) =>
+      (VARIANT[block.kind] || VARIANT.normal)
+        .split('{{ para.text }}')
+        .join(block.html)
+    )
+    .join('\n      ');
 
   return tpl
     // A function replacement: article copy is arbitrary text, and a bare $&
@@ -555,10 +607,19 @@ if (fs.existsSync(blogDir)) {
 // Transform every page first. This populates `hoverRules`, which the stylesheet
 // is built from — and the stylesheet has to exist before any page can be
 // written, because its filename carries a content hash that goes in the <head>.
-const rendered = BUILT.map((meta) => ({
-  meta,
-  content: transform(extractBlock(meta.flag)),
-}));
+const rendered = BUILT.map((meta) => {
+  let block = extractBlock(meta.flag);
+
+  // The blog index is the one page whose *shape* comes from content rather than
+  // from the design: three cards and two lists today, however many Ricky has
+  // tomorrow. Rebuilt from the design's own markup, so it still looks exactly
+  // as drawn — see tools/blog-index.js.
+  if (meta.key === 'blog' && CONTENT.fromSanity) {
+    block = renderBlogIndex(block, CONTENT, (post) => post.url);
+  }
+
+  return { meta, content: transform(block) };
+});
 
 // One page per article, under blog/. Each takes its dek as the meta
 // description and, where the index gave it a card, that card's photograph.
@@ -569,7 +630,11 @@ for (const post of POSTS) {
       file: post.url.slice(1), // "/blog/x.html" -> "blog/x.html"
       title: post.title,
       description: post.dek,
-      image: POST_IMAGE[post.slug] || 'assets/blog-header-sm.jpg',
+      // An article's own card photograph is the better share image. Sanity
+      // serves it already cropped to the 1.91:1 that Open Graph wants.
+      image: post.cover
+        ? coverUrl(post.cover, { width: 600, height: 315 })
+        : 'assets/blog-header-sm.jpg',
     },
     content: transform(renderPost(post)),
   });

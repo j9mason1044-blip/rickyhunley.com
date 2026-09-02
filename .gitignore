@@ -8,3 +8,4 @@ dns-snapshot.md
 # Sanity Studio build output and local cache
 studio/dist/
 studio/.sanity/
+studio/schema.json

@@ -126,19 +126,17 @@ data.episodes.forEach((e) => {
 })
 
 // --- blog ------------------------------------------------------------------
-// These three are the design's sample posts. Seeding them gives Ricky
-// something shaped like a real post to edit rather than an empty CMS.
-data.blog.forEach((b, i) => {
-  docs.push({
-    _id: `blogPost-${key(b.title)}`,
-    _type: 'blogPost',
-    title: b.title,
-    slug: { _type: 'slug', current: key(b.title) },
-    category: b.category,
-    excerpt: b.excerpt,
-    publishedAt: dayOffset(i),
-  })
-})
+// Deliberately nothing.
+//
+// This used to seed three sample posts shaped like the design's placeholders:
+// no body, and titles that have since been rewritten. The real twelve articles
+// were migrated out of the design by `scripts/migrate-from-design.js`, and
+// those three were deleted.
+//
+// Seeding them again would resurrect them — `createIfNotExists` only protects
+// documents that are still there — and the build would put three empty pages on
+// the live site. To rebuild the blog from scratch, run the migration instead;
+// it is idempotent, and it writes the articles Ricky actually has.
 
 if (DRY) {
   console.log(`${docs.length} documents would be written:\n`)

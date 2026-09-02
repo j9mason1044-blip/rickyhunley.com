@@ -2,8 +2,11 @@ import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 
-import { schemaTypes } from './schemaTypes'
+import { schemaTypes, SINGLETON_TYPES } from './schemaTypes'
 import { structure } from './structure'
+
+const isSingleton = (type?: string) =>
+  SINGLETON_TYPES.includes(type as (typeof SINGLETON_TYPES)[number])
 
 export default defineConfig({
   name: 'default',
@@ -22,18 +25,22 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
 
-    // Hide the singleton from global "create new" menus. Structure pins it to a
-    // fixed document ID; this stops a second one being created from the + button.
-    templates: (prev) => prev.filter((t) => t.schemaType !== 'siteSettings'),
+    // Keep the singletons out of the global "create new" menus. Structure pins
+    // each to a fixed document ID; this stops a second one being made from the
+    // + button, which would be invisible on the site and confusing in the Studio.
+    templates: (prev) => prev.filter((t) => !isSingleton(t.schemaType)),
   },
 
   document: {
     // Same reason, for the "Create new document" action list.
     newDocumentOptions: (prev) =>
-      prev.filter((item) => item.templateId !== 'siteSettings'),
+      prev.filter((item) => !isSingleton(item.templateId)),
 
+    // A page cannot be deleted or unpublished — the site expects it to exist,
+    // and a build against a missing About page should not be possible from a
+    // menu Ricky can reach by accident.
     actions: (prev, { schemaType }) =>
-      schemaType === 'siteSettings'
+      isSingleton(schemaType)
         ? prev.filter(({ action }) => action !== 'unpublish' && action !== 'delete')
         : prev,
   },

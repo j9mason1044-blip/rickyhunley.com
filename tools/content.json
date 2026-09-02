@@ -1,0 +1,548 @@
+{
+  "fetchedAt": "2026-09-02T19:58:54.744Z",
+  "source": "0m77etlx/production",
+  "series": [
+    {
+      "id": "series-seven-lessons-to-my-younger-self",
+      "intro": "A series written for the player I was at nineteen, and for every athlete who thinks the applause is the point.",
+      "order": 1,
+      "title": "Seven lessons to my younger self"
+    },
+    {
+      "id": "series-common-sense-ain-t-common",
+      "intro": "A short series applying John McClain’s favorite line to the game as it stands today.",
+      "order": 2,
+      "title": "Common sense ain’t common"
+    }
+  ],
+  "posts": [
+    {
+      "slug": "leadership",
+      "title": "What the huddle teaches that the meeting room can’t",
+      "dek": "Eleven people. One voice. Four seconds to decide. Why the huddle is still the best leadership lab I know.",
+      "category": "Leadership",
+      "publishedAt": "2026-09-01T17:00:00.000Z",
+      "seriesId": null,
+      "numberInSeries": null,
+      "cover": {
+        "url": "https://cdn.sanity.io/images/0m77etlx/production/83381d833299ce6c098b4f3506fc1893a7ee03fe-1920x1484.jpg",
+        "alt": "Ricky Hunley on the sideline with Arizona players during a game",
+        "hotspot": null
+      },
+      "body": [
+        {
+          "kind": "normal",
+          "html": "No slide deck. No follow-up email. No “let’s circle back.” Just a call, a break, and eleven people trusting each other enough to move as one on a ball they can’t see yet."
+        },
+        {
+          "kind": "normal",
+          "html": "I’ve sat in a lot of meeting rooms since I hung up my pads — boardrooms, coaches’ offices, donor lunches, committee tables. Some of the smartest people I know run those rooms. But I’ve never seen a meeting room produce what a huddle produces, and after almost fifty years around this game, I think I finally know why."
+        },
+        {
+          "kind": "blockquote",
+          "html": "A huddle has no room for pretending."
+        },
+        {
+          "kind": "normal",
+          "html": "In a meeting, you can nod along. You can stay quiet and let it look like agreement. A huddle won’t let you hide. If you don’t know the play, your body gives you away before the ball is even snapped. The huddle exposes preparation instantly — and it exposes trust just as fast. You either believe the voice calling the play, or you don’t. There’s no time to build that belief in the huddle itself. You bring it in with you, built from every rep before that moment."
+        },
+        {
+          "kind": "blockquote",
+          "html": "A huddle has one voice, not the loudest voice."
+        },
+        {
+          "kind": "normal",
+          "html": "Somebody calls the play. Everybody else’s job is to execute it with everything they’ve got, even if they’d have called something different. That’s not blind obedience — it’s discipline. It’s understanding that the team needs unity of action more than it needs eleven opinions. I learned leadership in the huddle before I ever learned it from a title. The quarterback wasn’t always the best athlete on the field. He was the one everybody believed would get it right, and who took responsibility when it went wrong."
+        },
+        {
+          "kind": "blockquote",
+          "html": "A huddle ends in commitment, not consensus."
+        },
+        {
+          "kind": "normal",
+          "html": "Four seconds, then everybody breaks toward the same purpose. No further debate at the line. That’s the piece I think we’ve lost in a lot of our institutions — the willingness to commit fully to a decision once it’s made, instead of relitigating it play after play, meeting after meeting."
+        },
+        {
+          "kind": "normal",
+          "html": "I still run my days like a huddle when I can. Say it plainly. Trust the people around you. Commit without flinching. Then go execute — together."
+        },
+        {
+          "kind": "normal",
+          "html": "That’s not nostalgia talking. That’s the best leadership lab I ever stood in, and I’m still teaching from what it showed me."
+        }
+      ]
+    },
+    {
+      "slug": "mentorship",
+      "title": "Ten kids, one mother, and the standard she set",
+      "dek": "Everything I know about accountability, I learned in Petersburg before I ever put on pads.",
+      "category": "Mentorship",
+      "publishedAt": "2026-08-31T17:00:00.000Z",
+      "seriesId": null,
+      "numberInSeries": null,
+      "cover": {
+        "url": "https://cdn.sanity.io/images/0m77etlx/production/6ce248a40131f34e0ee0da3814478f8d5e17f691-5683x3776.jpg",
+        "alt": "Ricky Hunley speaking at a Wildcats community event",
+        "hotspot": null
+      },
+      "body": [
+        {
+          "kind": "normal",
+          "html": "My mother, Scarlette, raised a big family in a small house, and on top of her own children, she opened that house to foster kids — dozens of them over the years. Different backgrounds. Different needs. Different levels of trust in whether an adult would actually keep their word this time. She didn’t treat any of that as a reason to lower the standard. If anything, it raised it."
+        },
+        {
+          "kind": "normal",
+          "html": "There was one rule in that house that never bent: you did what you said you’d do, and you owned it when you didn’t."
+        },
+        {
+          "kind": "h2",
+          "html": "She measured effort, not talent."
+        },
+        {
+          "kind": "normal",
+          "html": "Nobody in that house got praised for being naturally gifted at something. You got noticed for finishing the job. Dishes done all the way, not halfway. Homework checked, not just started. My mother didn’t have the luxury of managing ten kids by talent level — she managed by standard. Everybody met the same bar, because everybody was capable of meeting it if they tried."
+        },
+        {
+          "kind": "h2",
+          "html": "She made room without making excuses."
+        },
+        {
+          "kind": "normal",
+          "html": "Every child who came through that door carried something with them — grief, instability, questions nobody had answered for them yet. My mother made room for all of that. What she didn’t do was let it become a permanent excuse. She’d sit with a kid’s pain and still expect that kid at the table on time, still expect respect in her house. Compassion and accountability weren’t opposites to her. They were the same thing, delivered together."
+        },
+        {
+          "kind": "h2",
+          "html": "She showed up the same way every day."
+        },
+        {
+          "kind": "normal",
+          "html": "That’s the part I didn’t appreciate until I was much older. Consistency is its own kind of love. Ten different kids on ten different days getting the same version of Scarlette — not the tired version, not the frustrated version dressed up as discipline, but the same steady standard. That predictability is what let a house full of kids who’d been let down before start to trust an adult again."
+        },
+        {
+          "kind": "normal",
+          "html": "I’ve carried her standard into locker rooms, coaching staffs, and now into the work I do mentoring young people at Arizona. Nobody in this world ever built real character by being let off the hook. My mother knew that with ten kids and no manual. I try to know it too."
+        }
+      ]
+    },
+    {
+      "slug": "the-game",
+      "title": "Life after the snap",
+      "dek": "The transition nobody drafts you for, and what athletes should be building long before it arrives.",
+      "category": "The game",
+      "publishedAt": "2026-08-30T17:00:00.000Z",
+      "seriesId": null,
+      "numberInSeries": null,
+      "cover": {
+        "url": "https://cdn.sanity.io/images/0m77etlx/production/5dc49758b29a526503c5b318b9b576a4bf405138-4656x3405.jpg",
+        "alt": "Ricky Hunley at Arizona spring practice",
+        "hotspot": null
+      },
+      "body": [
+        {
+          "kind": "normal",
+          "html": "Nobody drafts you for this transition. There’s no combine for it, no scouting report, no agent negotiating the terms. One day the game is the organizing principle of your entire life, and the next, it isn’t — and almost nobody prepares an athlete for that particular silence."
+        },
+        {
+          "kind": "normal",
+          "html": "I played this game at the highest level. Two Super Bowls. A first-round life built around being one of the best at something very specific and very physical. And then, like it does for every single player eventually, it ended. Not on my terms. It rarely is on anyone’s terms."
+        },
+        {
+          "kind": "normal",
+          "html": "Here’s what I want young athletes to hear, long before they’re anywhere near that moment: The identity you build now is the one you’ll need later."
+        },
+        {
+          "kind": "normal",
+          "html": "If “athlete” is the only word that describes you, retirement doesn’t just end a career — it ends you, or at least it feels that way. The players I’ve watched struggle most after the game are the ones who never developed a second identity while the first one was still paying the bills. Start building the second one now. Coach a youth team. Learn a trade. Get curious about business, ministry, teaching, whatever pulls at you. Do it while football is still giving you the platform and the resources to explore."
+        },
+        {
+          "kind": "h2",
+          "html": "Your network shouldn’t be limited to the field."
+        },
+        {
+          "kind": "normal",
+          "html": "Locker rooms are tight-knit for good reason — but they can also become a bubble. The relationships that carry you through transition are the ones you built outside of football while you still had the game as your calling card. Community leaders, mentors, people ten and twenty years older than you who’ve already made a hard transition of their own. Build those bridges early. Don’t wait until you need them."
+        },
+        {
+          "kind": "h2",
+          "html": "Purpose has to be bigger than performance."
+        },
+        {
+          "kind": "normal",
+          "html": "Performance is intoxicating. The standing ovation, the highlight, the win — none of that translates cleanly to civilian life. What does translate is purpose: who you’re trying to help, what you’re trying to build, what legacy you actually want. Start asking that question at nineteen, not thirty-nine."
+        },
+        {
+          "kind": "normal",
+          "html": "I didn’t have this roadmap when my own transition came. I’ve spent the years since building it — for myself, and now for the young men I get to mentor. The last snap is coming for every single athlete reading this. The only question is whether you’re building something now that will still be standing when it does."
+        }
+      ]
+    },
+    {
+      "slug": "knowing",
+      "title": "Knowing is not enough, we must apply",
+      "dek": "You can coast on talent and still look good enough to fool everybody but yourself.",
+      "category": "Seven lessons",
+      "publishedAt": "2026-08-29T17:00:00.000Z",
+      "seriesId": "series-seven-lessons-to-my-younger-self",
+      "numberInSeries": 1,
+      "cover": null,
+      "body": [
+        {
+          "kind": "blockquote",
+          "html": "Knowing is not enough, we must apply. Willing is not enough, we must do. — Bruce Lee"
+        },
+        {
+          "kind": "normal",
+          "html": "When I was coming up, my teammates never knew when I was playing below my max. Nobody could tell. That’s the trap. You can coast on talent and still look good enough to fool everybody but yourself."
+        },
+        {
+          "kind": "normal",
+          "html": "My mom used to say, “What doesn’t kill you only makes you stronger.” I believed her, but believing isn’t the same as living it out on the field, in the classroom, in the office."
+        },
+        {
+          "kind": "normal",
+          "html": "Here’s what I’ve learned: the hard work it takes to be the best at anything shows up disguised as work. It doesn’t announce itself. It just looks like one more rep, one more phone call, one more extra hour when everyone else has gone home. If you’re waiting for it to feel like destiny, you’ll miss it every time."
+        },
+        {
+          "kind": "normal",
+          "html": "I grew up broke and hungry in Petersburg, Virginia. That feeling — the edge, the chip on your shoulder — never fully goes away, and it shouldn’t. Use it. Don’t get comfortable being a minimum-effort person. Your minimum will already look better than a lot of people’s maximum, and that’s exactly the trap that keeps good players from becoming great ones."
+        },
+        {
+          "kind": "normal",
+          "html": "Attack. Be relentless. No exceptions, no excuses. Don’t let “cool with average” become your standard."
+        },
+        {
+          "kind": "normal",
+          "html": "Knowing what to do has never been the hard part. Doing it — especially when nobody’s watching and nobody would ever know — that’s the whole game."
+        }
+      ]
+    },
+    {
+      "slug": "hero",
+      "title": "You are only a hero for a moment — invest in yourself",
+      "dek": "The cheering stops. It stops more than once, and every time it does you feel empty if you built your identity on the applause.",
+      "category": "Seven lessons",
+      "publishedAt": "2026-08-28T17:00:00.000Z",
+      "seriesId": "series-seven-lessons-to-my-younger-self",
+      "numberInSeries": 3,
+      "cover": null,
+      "body": [
+        {
+          "kind": "normal",
+          "html": "I threw no-hitters in Little League. By high school, I was throwing darts over 90 mph and getting picked up for games in a coach’s air-conditioned Cadillac. People treated me like a rock star. It felt incredible."
+        },
+        {
+          "kind": "normal",
+          "html": "The Pittsburgh Pirates’ GM drafted me my senior year and offered me a contract to play professional baseball. Real money. A real choice. I turned it down to commit to the University of Arizona and play football instead."
+        },
+        {
+          "kind": "normal",
+          "html": "I’ve thought about that decision for decades. Not because it was wrong — my life turned out to be a blessing — but because it taught me something about the nature of being a “hero.” The cheering stops. It stops more than once, and every time it does, you feel empty if you built your identity on the applause instead of on yourself."
+        },
+        {
+          "kind": "normal",
+          "html": "Savor those moments when they come. They’re the best feeling in the world, and they leave as fast as they arrive."
+        },
+        {
+          "kind": "normal",
+          "html": "Here’s the lesson I’d give my younger self: don’t wait for the crowd to tell you who you are. Invest in yourself — your discipline, your character, your relationships — because that’s the only thing still standing when the stadium empties out and everyone goes home."
+        },
+        {
+          "kind": "normal",
+          "html": "Being a hero is a moment. Being a man, a father, a mentor — that’s a lifetime commitment. Choose accordingly."
+        }
+      ]
+    },
+    {
+      "slug": "stay-course",
+      "title": "Those who stay the course will be champions",
+      "dek": "My first day on the Arizona practice field, I was sixth on the depth chart.",
+      "category": "Seven lessons",
+      "publishedAt": "2026-08-27T17:00:00.000Z",
+      "seriesId": "series-seven-lessons-to-my-younger-self",
+      "numberInSeries": 4,
+      "cover": null,
+      "body": [
+        {
+          "kind": "normal",
+          "html": "My first day on the University of Arizona practice field, I was sixth on the depth chart. Third and fourth team. Nobody’s future All-American."
+        },
+        {
+          "kind": "normal",
+          "html": "Then a senior linebacker went down, and I got my first start — as a freshman — against the number one team in the country. I didn’t have command of the playbook. I didn’t have the experience. I had a gut full of fear and one thing I could control: effort."
+        },
+        {
+          "kind": "normal",
+          "html": "My head coach told me flatly, “It’s your job to lose, freshman.” So I played like my hair was on fire, technique imperfect, effort maxed out. Twelve tackles, three sacks, Pac-10 Player of the Week. From that game forward, I started every game of my college career."
+        },
+        {
+          "kind": "normal",
+          "html": "That’s the lesson: the difference between school and life is that school teaches you the lesson and then tests you. Life tests you first, and you learn the lesson after — usually the hard way, usually on short notice."
+        },
+        {
+          "kind": "normal",
+          "html": "I went on to become a two-time consensus All-American, the career tackles leader at the University of Arizona with 566 and the first Wildcat inducted into the College Football Hall of Fame. None of it started with confidence. It started with staying in the fight when I had every reason to think I wasn’t ready."
+        },
+        {
+          "kind": "normal",
+          "html": "You will rarely feel ready. Stay the course anyway. Readiness shows up in the doing, not before it."
+        }
+      ]
+    },
+    {
+      "slug": "humble",
+      "title": "Humble yourself — your words belong to the world",
+      "dek": "Your thoughts belong to you. Your words belong to everybody else.",
+      "category": "Seven lessons",
+      "publishedAt": "2026-08-26T17:00:00.000Z",
+      "seriesId": "series-seven-lessons-to-my-younger-self",
+      "numberInSeries": 5,
+      "cover": null,
+      "body": [
+        {
+          "kind": "normal",
+          "html": "During the 1987 NFL strike, I was one of the youngest Players’ Reps in the league, hand-picked to lead my team. I believed in the cause. I put myself out on a limb for teammates and a union that, looking back, wasn’t always there for me the way I was there for them."
+        },
+        {
+          "kind": "normal",
+          "html": "After the strike ended, our first game back was rough — six weeks with no practice will do that. My head coach mentioned to the press that he’d talked to me, specifically, about the possibility of being benched. The media swarmed. I felt like I’d been thrown under the bus."
+        },
+        {
+          "kind": "normal",
+          "html": "I held my tongue through the questions, but the sting stayed with me. By season’s end, I said something about my coach to the press that I shouldn’t have. It was damning, and it was a no-win move. I got traded to the worst team in the league."
+        },
+        {
+          "kind": "normal",
+          "html": "Here’s the lesson, plain: how you are isn’t always as important as how you’re perceived. Perception is the gatekeeper between your essence and your image, and image is the only thing most people ever see. Changing yourself gives you peace. Changing how you’re perceived gives you power — but only if you’re careful with your words in the moment that matters most."
+        },
+        {
+          "kind": "normal",
+          "html": "When you make your bed, you lay in it. Think before you speak. Every time."
+        }
+      ]
+    },
+    {
+      "slug": "give-back",
+      "title": "Give back",
+      "dek": "Give people your money and you give them something you can replace. Give them your time and you give them a piece of your life.",
+      "category": "Seven lessons",
+      "publishedAt": "2026-08-25T17:00:00.000Z",
+      "seriesId": "series-seven-lessons-to-my-younger-self",
+      "numberInSeries": 6,
+      "cover": null,
+      "body": [
+        {
+          "kind": "normal",
+          "html": "My mother, Scarlette, raised ten of her own kids and fostered more than 50 others. She always reminded us: we weren’t just her kids, we were everybody’s kids. So many people had a hand in raising us, and she never let us forget it."
+        },
+        {
+          "kind": "normal",
+          "html": "Rick Warren, the author, wrote something that’s stuck with me for years: “When you give people your money, you give them something you can replace. But when you give people your time, you give them a piece of your life.”"
+        },
+        {
+          "kind": "normal",
+          "html": "I’ve had mentors — John McClain, Warren Rustand, Gene Stallings, Larry Smith, Marvin Lewis, Solomon Wilcots, my brother LaMonte — who gave me pieces of their lives without expecting anything back. Every one of those relationships turned out to be mutually beneficial, even when that wasn’t the intention going in."
+        },
+        {
+          "kind": "normal",
+          "html": "My resume speaks for itself. Two-time consensus All-American, first-round draft pick, two Super Bowls, Hall of Fame. But none of that outweighs what I get to share with young players now as a coach and mentor. That feeling — passing it forward — replaced something in me that I lost the day I stopped playing."
+        },
+        {
+          "kind": "normal",
+          "html": "Others will accept the minimum you’re willing to give them. It should never be acceptable to you. Pursue every relationship, every opportunity to mentor, with real intentionality. Give your time. It’s the one thing you can’t get back — and the one thing that actually changes lives."
+        }
+      ]
+    },
+    {
+      "slug": "think-act",
+      "title": "Think before you act — be all that you can be",
+      "dek": "I had everything I needed heading into the 1984 draft. Then I thought getting there was enough.",
+      "category": "Seven lessons",
+      "publishedAt": "2026-08-24T17:00:00.000Z",
+      "seriesId": "series-seven-lessons-to-my-younger-self",
+      "numberInSeries": 7,
+      "cover": null,
+      "body": [
+        {
+          "kind": "normal",
+          "html": "Growing up poor in Petersburg, Virginia, with seven brothers and three sisters, football was my way out. When I signed my first contract, I used part of the bonus to buy my mother a seven-bedroom home. That’s still one of the proudest moments of my life."
+        },
+        {
+          "kind": "normal",
+          "html": "Heading into the 1984 NFL Draft, I’d built my body into a machine — 6’1”, 238 pounds, benching 400, squatting 750, running a 4.55. I was projected as a future Pro Bowler. I had everything I needed."
+        },
+        {
+          "kind": "normal",
+          "html": "Then I thought getting there was enough. It wasn’t. The trappings of money and good times crept in slow, like a quiet cancer, and knocked me off the discipline that got me there in the first place. I made it to Hawaii — but only to party, never as a Pro Bowl player. That’s a regret I still carry."
+        },
+        {
+          "kind": "normal",
+          "html": "My high school baseball coach, Ollie Jarvis, once told me, “You’ve got the rest of your life to work and only a little time to play.” I understood the words. I didn’t live by them when it mattered most."
+        },
+        {
+          "kind": "normal",
+          "html": "Self-discipline is the difference between good and great — the extra reps, the post-practice stretching, the ice tubs, the food choices nobody sees. Those are the “above and beyond” things. Don’t wait until it’s too late to be self-motivated."
+        },
+        {
+          "kind": "normal",
+          "html": "There are no do-overs in life. Get it right the first time."
+        }
+      ]
+    },
+    {
+      "slug": "common-sense",
+      "title": "Common sense ain’t common",
+      "dek": "My mentor John McClain handed me one of the truest things anyone ever told me. It took years to understand it.",
+      "category": "Perspective",
+      "publishedAt": "2026-08-23T17:00:00.000Z",
+      "seriesId": "series-common-sense-ain-t-common",
+      "numberInSeries": null,
+      "cover": null,
+      "body": [
+        {
+          "kind": "normal",
+          "html": "My mentor John McClain used to tell me, “Common sense ain’t common.” I was a young player when I first heard it, and I thought it was just a clever line. It took me years — and a lot of mistakes — to understand he was handing me one of the truest things anyone ever told me."
+        },
+        {
+          "kind": "normal",
+          "html": "Common sense isn’t a gift you’re born with. It’s not intelligence, and it’s not talent. It’s the accumulated wisdom of paying attention — to your coaches, your elders, your own consequences — and actually applying what you learn. That’s why it’s rare. Most people have access to the same lessons I did. Few actually live by them."
+        },
+        {
+          "kind": "normal",
+          "html": "Today’s student athlete has more access to information than any generation before him. Film, data, NIL contracts, agents, advisors, a phone full of opinions. And still — common sense is as scarce as it’s ever been. Maybe more so, because there’s more noise drowning it out."
+        },
+        {
+          "kind": "normal",
+          "html": "The seven lessons I wrote for my younger self were never really seven separate ideas. They were seven versions of the same warning: knowledge without application is worthless, and good judgment has to be practiced like a muscle, not assumed like a birthright."
+        },
+        {
+          "kind": "normal",
+          "html": "John McClain ran circles around the smartest people I ever met, not because he was the smartest man in the room, but because he had something rarer — the sense to actually use what he knew. That’s the standard. Not being the most talented player on the field. Being the one with the sense to make the most of what you’ve got."
+        },
+        {
+          "kind": "normal",
+          "html": "This is the first in a short series applying that lesson to where the game is right now."
+        }
+      ]
+    },
+    {
+      "slug": "redline",
+      "title": "Redline: how Coach Brennan’s standard echoes seven hard lessons",
+      "dek": "Effort, execution, accountability. It’s the standard I was chasing my whole career — I just didn’t have the word for it.",
+      "category": "Perspective",
+      "publishedAt": "2026-08-22T17:00:00.000Z",
+      "seriesId": "series-common-sense-ain-t-common",
+      "numberInSeries": null,
+      "cover": null,
+      "body": [
+        {
+          "kind": "normal",
+          "html": "When Brent Brennan first brought “Redline” to Tucson, he borrowed the term from racing. On a car, redline is the point on the tachometer where the engine is running at its absolute limit — the edge of maximum output before something breaks. Brennan’s version isn’t about breaking anything. It’s about living there anyway: full effort, full execution, full accountability, every single rep. Coach has said it plainly — Redline comes down to effort, execution, and accountability. No more, no less."
+        },
+        {
+          "kind": "normal",
+          "html": "I didn’t have a one-word name for it when I played. But reading back through the seven lessons I wrote for my younger self, I realize Redline was the standard I was reaching for the entire time — I just didn’t have the language for it yet. Here’s how I see the two connect."
+        },
+        {
+          "kind": "h2",
+          "html": "Lesson 1 — Knowing is not enough, we must apply."
+        },
+        {
+          "kind": "normal",
+          "html": "This is Redline in its purest form. Knowing the playbook, knowing the standard, knowing what’s required — none of it means anything until you apply it at full speed, on every rep, whether anyone’s grading you or not. Redline doesn’t have an off switch for the plays nobody’s watching."
+        },
+        {
+          "kind": "h2",
+          "html": "Lesson 2 — Embrace coaching."
+        },
+        {
+          "kind": "normal",
+          "html": "Execution and accountability are team words, not individual ones. You can’t hold yourself to Redline in isolation — it requires being coachable enough to hear where you fell short and humble enough to fix it before the next rep. A player who can’t take coaching can’t sustain Redline; he just has good days."
+        },
+        {
+          "kind": "h2",
+          "html": "Lesson 3 — You are only a hero for a moment."
+        },
+        {
+          "kind": "normal",
+          "html": "Redline isn’t a highlight-reel standard. It’s not one big play — it’s the discipline underneath a hundred quiet ones. The players who chase the “hero moment” instead of the standard will flame out fast. The ones who live at Redline build something that outlasts any single game."
+        },
+        {
+          "kind": "h2",
+          "html": "Lesson 4 — Those who stay the course will be champions."
+        },
+        {
+          "kind": "normal",
+          "html": "I started sixth on the depth chart and stayed the course until I was starting every game of my career. That’s Redline over time — not one explosive week, but sustained effort until the results catch up to the standard. Coach Brennan’s teams that have found their “Mr. Redlines” are the ones who kept applying the standard through fall camp, through the bye week, through the grind nobody sees on Saturdays."
+        },
+        {
+          "kind": "h2",
+          "html": "Lesson 5 — Humble yourself, think before you speak."
+        },
+        {
+          "kind": "normal",
+          "html": "Accountability is the third leg of Redline, and accountability starts with how you handle being wrong. It’s owning your mistakes out loud instead of shifting blame, and it’s understanding that your words in the locker room or in front of a microphone reflect on the whole standard, not just you."
+        },
+        {
+          "kind": "h2",
+          "html": "Lesson 6 — Give back."
+        },
+        {
+          "kind": "normal",
+          "html": "Redline isn’t sustainable as a solo pursuit. The reason a program can hold 105 players to one standard is that the older guys — the Mr. Redlines — pass it down to the young ones. That’s coaching in its truest form, and it’s exactly what my mother taught me about giving your time, not just your talent, to the people coming up behind you."
+        },
+        {
+          "kind": "h2",
+          "html": "Lesson 7 — Think before you act, be all that you can be."
+        },
+        {
+          "kind": "normal",
+          "html": "This is the lesson I regret not living out fully as a player — the discipline in the weight room, the recovery, the extra rep nobody’s counting. Redline demands exactly that: the “above and beyond” work that separates good from great, applied consistently enough that it becomes who you are, not just how you play on Saturday."
+        },
+        {
+          "kind": "normal",
+          "html": "Redline is a new word for an old truth. Effort, execution, accountability — that’s the standard I was chasing my whole career, whether I had the vocabulary for it or not. What I love about what Coach Brennan has built at Arizona is that it’s not just a slogan on a locker room wall. It’s a shared language for exactly what I was trying to teach my younger self all those years later: the standard doesn’t move. You either rise to meet it, or you don’t."
+        },
+        {
+          "kind": "normal",
+          "html": "Bear Down, and stay at Redline."
+        }
+      ]
+    },
+    {
+      "slug": "roster",
+      "title": "Roster security: nothing is guaranteed, so earn it every day",
+      "dek": "My scholarship was mine for four years. That world is gone.",
+      "category": "Perspective",
+      "publishedAt": "2026-08-21T17:00:00.000Z",
+      "seriesId": "series-common-sense-ain-t-common",
+      "numberInSeries": null,
+      "cover": null,
+      "body": [
+        {
+          "kind": "normal",
+          "html": "I never had to think about a roster limit. My scholarship was mine for four years, and the only thing that could take it away was committing a felony, flunking out of school or just quitting. That world is gone."
+        },
+        {
+          "kind": "normal",
+          "html": "Today’s player operates inside a 105-man roster and a scholarship that resets year to year. Nobody hands you security anymore — you build it, or you don’t. Common sense says: if the guarantee is gone, the work has to fill the gap it left behind."
+        },
+        {
+          "kind": "normal",
+          "html": "I think about Lesson 4 here — those who stay the course will be champions. That lesson meant something different in my day, when staying the course was mostly about patience. Now it also means competing for your own spot every single offseason, whether you’re a fifth-year starter or a true freshman trying to survive a cutdown. The players who treat every year like a tryout, not an entitlement, are the ones who last."
+        },
+        {
+          "kind": "normal",
+          "html": "It also connects straight back to what Coach Brennan’s staff calls Redline — effort, execution, accountability, applied without a break. In a world with no guaranteed four years, Redline isn’t just a slogan anymore. It’s the actual math of staying on the roster. The guys living at that standard every single day are the ones a staff protects when hard roster decisions come. The guys coasting on potential are the ones who find out the hard way that potential doesn’t fill out a depth chart."
+        },
+        {
+          "kind": "normal",
+          "html": "John McClain’s line fits perfectly here: common sense ain’t common. Everybody on a roster knows, in theory, that nothing is promised. Very few players actually train, study, and carry themselves like they understand that in their bones. That gap — between knowing it and living like it’s true — is exactly where roster spots get decided now."
+        },
+        {
+          "kind": "normal",
+          "html": "Don’t wait for a guarantee that isn’t coming. Earn the spot like it’s temporary, because honestly, it is."
+        }
+      ]
+    }
+  ]
+}
