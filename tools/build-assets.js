@@ -34,7 +34,7 @@ const PHOTOS = `${WORKING}/Ricky Hunley Photos`;
 const IMAGES = [
   // Home
   { out: 'hero-asu.jpg', src: `${PHOTOS}/231125 FB at ASU_Marison Bilagody6909.jpg`, width: 2400 },
-  { out: 'practice.jpg', src: `${PHOTOS}/210415 FB Spring Practice_Mike Christy1386.jpg`, width: 2000 },
+  { out: 'practice-sm.jpg', src: `${PHOTOS}/210415 FB Spring Practice_Mike Christy1386.jpg`, width: 1200 },
   { out: 'headshot.jpg', src: `${PHOTOS}/Updated Headshot Photo.jpg`, width: 1200 },
 
   // About
@@ -50,40 +50,67 @@ const IMAGES = [
   { out: 'mag-cover-82.jpg', src: `${PHOTOS}/Copy of Ricky Hunley 82 mg cover.JPG`, width: 900 },
   { out: 'rhunley1.jpg', src: `${PHOTOS}/rhunley1.jpg`, width: 900 },
   { out: 'sideline.jpg', src: `${PHOTOS}/230916 FB vs. UTEP_Mike Christy160.jpg`, width: 900 },
-  { out: 'coaching.jpg', src: `${PHOTOS}/Ricky Coaching Picture.jpg`, width: 900 },
+  { out: 'coaching-sm.jpg', src: `${PHOTOS}/Ricky Coaching Picture.jpg`, width: 900 },
   { out: 'banquet.jpg', src: `${PHOTOS}/231203 FB Banquet_Ary Frank377.jpg`, width: 900 },
-  { out: 'hunley-portrait-2013.jpg', src: `${PHOTOS}/2013-11-15 22.22.50.png`, width: 900 },
+  { out: 'hunley-bw.jpg', src: `${PHOTOS}/hunleybw.jpg`, width: 900 },
 
-  // Speaking
-  { out: 'speaking-2.jpg', src: `${PHOTOS}/Ricky Leadership Presentation Images/IMG_3631.jpg`, width: 1600 },
-  { out: 'speaking-3.jpg', src: `${PHOTOS}/Ricky Leadership Presentation Images/IMG_3655.jpg`, width: 1600 },
+  // Speaking — the design replaced the two-photo montage with a crossfading
+  // column, so IMG_3631 / IMG_3655 are no longer used. `community-sm` is
+  // shared with the Community page.
   { out: 'speaking-glendale.jpg', src: `${PHOTOS}/240517 ICA WWT Glendale_Mike Christy0407(small).png`, width: 1600 },
+  { out: 'community-sm.jpg', src: `${PHOTOS}/240507 ICA WWT Tucson_Mike Christy0471.jpg`, width: 1200 },
 
   // The Huddle — Football 101 grid
   { out: 'f101-a.jpg', src: `${PHOTOS}/20251112 Ricky Hunley Huddle football 101/DSC04700.JPG`, width: 1000 },
   { out: 'f101-b.jpg', src: `${PHOTOS}/20251112 Ricky Hunley Huddle football 101/DSC04760.JPG`, width: 1000 },
   { out: 'f101-c.jpg', src: `${PHOTOS}/20251112 Ricky Hunley Huddle football 101/DSC04730.JPG`, width: 1000 },
+  // The same frame again at the width the Speaking column needs.
+  { out: 'f101-c-sm.jpg', src: `${PHOTOS}/20251112 Ricky Hunley Huddle football 101/DSC04730.JPG`, width: 1200 },
   { out: 'f101-d.jpg', src: `${PHOTOS}/20251112 Ricky Hunley Huddle football 101/DSC04680.JPG`, width: 1000 },
-  { out: 'huddle-prescott.jpg', src: `${PHOTOS}/240606 WT Prescott Valley_Rebecca Sasnett876(small).png`, width: 1600 },
+  { out: 'huddle-prescott-sm.jpg', src: `${PHOTOS}/240606 WT Prescott Valley_Rebecca Sasnett876.jpg`, width: 1200 },
+  // The Huddle's page header: Ricky and LaMonte in the studio. This one sits
+  // in the Hunley Huddle Logos folder, not with the rest of the photography.
+  { out: 'huddle-header-sm.jpg', src: `${WORKING}/Hunley Huddle Logos/IMG_6274.JPG`, width: 1800 },
 
   // Contact / community
   { out: 'contact-nau.jpg', src: `${PHOTOS}/210918_FB_vs_NAU_MMattina_48.jpg`, width: 1600 },
   { out: 'contact-nogales.jpg', src: `${PHOTOS}/240617 WWT Nogales_Rebecca Sasnett159(small).png`, width: 1600 },
+
+  // Blog
+  { out: 'blog-header-sm.jpg', src: `${PHOTOS}/231223 FB Alamo travel_Rebecca Sasnett536.jpg`, width: 1800 },
 ];
 
 // Small enough that the design project serves them intact, and they have no
-// larger original worth going back to.
-const FROM_DESIGN_PROJECT = ['ua-1983.jpg', 'hunley-huddle-logo.png'];
+// larger original worth going back to. `favicon-rh-bleed.png` is a variant of
+// the brand favicon drawn in a design session — the mark bled to the edges so
+// it reads at 16px — and exists nowhere else.
+const FROM_DESIGN_PROJECT = [
+  'ua-1983.jpg',
+  'hunley-huddle-logo.png',
+  'favicon-rh-bleed.png',
+];
 
 /**
- * Copied byte-for-byte rather than re-encoded. These are brand files with an
- * alpha channel; pushing them through ffmpeg risks flattening transparency or
- * introducing artefacts for no gain, since they are already small.
+ * Copied byte-for-byte rather than re-encoded. These are brand files — vector
+ * artwork and marks with an alpha channel — and pushing them through ffmpeg
+ * would rasterise or flatten them for no gain, since they are already small.
+ *
+ * The design project holds the same three SVGs with their C2PA metadata
+ * stripped by whatever wrote them there; the Dropbox originals are the
+ * cleaner source and are what these copy.
  */
 const COPIES = [
   {
-    out: 'favicon.png',
-    src: `${WORKING}/Ricky Hunley Logo/Ricky Hunley Logotype/RICKY HUNLEY FAVICON.png`,
+    out: 'rh-logo-horizontal.svg',
+    src: `${WORKING}/Ricky Hunley Logo/SVG/RH-logo-horizontal.svg`,
+  },
+  {
+    out: 'rh-logo-vertical.svg',
+    src: `${WORKING}/Ricky Hunley Logo/SVG/RH-logo-vertical.svg`,
+  },
+  {
+    out: 'rh-autograph.svg',
+    src: `${WORKING}/Ricky Hunley Logo/SVG/RH-Autograph.svg`,
   },
 ];
 

@@ -75,27 +75,26 @@
   to = "/news.html"
   status = 301
 
-# The blog is hidden for now, so its own URL and the Squarespace ones that used
-# to point at it all go to the home page. /blog.html is listed because the page
-# was briefly live before being hidden.
+# The blog is live now, so its URLs point at it rather than at the home page.
+#
+# /blog needs stating explicitly. Netlify serves /about for /about.html without
+# being asked, but that only works while nothing else claims the path — and
+# /blog is now also a directory, holding the twelve article pages. Netlify looks
+# for blog/index.html, finds none, and would 404 without this. `from = "/blog"`
+# matches that one path exactly, so the articles under /blog/ are untouched.
 [[redirects]]
   from = "/blog"
-  to = "/"
-  status = 301
-
-[[redirects]]
-  from = "/blog.html"
-  to = "/"
+  to = "/blog.html"
   status = 301
 
 [[redirects]]
   from = "/personal-blog"
-  to = "/"
+  to = "/blog.html"
   status = 301
 
 [[redirects]]
   from = "/personal-blog/*"
-  to = "/"
+  to = "/blog.html"
   status = 301
 
 [[redirects]]

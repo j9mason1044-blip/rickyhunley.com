@@ -1,10 +1,11 @@
 /**
- * The three pieces of behaviour the design expresses as component state, and
- * which a static page therefore has to do itself: the hero video reveal, the
- * mobile menu, and the About page's crossfading image columns.
+ * The two pieces of behaviour the design expresses as component state, and
+ * which a static page therefore has to do itself: the hero video reveal and
+ * the mobile menu. (The photo columns used to be a third; the design now
+ * crossfades them with a CSS animation, so nothing here drives them.)
  *
- * Generated markup carries the hooks (`data-hero-video`, `data-menu-toggle`,
- * `data-slide`); this file is hand-written and stable.
+ * Generated markup carries the hooks (`data-hero-video`, `data-menu-toggle`);
+ * this file is hand-written and stable.
  */
 (function () {
   'use strict';
@@ -75,39 +76,4 @@
     else if (wide.addListener) wide.addListener(onChange);
   })();
 
-  // --- About page image columns -------------------------------------------
-  // Three columns of three stacked images. Each column shows one at a time and
-  // advances on a shared timer, staggered so they never change together — the
-  // design does this with `(tick + offset) % 3`, and so does this.
-  (function carousel() {
-    var slides = document.querySelectorAll('[data-slide]');
-    if (!slides.length) return;
-
-    var INTERVAL_MS = 4500;
-    var VISIBLE = '0.94';
-    var COLUMNS = { a: 0, b: 1, c: 2 };
-
-    // Group by column, indexed by position within it.
-    var columns = {};
-    Array.prototype.forEach.call(slides, function (el) {
-      var name = el.getAttribute('data-slide');
-      var col = name.charAt(0);
-      var index = Number(name.charAt(1));
-      (columns[col] = columns[col] || [])[index] = el;
-    });
-
-    // Respect a reduced-motion preference: show the opening frame, no timer.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    var tick = 0;
-    setInterval(function () {
-      tick += 1;
-      Object.keys(columns).forEach(function (col) {
-        var active = (tick + COLUMNS[col]) % 3;
-        columns[col].forEach(function (el, i) {
-          if (el) el.style.opacity = i === active ? VISIBLE : '0';
-        });
-      });
-    }, INTERVAL_MS);
-  })();
 })();

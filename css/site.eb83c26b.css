@@ -5,6 +5,13 @@ html, body { margin:0; padding:0; background:#FBFAF8; -webkit-font-smoothing:ant
   a:hover { color:#AB0520; }
   ::selection { background:#0C234B; color:#fff; }
 
+  /* About-page photo carousel: 3 stacked layers, one shared cycle, offset per layer */
+  @keyframes rhFade {
+    0%, 29% { opacity: .94; }
+    33.33%, 95.66% { opacity: 0; }
+    100% { opacity: .94; }
+  }
+
   /* Mobile: collapse the fixed-column desktop grids. Overrides inline styles, so !important. */
   @media (max-width: 900px) {
     [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
@@ -50,6 +57,15 @@ html, body { margin:0; padding:0; background:#FBFAF8; -webkit-font-smoothing:ant
 
 :focus-visible { outline: 2px solid #AB0520; outline-offset: 3px; }
 
+/* The photo columns on the About and Speaking pages crossfade with a CSS
+   animation the design declares in its <helmet>. Nothing there honours a
+   reduced-motion preference, and the animation runs forever, so it is stopped
+   here — on its first frame, which is what the column would show anyway. */
+@media (prefers-reduced-motion: reduce) {
+  [style*="animation:rhFade"] { animation: none !important; }
+  [style*="animation:rhFade"]:first-of-type { opacity: 0.94 !important; }
+}
+
 /* Hover states, lifted from the design's style-hover attributes. */
 .hv-1:hover { background:var(--accent, #AB0520) !important; }
 .hv-2:hover { color:var(--accent, #AB0520) !important; }
@@ -61,8 +77,10 @@ html, body { margin:0; padding:0; background:#FBFAF8; -webkit-font-smoothing:ant
 .hv-8:hover { filter:grayscale(0.2) contrast(1.02) !important; opacity:0.95 !important; }
 .hv-9:hover { filter:none !important; mix-blend-mode:normal !important; opacity:1 !important; }
 .hv-10:hover { border-color:#0C234B !important; color:var(--accent, #AB0520) !important; }
-.hv-11:hover { background:rgba(255,255,255,.06) !important; color:#EF6275 !important; }
+.hv-11:hover { background:rgba(255,255,255,.06) !important; color:#EF6275 !important; padding-left:22px !important; box-shadow:inset 3px 0 0 #EF6275 !important; }
 .hv-12:hover { background:#fff !important; color:var(--accent, #AB0520) !important; }
+.hv-13:hover { background:#fff !important; color:var(--accent, #AB0520) !important; padding-left:22px !important; box-shadow:inset 3px 0 0 var(--accent, #AB0520) !important; }
+.hv-14:hover { background:#fff !important; transform:translateY(-6px) !important; box-shadow:0 24px 48px rgba(12,35,75,.16) !important; z-index:2 !important; }
 
 /* The mobile menu's drawer and icons carry inline display values, which beat
    the [hidden] rule in the user-agent stylesheet. This puts it back. */

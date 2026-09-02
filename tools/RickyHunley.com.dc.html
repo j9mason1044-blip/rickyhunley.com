@@ -8,8 +8,8 @@
 <body>
 <x-dc>
 <helmet>
-<link rel="icon" type="image/png" href="assets/favicon.png" />
-<link rel="apple-touch-icon" href="assets/favicon.png" />
+<link rel="icon" type="image/png" href="assets/favicon-rh-bleed.png" />
+<link rel="apple-touch-icon" href="assets/favicon-rh-bleed.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin" />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
@@ -18,6 +18,13 @@
   a { color:#0C234B; text-decoration:none; }
   a:hover { color:#AB0520; }
   ::selection { background:#0C234B; color:#fff; }
+
+  /* About-page photo carousel: 3 stacked layers, one shared cycle, offset per layer */
+  @keyframes rhFade {
+    0%, 29% { opacity: .94; }
+    33.33%, 95.66% { opacity: 0; }
+    100% { opacity: .94; }
+  }
 
   /* Mobile: collapse the fixed-column desktop grids. Overrides inline styles, so !important. */
   @media (max-width: 900px) {
@@ -60,7 +67,7 @@
         <a href="#" onClick="{{ nav.speaking }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">Speaking</a>
         <a href="#" onClick="{{ nav.huddle }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">The Huddle</a>
         <a href="#" onClick="{{ nav.news }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">News</a>
-        <sc-if value="{{ showBlog }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ showBlog }}" hint-placeholder-val="{{ true }}">
         <a href="#" onClick="{{ nav.blog }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">Blog</a>
         </sc-if>
         <a href="#" onClick="{{ nav.contact }}" style="font-family:Archivo, sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#2A2F3A" style-hover="color:var(--accent, #AB0520)">Contact</a>
@@ -82,7 +89,7 @@
         <a href="#" onClick="{{ nav.huddle }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">The Huddle</a>
         <a href="#" onClick="{{ nav.community }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Community</a>
         <a href="#" onClick="{{ nav.news }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">News</a>
-        <sc-if value="{{ showBlog }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ showBlog }}" hint-placeholder-val="{{ true }}">
         <a href="#" onClick="{{ nav.blog }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Blog</a>
         </sc-if>
         <a href="#" onClick="{{ nav.contact }}" style="font-family:Archivo, sans-serif; font-size:15px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; padding:16px 0; border-bottom:1px solid #EDE9E1" style-hover="color:var(--accent, #AB0520)">Contact</a>
@@ -156,7 +163,7 @@
           <p style="margin:0; font-size:18.5px; line-height:1.7; color:#5C6270; max-width:42ch">The story in his own words: Petersburg, Tucson, the league, and the work he does now.</p>
         </div>
         <a href="{{ reelUrl }}" target="_blank" rel="noreferrer" style="position:relative; display:block; background:#0C234B; aspect-ratio:16/9; overflow:hidden" style-hover="color:var(--accent, #AB0520)">
-          <img src="assets/practice.jpg" alt="Ricky Hunley film still" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(0.9); mix-blend-mode:screen; opacity:0.86; transition:all .6s ease" style-hover="filter:grayscale(0.2) contrast(1.02); opacity:0.95" />
+          <img src="assets/practice-sm.jpg" alt="Ricky Hunley film still" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(0.9); mix-blend-mode:screen; opacity:0.86; transition:all .6s ease" style-hover="filter:grayscale(0.2) contrast(1.02); opacity:0.95" />
           <span style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:96px; height:96px; border-radius:50%; background:rgba(255,255,255,.94); display:flex; align-items:center; justify-content:center">
             <span style="width:0; height:0; margin-left:7px; border-top:15px solid transparent; border-bottom:15px solid transparent; border-left:24px solid #0C234B"></span>
           </span>
@@ -175,7 +182,7 @@
           <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent, #AB0520)">About Ricky</span>
         </div>
         <h2 style="margin:0; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(36px, 4.2vw, 58px); line-height:1.02; letter-spacing:-0.03em; color:#0C234B; max-width:16ch">From Petersburg to the Hall of Fame</h2>
-        <p style="font-size:19px; line-height:1.72; color:#3E434E; margin:30px 0 0; max-width:58ch">Ricky Cardell Hunley was one of nine siblings raised by Scarlette Hunley in Petersburg, Virginia. He became the first Arizona Wildcat to earn consensus All-American honors twice, went seventh overall in the 1984 NFL Draft, and played seven seasons for the Broncos, Cardinals and Raiders.</p>
+        <p style="font-size:19px; line-height:1.72; color:#3E434E; margin:30px 0 0; max-width:58ch">Ricky Cardell Hunley was one of ten siblings raised by Scarlette Hunley in Petersburg, Virginia. He became the first Arizona Wildcat to earn consensus All-American honors twice, went seventh overall in the 1984 NFL Draft, and played seven seasons for the Broncos, Cardinals and Raiders.</p>
         <p style="font-size:19px; line-height:1.72; color:#3E434E; margin:22px 0 0; max-width:58ch">Today he serves as Executive Director of Player Relations and External Development at the University of Arizona, and gives his time to Easter Seals, the Arizona Diaper Bank, the American Heart Association, the Boys &amp; Girls Club of Tucson, and the foster-care work of the Ricky Hunley Foundation.</p>
         <a href="#" onClick="{{ nav.about }}" style="display:inline-block; margin-top:36px; font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; border-bottom:2px solid var(--accent, #AB0520); padding-bottom:6px" style-hover="color:var(--accent, #AB0520)">Read the full story</a>
       </div>
@@ -236,21 +243,21 @@
             <span style="width:28px; height:2px; background:var(--accent, #AB0520)"></span>
             <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#93A0B6">Listen to the latest episodes</span>
           </div>
-          <a href="https://podcasts.apple.com/us/podcast/eye-on-the-ball/id1532309071?i=1000737944104" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" style-hover="background:rgba(255,255,255,.06); color:#EF6275">
+          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-9-314856565" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:rgba(255,255,255,.06); color:#EF6275; padding-left:22px; box-shadow:inset 3px 0 0 #EF6275">
+            <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 9</span>
+            <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Holiday Bowl</span>
+          </a>
+          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-8-nick-foles-and-willie-tuitama-308610405" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:rgba(255,255,255,.06); color:#EF6275; padding-left:22px; box-shadow:inset 3px 0 0 #EF6275">
             <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 8</span>
             <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Nick Foles &amp; Willie Tuitama</span>
           </a>
-          <a href="https://podcasts.apple.com/us/podcast/eye-on-the-ball/id1532309071?i=1000735891033" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" style-hover="background:rgba(255,255,255,.06); color:#EF6275">
+          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-7-rob-gronkowski-305800453" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:rgba(255,255,255,.06); color:#EF6275; padding-left:22px; box-shadow:inset 3px 0 0 #EF6275">
             <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 7</span>
             <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Rob Gronkowski</span>
           </a>
-          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-6-brad-anderson-299997314/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); color:#fff" style-hover="background:rgba(255,255,255,.06); color:#EF6275">
+          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-6-brad-anderson-299997314/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); border-bottom:1px solid rgba(255,255,255,.18); color:#fff; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:rgba(255,255,255,.06); color:#EF6275; padding-left:22px; box-shadow:inset 3px 0 0 #EF6275">
             <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 6</span>
             <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Brad Anderson</span>
-          </a>
-          <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-5-lance-briggs-298567369/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:24px; padding:26px 4px; border-top:1px solid rgba(255,255,255,.18); border-bottom:1px solid rgba(255,255,255,.18); color:#fff" style-hover="background:rgba(255,255,255,.06); color:#EF6275">
-            <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#8E9AB0; min-width:52px">EP. 5</span>
-            <span style="font-family:Archivo, sans-serif; font-size:25px; font-weight:700; letter-spacing:-0.02em; line-height:1.2">Lance Briggs</span>
           </a>
         </div>
       </div>
@@ -269,7 +276,7 @@
             <img src="assets/f101-d.jpg" alt="Football 101 crowd" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
           <div style="position:relative; background:#0C234B; overflow:hidden">
-            <img src="assets/f101-c.jpg" alt="Football 101 on the field" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
+            <img src="assets/f101-c.jpg" alt="Ricky Hunley speaking at a Hunley Huddle event" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
         </div>
         <div>
@@ -353,7 +360,7 @@
       <div data-r="labelrow" style="display:grid; grid-template-columns:200px 1fr; gap:56px; padding-bottom:64px; border-bottom:1px solid #E6E2DA">
         <h2 style="margin:0; font-family:Archivo, sans-serif; font-weight:700; font-size:15px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Early life &amp; college career</h2>
         <div>
-          <p style="margin:0; font-size:19.5px; line-height:1.75; color:#2A2F3A">Born in Petersburg, Virginia, Ricky Hunley was one of nine siblings raised by Scarlette Hunley. He attended Petersburg High School, where he excelled as an athlete in both football and baseball. His talent on the baseball field caught the attention of the Pittsburgh Pirates, who drafted him in 1980. However, Hunley chose to pursue football and enrolled at the University of Arizona.</p>
+          <p style="margin:0; font-size:19.5px; line-height:1.75; color:#2A2F3A">Born in Petersburg, Virginia, Ricky Hunley was one of ten siblings raised by Scarlette Hunley. He attended Petersburg High School, where he excelled as an athlete in both football and baseball. His talent on the baseball field caught the attention of the Pittsburgh Pirates, who drafted him in 1980. However, Hunley chose to pursue football and enrolled at the University of Arizona.</p>
           <p style="margin:22px 0 0; font-size:19.5px; line-height:1.75; color:#2A2F3A">At Arizona, he became the first Wildcat to earn consensus All-American honors twice, in 1982 and 1983. His exceptional performance led to his induction into the College Football Hall of Fame in 1998.</p>
         </div>
       </div>
@@ -400,19 +407,19 @@
 
     <section data-r="keep2" style="max-width:1280px; margin:0 auto; padding:100px 40px 120px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px">
       <div style="position:relative; background:#0C234B; aspect-ratio:4/5; overflow:hidden">
-        <img src="assets/ua-1983.jpg" alt="1983 All-America team" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ a0 }}" />
-        <img src="assets/mag-cover-82.jpg" alt="Ricky Hunley on a 1982 magazine cover" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ a1 }}" />
-        <img src="assets/rhunley1.jpg" alt="Ricky Hunley in an Arizona uniform" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ a2 }}" />
+        <img src="assets/ua-1983.jpg" alt="1983 All-America team" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-2s" />
+        <img src="assets/mag-cover-82.jpg" alt="Ricky Hunley on a 1982 magazine cover" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-6.5s" />
+        <img src="assets/rhunley1.jpg" alt="Ricky Hunley in an Arizona uniform" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-11s" />
       </div>
       <div style="position:relative; background:#0C234B; aspect-ratio:4/5; overflow:hidden">
-        <img src="assets/denver.png" alt="Ricky Hunley at the Hula Bowl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ b0 }}" />
-        <img src="assets/sideline.jpg" alt="Ricky Hunley on the sideline" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ b1 }}" />
-        <img src="assets/coaching.jpg" alt="Ricky Hunley coaching" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ b2 }}" />
+        <img src="assets/denver.png" alt="Ricky Hunley at the Hula Bowl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-3.5s" />
+        <img src="assets/sideline.jpg" alt="Ricky Hunley on the sideline" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-8s" />
+        <img src="assets/coaching-sm.jpg" alt="Ricky Hunley coaching" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-12.5s" />
       </div>
       <div style="position:relative; background:#0C234B; aspect-ratio:4/5; overflow:hidden">
-        <img src="assets/family.jpg" alt="Ricky with his daughters" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ c0 }}" />
-        <img src="assets/banquet.jpg" alt="Ricky Hunley at an awards banquet" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ c1 }}" />
-        <img src="assets/hunley-portrait-2013.png" alt="Ricky Hunley portrait" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; transition:opacity 1.2s ease; opacity:{{ c2 }}" />
+        <img src="assets/family.jpg" alt="Ricky with his daughters" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-5s" />
+        <img src="assets/banquet.jpg" alt="Ricky Hunley at an awards banquet" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-9.5s" />
+        <img src="assets/hunley-bw.jpg" alt="Ricky Hunley, No. 89, closing on the play" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-0.5s" />
       </div>
     </section>
   </div>
@@ -468,13 +475,10 @@
           </div>
           <p style="margin:34px 0 0; font-size:18px; line-height:1.7; color:#5C6270">Interested in booking Ricky for your next event? Email <a href="mailto:connect@rickyhunley.com" style="color:var(--accent, #AB0520); border-bottom:1px solid rgba(171,5,32,.35)" style-hover="color:var(--accent, #AB0520)">connect@rickyhunley.com</a>.</p>
         </div>
-        <div data-r="keep2" style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
-          <div style="position:relative; background:#0C234B; aspect-ratio:3/4; overflow:hidden">
-            <img src="assets/speaking-2.jpg" alt="Ricky presenting" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
-          </div>
-          <div style="position:relative; background:#0C234B; aspect-ratio:3/4; overflow:hidden; margin-top:40px">
-            <img src="assets/speaking-3.jpg" alt="Ricky with an audience" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
-          </div>
+        <div style="position:relative; background:#0C234B; aspect-ratio:4/5; overflow:hidden">
+          <img src="assets/huddle-prescott-sm.jpg" alt="Ricky Hunley speaking with a microphone on a Wildcats panel" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:56% 38%; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-2s" />
+          <img src="assets/f101-c-sm.jpg" alt="Ricky Hunley addressing the room at a Hunley Huddle event" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:52% 34%; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-6.5s" />
+          <img src="assets/community-sm.jpg" alt="Ricky Hunley on the microphone at a Wildcats community event" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:40% 52%; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0; animation:rhFade 13.5s linear infinite; animation-delay:-11s" />
         </div>
       </div>
     </section>
@@ -484,7 +488,7 @@
   <sc-if value="{{ isHuddle }}" hint-placeholder-val="{{ false }}">
   <div>
     <section style="position:relative; overflow:hidden; background:#0C234B; color:#fff; min-height:520px; box-sizing:border-box; display:flex; align-items:center">
-      <img src="assets/huddle-prescott.png" alt="Ricky Hunley speaking on a Wildcats panel" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:60% 30%; filter:grayscale(1) contrast(1.08) brightness(1.02); mix-blend-mode:screen; opacity:0.55" />
+      <img src="assets/huddle-header-sm.jpg" alt="Ricky and LaMonte Hunley recording The Hunley Huddle in the studio" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:62% 34%; filter:grayscale(1) contrast(1.08) brightness(1.02); mix-blend-mode:screen; opacity:0.55" />
       <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,35,75,.55) 0%, rgba(12,35,75,.72) 60%, rgba(12,35,75,.94) 100%)"></div>
       <div style="position:relative; width:100%; max-width:1280px; margin:0 auto; padding:72px 40px; display:grid; grid-template-columns:276px 1fr; gap:64px; align-items:center">
         <img src="assets/hunley-huddle-logo.png" alt="The Hunley Huddle" data-r="logo" style="width:100%; height:auto; display:block; filter:drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff)" />
@@ -521,35 +525,50 @@
 
     <section style="max-width:1120px; margin:0 auto; padding:100px 40px">
       <h2 style="margin:0 0 40px; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(30px, 3.2vw, 42px); line-height:1.05; letter-spacing:-0.03em; color:#0C234B">Episodes</h2>
-      <a href="https://podcasts.apple.com/us/podcast/eye-on-the-ball/id1532309071?i=1000737944104" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-9-314856565" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 9</span>
+        <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Holiday Bowl</span>
+        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">iHeart</span>
+      </a>
+      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-8-nick-foles-and-willie-tuitama-308610405" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 8</span>
         <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Nick Foles &amp; Willie Tuitama</span>
-        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">Apple Podcasts</span>
+        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">iHeart</span>
       </a>
-      <a href="https://podcasts.apple.com/us/podcast/eye-on-the-ball/id1532309071?i=1000735891033" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-7-rob-gronkowski-305800453" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 7</span>
         <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Rob Gronkowski</span>
-        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">Apple Podcasts</span>
+        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">iHeart</span>
       </a>
-      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-6-brad-anderson-299997314/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-6-brad-anderson-299997314/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 6</span>
         <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Brad Anderson</span>
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">iHeart</span>
       </a>
-      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-5-lance-briggs-298567369/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-5-lance-briggs-298567369/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 5</span>
         <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Lance Briggs</span>
         <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">iHeart</span>
       </a>
-      <a href="https://www.listennotes.com/de/podcasts/eye-on-the-ball/hunley-huddle-brent-brennan-K2PUv5DkRAE/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
-        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 3</span>
-        <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Brent Brennan &amp; Randy Robbins</span>
-        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">Listen Notes</span>
+      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-4-297093109" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 4</span>
+        <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Ricky Hunley from Ames, Iowa</span>
+        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">iHeart</span>
       </a>
-      <a href="https://podcasts.apple.com/us/podcast/hunley-huddle-ep-2-chuck-cecil/id1532309071?i=1000725327507" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA; color:#0C234B" style-hover="background:#fff; color:var(--accent, #AB0520)">
+      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-3-tom-tunnicliffe-294108683" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 3</span>
+        <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Tom Tunnicliffe</span>
+        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">iHeart</span>
+      </a>
+      <a href="https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-2-chuck-cecil-292648226" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
         <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 2</span>
         <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Chuck Cecil</span>
-        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">Apple Podcasts</span>
+        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">iHeart</span>
+      </a>
+      <a href="https://www.listennotes.com/de/podcasts/eye-on-the-ball/hunley-huddle-brent-brennan-K2PUv5DkRAE/" target="_blank" rel="noreferrer" style="display:flex; align-items:baseline; gap:28px; padding:28px 8px; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:56px">EP. 1</span>
+        <span style="font-family:Archivo, sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; flex:1">Brent Brennan &amp; Randy Robbins</span>
+        <span style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">Listen Notes</span>
       </a>
       <div style="display:flex; align-items:center; gap:18px; flex-wrap:wrap; margin-top:44px">
         <span style="font-size:18px; line-height:1.6; color:#5C6270">New episodes and behind-the-scenes on Instagram.</span>
@@ -577,14 +596,14 @@
             <img src="assets/f101-b.jpg" alt="Football 101 session" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
           <div style="position:relative; background:#0C234B; aspect-ratio:3/4; overflow:hidden">
-            <img src="assets/f101-c.jpg" alt="Football 101 on the field" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
+            <img src="assets/f101-c.jpg" alt="Ricky Hunley speaking at a Hunley Huddle event" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
           <div style="position:relative; background:#0C234B; aspect-ratio:3/4; overflow:hidden">
             <img src="assets/f101-d.jpg" alt="Football 101 crowd" style="width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
           </div>
         </div>
         <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-top:44px">
-          <a href="{{ eventbriteUrl }}" target="_blank" rel="noreferrer" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#fff; background:#0C234B; padding:18px 30px" style-hover="background:var(--accent, #AB0520)">Get tickets on Eventbrite</a>
+          <span aria-disabled="true" style="font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#8A8579; background:#EDEAE4; border:1px solid #DCD7CD; padding:18px 30px; cursor:default">Tickets coming soon</span>
           <span style="font-size:17px; line-height:1.6; color:#5C6270">Dates for the next session are announced each season.</span>
         </div>
       </div>
@@ -651,31 +670,150 @@
 
   <sc-if value="{{ isBlog }}" hint-placeholder-val="{{ false }}">
   <div>
-    <section style="max-width:1280px; margin:0 auto; padding:72px 40px; min-height:520px; box-sizing:border-box; display:flex; align-items:center; flex-direction:column; justify-content:center; align-items:stretch">
-      <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent, #AB0520)">Blog</div>
-      <h1 style="margin:24px 0 0; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(42px, 5.2vw, 72px); line-height:0.98; letter-spacing:-0.035em; color:#0C234B; max-width:14ch">Insights from Ricky Hunley</h1>
-      <p style="margin:26px 0 0; font-size:19.5px; line-height:1.68; color:#3E434E; max-width:56ch">Reflections on leadership, mentorship, sports culture and personal growth. A deeper look at the values behind the work.</p>
-      <img src="assets/rh-autograph.svg" alt="Ricky Hunley signature" style="width:300px; max-width:70%; height:auto; display:block; margin:52px 0 0; opacity:0.82" />
+    <section style="position:relative; overflow:hidden; background:#0C234B; color:#fff; min-height:520px; box-sizing:border-box; display:flex; align-items:center">
+      <img src="assets/blog-header-sm.jpg" alt="Ricky Hunley boarding the team plane for the Alamo Bowl" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 14%; filter:grayscale(1) contrast(1.05); opacity:0.62" />
+      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,35,75,.5) 0%, rgba(12,35,75,.72) 55%, rgba(12,35,75,.97) 100%)"></div>
+      <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(12,35,75,.86) 0%, rgba(12,35,75,.38) 56%, rgba(12,35,75,0) 100%)"></div>
+      <div style="position:relative; width:100%; max-width:1280px; margin:0 auto; padding:80px 40px; display:grid; grid-template-columns:1.15fr 0.85fr; gap:64px; align-items:end">
+        <div>
+          <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#93A0B6">Blog</div>
+          <h1 style="margin:24px 0 0; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(42px, 5.2vw, 72px); line-height:0.98; letter-spacing:-0.035em; color:#fff; max-width:14ch; text-wrap:pretty">Insights from Ricky Hunley</h1>
+          <p style="margin:26px 0 0; font-size:19.5px; line-height:1.68; color:#C6CCD8; max-width:52ch; text-wrap:pretty">Reflections on leadership, mentorship, sports culture and personal growth. A deeper look at the values behind the work.</p>
+        </div>
+        <div role="img" aria-label="Ricky Hunley signature" style="width:340px; max-width:100%; aspect-ratio:1752 / 772; background:#fff; opacity:0.92; justify-self:end; -webkit-mask:url(assets/rh-autograph.svg) center / contain no-repeat; mask:url(assets/rh-autograph.svg) center / contain no-repeat"></div>
+      </div>
+    </section>
+    <section style="max-width:1280px; margin:0 auto; padding:76px 40px 30px">
+      <h2 style="margin:0; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(28px, 3vw, 40px); line-height:1.05; letter-spacing:-0.03em; color:#0C234B">Latest posts</h2>
     </section>
     <section style="max-width:1280px; margin:0 auto; padding:0 40px 40px; display:grid; grid-template-columns:repeat(3, 1fr); gap:1px; background:#E6E2DA; border:1px solid #E6E2DA">
-      <article style="background:#FBFAF8; padding:44px 34px 52px">
-        <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">Leadership</div>
-        <h2 style="margin:20px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:26px; line-height:1.18; letter-spacing:-0.025em; color:#0C234B">What the huddle teaches that the meeting room can't</h2>
-        <p style="margin:16px 0 0; font-size:17px; line-height:1.66; color:#5C6270">Eleven people, one voice, four seconds to decide. Why the huddle is still the best leadership lab I know.</p>
-      </article>
-      <article style="background:#FBFAF8; padding:44px 34px 52px">
-        <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">Mentorship</div>
-        <h2 style="margin:20px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:26px; line-height:1.18; letter-spacing:-0.025em; color:#0C234B">Nine kids, one mother, and the standard she set</h2>
-        <p style="margin:16px 0 0; font-size:17px; line-height:1.66; color:#5C6270">Everything I know about accountability, I learned in Petersburg before I ever put on pads.</p>
-      </article>
-      <article style="background:#FBFAF8; padding:44px 34px 52px">
-        <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">The game</div>
-        <h2 style="margin:20px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:26px; line-height:1.18; letter-spacing:-0.025em; color:#0C234B">Life after the last snap</h2>
-        <p style="margin:16px 0 0; font-size:17px; line-height:1.66; color:#5C6270">The transition nobody drafts you for, and what athletes should be building long before it arrives.</p>
-      </article>
+      <a href="#" onClick="{{ open.leadership }}" style="background:#FBFAF8; display:flex; flex-direction:column; color:#0C234B; position:relative; transition:transform .3s ease, box-shadow .3s ease, background .2s ease" style-hover="background:#fff; transform:translateY(-6px); box-shadow:0 24px 48px rgba(12,35,75,.16); z-index:2">
+        <div style="aspect-ratio:16 / 10; overflow:hidden; background:#0C234B">
+          <img src="assets/coaching-sm.jpg" alt="Ricky Hunley on the sideline with Arizona players during a game" style="width:100%; height:100%; object-fit:cover; object-position:50% 30%; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
+        </div>
+        <div style="padding:32px 32px 38px; display:flex; flex-direction:column; flex:1">
+          <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Leadership</div>
+          <h2 style="margin:16px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:25px; line-height:1.18; letter-spacing:-0.025em; color:#0C234B; text-wrap:pretty">What the huddle teaches that the meeting room can’t</h2>
+          <p style="margin:14px 0 0; font-size:17px; line-height:1.66; color:#5C6270; text-wrap:pretty">Eleven people. One voice. Four seconds to decide. Why the huddle is still the best leadership lab I know.</p>
+          <span style="display:inline-flex; align-items:center; gap:10px; margin-top:auto; padding-top:30px; font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Read the post <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+        </div>
+      </a>
+      <a href="#" onClick="{{ open.mentorship }}" style="background:#FBFAF8; display:flex; flex-direction:column; color:#0C234B; position:relative; transition:transform .3s ease, box-shadow .3s ease, background .2s ease" style-hover="background:#fff; transform:translateY(-6px); box-shadow:0 24px 48px rgba(12,35,75,.16); z-index:2">
+        <div style="aspect-ratio:16 / 10; overflow:hidden; background:#0C234B">
+          <img src="assets/community-sm.jpg" alt="Ricky Hunley speaking at a Wildcats community event" style="width:100%; height:100%; object-fit:cover; object-position:50% 42%; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
+        </div>
+        <div style="padding:32px 32px 38px; display:flex; flex-direction:column; flex:1">
+          <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Mentorship</div>
+          <h2 style="margin:16px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:25px; line-height:1.18; letter-spacing:-0.025em; color:#0C234B; text-wrap:pretty">Ten kids, one mother, and the standard she set</h2>
+          <p style="margin:14px 0 0; font-size:17px; line-height:1.66; color:#5C6270; text-wrap:pretty">Everything I know about accountability, I learned in Petersburg before I ever put on pads.</p>
+          <span style="display:inline-flex; align-items:center; gap:10px; margin-top:auto; padding-top:30px; font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Read the post <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+        </div>
+      </a>
+      <a href="#" onClick="{{ open.theGame }}" style="background:#FBFAF8; display:flex; flex-direction:column; color:#0C234B; position:relative; transition:transform .3s ease, box-shadow .3s ease, background .2s ease" style-hover="background:#fff; transform:translateY(-6px); box-shadow:0 24px 48px rgba(12,35,75,.16); z-index:2">
+        <div style="aspect-ratio:16 / 10; overflow:hidden; background:#0C234B">
+          <img src="assets/practice-sm.jpg" alt="Ricky Hunley at Arizona spring practice" style="width:100%; height:100%; object-fit:cover; object-position:50% 26%; display:block; filter:grayscale(1) contrast(1.06) brightness(1.06); mix-blend-mode:screen; opacity:0.94; transition:all .5s ease" style-hover="filter:none; mix-blend-mode:normal; opacity:1" />
+        </div>
+        <div style="padding:32px 32px 38px; display:flex; flex-direction:column; flex:1">
+          <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">The game</div>
+          <h2 style="margin:16px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:25px; line-height:1.18; letter-spacing:-0.025em; color:#0C234B; text-wrap:pretty">Life after the snap</h2>
+          <p style="margin:14px 0 0; font-size:17px; line-height:1.66; color:#5C6270; text-wrap:pretty">The transition nobody drafts you for, and what athletes should be building long before it arrives.</p>
+          <span style="display:inline-flex; align-items:center; gap:10px; margin-top:auto; padding-top:30px; font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent, #AB0520)">Read the post <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+        </div>
+      </a>
     </section>
-    <section style="max-width:1280px; margin:0 auto; padding:40px 40px 120px">
-      <p style="font-family:Archivo, sans-serif; font-size:12px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:#9B9689">Sample posts. Replace with Ricky's writing</p>
+
+    <section style="max-width:1280px; margin:0 auto; padding:80px 40px 0">
+      <div style="display:flex; align-items:baseline; gap:20px; flex-wrap:wrap; margin-bottom:14px">
+        <h2 style="margin:0; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(28px, 3vw, 40px); line-height:1.05; letter-spacing:-0.03em; color:#0C234B">Seven lessons to my younger self</h2>
+      </div>
+      <p style="margin:0 0 34px; font-size:18.5px; line-height:1.7; color:#5C6270; max-width:60ch">A series written for the player I was at nineteen, and for every athlete who thinks the applause is the point.</p>
+      <a href="#" onClick="{{ open.knowing }}" style="display:flex; align-items:baseline; gap:28px; padding:26px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:34px">01</span>
+        <span style="font-family:Archivo, sans-serif; font-size:clamp(19px, 2vw, 24px); font-weight:700; letter-spacing:-0.02em; flex:1; text-wrap:pretty">Knowing is not enough, we must apply</span>
+      
+        <span style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:inherit; opacity:0.6">Read <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+      </a>
+      <a href="#" onClick="{{ open.hero }}" style="display:flex; align-items:baseline; gap:28px; padding:26px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:34px">03</span>
+        <span style="font-family:Archivo, sans-serif; font-size:clamp(19px, 2vw, 24px); font-weight:700; letter-spacing:-0.02em; flex:1; text-wrap:pretty">You are only a hero for a moment — invest in yourself</span>
+      
+        <span style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:inherit; opacity:0.6">Read <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+      </a>
+      <a href="#" onClick="{{ open.stayCourse }}" style="display:flex; align-items:baseline; gap:28px; padding:26px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:34px">04</span>
+        <span style="font-family:Archivo, sans-serif; font-size:clamp(19px, 2vw, 24px); font-weight:700; letter-spacing:-0.02em; flex:1; text-wrap:pretty">Those who stay the course will be champions</span>
+      
+        <span style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:inherit; opacity:0.6">Read <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+      </a>
+      <a href="#" onClick="{{ open.humble }}" style="display:flex; align-items:baseline; gap:28px; padding:26px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:34px">05</span>
+        <span style="font-family:Archivo, sans-serif; font-size:clamp(19px, 2vw, 24px); font-weight:700; letter-spacing:-0.02em; flex:1; text-wrap:pretty">Humble yourself — your words belong to the world</span>
+      
+        <span style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:inherit; opacity:0.6">Read <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+      </a>
+      <a href="#" onClick="{{ open.giveBack }}" style="display:flex; align-items:baseline; gap:28px; padding:26px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:34px">06</span>
+        <span style="font-family:Archivo, sans-serif; font-size:clamp(19px, 2vw, 24px); font-weight:700; letter-spacing:-0.02em; flex:1; text-wrap:pretty">Give back</span>
+      
+        <span style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:inherit; opacity:0.6">Read <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+      </a>
+      <a href="#" onClick="{{ open.thinkAct }}" style="display:flex; align-items:baseline; gap:28px; padding:26px 8px; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:12px; font-weight:700; letter-spacing:0.14em; color:#9B9689; min-width:34px">07</span>
+        <span style="font-family:Archivo, sans-serif; font-size:clamp(19px, 2vw, 24px); font-weight:700; letter-spacing:-0.02em; flex:1; text-wrap:pretty">Think before you act — be all that you can be</span>
+      
+        <span style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:inherit; opacity:0.6">Read <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+      </a>
+    </section>
+
+    <section style="max-width:1280px; margin:0 auto; padding:80px 40px 120px">
+      <h2 style="margin:0 0 14px; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(28px, 3vw, 40px); line-height:1.05; letter-spacing:-0.03em; color:#0C234B">Common sense ain’t common</h2>
+      <p style="margin:0 0 34px; font-size:18.5px; line-height:1.7; color:#5C6270; max-width:60ch">A short series applying John McClain’s favorite line to the game as it stands today.</p>
+      <a href="#" onClick="{{ open.commonSense }}" style="display:flex; align-items:baseline; gap:28px; padding:26px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:clamp(19px, 2vw, 24px); font-weight:700; letter-spacing:-0.02em; flex:1; text-wrap:pretty">Common sense ain’t common</span>
+      
+        <span style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:inherit; opacity:0.6">Read <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+      </a>
+      <a href="#" onClick="{{ open.redline }}" style="display:flex; align-items:baseline; gap:28px; padding:26px 8px; border-top:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:clamp(19px, 2vw, 24px); font-weight:700; letter-spacing:-0.02em; flex:1; text-wrap:pretty">Redline: how Coach Brennan’s standard echoes seven hard lessons</span>
+      
+        <span style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:inherit; opacity:0.6">Read <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+      </a>
+      <a href="#" onClick="{{ open.roster }}" style="display:flex; align-items:baseline; gap:28px; padding:26px 8px; border-top:1px solid #E6E2DA; border-bottom:1px solid #E6E2DA; color:#0C234B; transition:background .22s ease, color .22s ease, padding-left .22s ease, box-shadow .22s ease" style-hover="background:#fff; color:var(--accent, #AB0520); padding-left:22px; box-shadow:inset 3px 0 0 var(--accent, #AB0520)">
+        <span style="font-family:Archivo, sans-serif; font-size:clamp(19px, 2vw, 24px); font-weight:700; letter-spacing:-0.02em; flex:1; text-wrap:pretty">Roster security: nothing is guaranteed, so earn it every day</span>
+      
+        <span style="display:inline-flex; align-items:center; gap:10px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:inherit; opacity:0.6">Read <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M4 12h14"></path><path d="M12 5l7 7-7 7"></path></svg></span>
+      </a>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isPost }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <section style="max-width:760px; margin:0 auto; padding:64px 40px 0">
+      <a href="#" onClick="{{ nav.blog }}" style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:#9B9689" style-hover="color:var(--accent, #AB0520)">← All posts</a>
+      <div style="margin-top:44px; font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent, #AB0520)">{{ article.category }}</div>
+      <h1 style="margin:22px 0 0; font-family:Archivo, sans-serif; font-weight:800; font-size:clamp(34px, 4.4vw, 56px); line-height:1.02; letter-spacing:-0.035em; color:#0C234B; text-wrap:pretty">{{ article.title }}</h1>
+      <p style="margin:24px 0 0; font-size:21px; line-height:1.6; color:#5C6270; text-wrap:pretty">{{ article.dek }}</p>
+      <div style="margin:44px 0 0; height:1px; background:#E6E2DA"></div>
+    </section>
+    <section style="max-width:760px; margin:0 auto; padding:0 40px 40px">
+      <sc-for list="{{ article.paras }}" as="para" hint-placeholder-count="6">
+        <sc-if value="{{ para.isBody }}" hint-placeholder-val="{{ true }}">
+          <p style="margin:32px 0 0; font-size:20px; line-height:1.78; color:#2A2F3A; text-wrap:pretty">{{ para.text }}</p>
+        </sc-if>
+        <sc-if value="{{ para.isSub }}" hint-placeholder-val="{{ false }}">
+          <h2 style="margin:52px 0 0; font-family:Archivo, sans-serif; font-weight:700; font-size:24px; line-height:1.25; letter-spacing:-0.025em; color:#0C234B; text-wrap:pretty">{{ para.text }}</h2>
+        </sc-if>
+        <sc-if value="{{ para.isQuote }}" hint-placeholder-val="{{ false }}">
+          <blockquote style="margin:48px 0 0; padding:0 0 0 28px; border-left:2px solid var(--accent, #AB0520); font-family:Archivo, sans-serif; font-size:26px; font-weight:700; line-height:1.28; letter-spacing:-0.025em; color:#0C234B; text-wrap:pretty">{{ para.text }}</blockquote>
+        </sc-if>
+      </sc-for>
+      <div style="margin-top:56px; padding-top:36px; border-top:1px solid #E6E2DA">
+        <img src="assets/rh-autograph.svg" alt="Ricky Hunley signature" style="width:220px; max-width:60%; height:auto; display:block; opacity:0.82" />
+      </div>
+    </section>
+    <section style="max-width:760px; margin:0 auto; padding:0 40px 120px">
+      <a href="#" onClick="{{ nav.blog }}" style="display:inline-block; font-family:Archivo, sans-serif; font-size:13px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:#0C234B; border:1px solid #C9C4B9; padding:16px 26px" style-hover="border-color:var(--accent, #AB0520); color:var(--accent, #AB0520)">More writing</a>
     </section>
   </div>
   </sc-if>
@@ -790,7 +928,7 @@
         <a href="#" onClick="{{ nav.huddle }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">The Hunley Huddle</a>
         <a href="#" onClick="{{ nav.community }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">Community</a>
         <a href="#" onClick="{{ nav.news }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">News</a>
-        <sc-if value="{{ showBlog }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ showBlog }}" hint-placeholder-val="{{ true }}">
         <a href="#" onClick="{{ nav.blog }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">Blog</a>
         </sc-if>
         <a href="#" onClick="{{ nav.contact }}" style="font-size:16.5px; color:#DCE0E8" style-hover="color:#EF6275">Contact</a>
@@ -809,24 +947,218 @@
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;heroVideoId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;reelUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://youtu.be/tGlJqTsDWkE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;showFoundation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;carouselSeconds&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4.5,&quot;min&quot;:2,&quot;max&quot;:12,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;About page&quot;},&quot;eventbriteUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;The Huddle&quot;},&quot;showBlog&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Pages&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#AB0520&quot;,&quot;options&quot;:[&quot;#AB0520&quot;,&quot;#0C234B&quot;,&quot;#8C6A1E&quot;,&quot;#1F5C4A&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroVideoId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;reelUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://youtu.be/tGlJqTsDWkE&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;showFoundation&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Homepage&quot;},&quot;eventbriteUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;The Huddle&quot;},&quot;showBlog&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Pages&quot;},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#AB0520&quot;,&quot;options&quot;:[&quot;#AB0520&quot;,&quot;#0C234B&quot;,&quot;#8C6A1E&quot;,&quot;#1F5C4A&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;}}">
 class Component extends DCLogic {
-  state = { page: 'home', videoFailed: false, menuOpen: false, tick: 0 };
+  state = { page: 'home', videoFailed: false, menuOpen: false, post: null };
   go(p) {
     return (e) => {
       if (e && e.preventDefault) e.preventDefault();
-      this.setState({ page: p, menuOpen: false });
+      this.setState({ page: p, menuOpen: false, post: null });
       if (typeof window !== 'undefined') window.scrollTo(0, 0);
     };
   }
-  componentDidMount() {
-    const ms = Math.max(1500, (this.props.carouselSeconds ?? 4.5) * 1000);
-    this._rot = setInterval(() => this.setState(st => ({ tick: (st.tick || 0) + 1 })), ms);
+  goPost(slug) {
+    return (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      this.setState({ page: 'blog', menuOpen: false, post: slug });
+      if (typeof window !== 'undefined') window.scrollTo(0, 0);
+    };
   }
-  componentWillUnmount() { clearInterval(this._rot); }
-  slides(offset) {
-    const active = ((this.state.tick || 0) + offset) % 3;
-    return { 0: active === 0 ? 0.94 : 0, 1: active === 1 ? 0.94 : 0, 2: active === 2 ? 0.94 : 0 };
+  posts = [
+    {
+      slug: 'leadership', category: 'Leadership',
+      title: 'What the huddle teaches that the meeting room can’t',
+      dek: 'Eleven people. One voice. Four seconds to decide. Why the huddle is still the best leadership lab I know.',
+      body: [
+        'No slide deck. No follow-up email. No “let’s circle back.” Just a call, a break, and eleven people trusting each other enough to move as one on a ball they can’t see yet.',
+        'I’ve sat in a lot of meeting rooms since I hung up my pads — boardrooms, coaches’ offices, donor lunches, committee tables. Some of the smartest people I know run those rooms. But I’ve never seen a meeting room produce what a huddle produces, and after almost fifty years around this game, I think I finally know why.',
+        '> A huddle has no room for pretending.',
+        'In a meeting, you can nod along. You can stay quiet and let it look like agreement. A huddle won’t let you hide. If you don’t know the play, your body gives you away before the ball is even snapped. The huddle exposes preparation instantly — and it exposes trust just as fast. You either believe the voice calling the play, or you don’t. There’s no time to build that belief in the huddle itself. You bring it in with you, built from every rep before that moment.',
+        '> A huddle has one voice, not the loudest voice.',
+        'Somebody calls the play. Everybody else’s job is to execute it with everything they’ve got, even if they’d have called something different. That’s not blind obedience — it’s discipline. It’s understanding that the team needs unity of action more than it needs eleven opinions. I learned leadership in the huddle before I ever learned it from a title. The quarterback wasn’t always the best athlete on the field. He was the one everybody believed would get it right, and who took responsibility when it went wrong.',
+        '> A huddle ends in commitment, not consensus.',
+        'Four seconds, then everybody breaks toward the same purpose. No further debate at the line. That’s the piece I think we’ve lost in a lot of our institutions — the willingness to commit fully to a decision once it’s made, instead of relitigating it play after play, meeting after meeting.',
+        'I still run my days like a huddle when I can. Say it plainly. Trust the people around you. Commit without flinching. Then go execute — together.',
+        'That’s not nostalgia talking. That’s the best leadership lab I ever stood in, and I’m still teaching from what it showed me.'
+      ]
+    },
+    {
+      slug: 'mentorship', category: 'Mentorship',
+      title: 'Ten kids, one mother, and the standard she set',
+      dek: 'Everything I know about accountability, I learned in Petersburg before I ever put on pads.',
+      body: [
+        'My mother, Scarlette, raised a big family in a small house, and on top of her own children, she opened that house to foster kids — dozens of them over the years. Different backgrounds. Different needs. Different levels of trust in whether an adult would actually keep their word this time. She didn’t treat any of that as a reason to lower the standard. If anything, it raised it.',
+        'There was one rule in that house that never bent: you did what you said you’d do, and you owned it when you didn’t.',
+        '## She measured effort, not talent.',
+        'Nobody in that house got praised for being naturally gifted at something. You got noticed for finishing the job. Dishes done all the way, not halfway. Homework checked, not just started. My mother didn’t have the luxury of managing ten kids by talent level — she managed by standard. Everybody met the same bar, because everybody was capable of meeting it if they tried.',
+        '## She made room without making excuses.',
+        'Every child who came through that door carried something with them — grief, instability, questions nobody had answered for them yet. My mother made room for all of that. What she didn’t do was let it become a permanent excuse. She’d sit with a kid’s pain and still expect that kid at the table on time, still expect respect in her house. Compassion and accountability weren’t opposites to her. They were the same thing, delivered together.',
+        '## She showed up the same way every day.',
+        'That’s the part I didn’t appreciate until I was much older. Consistency is its own kind of love. Ten different kids on ten different days getting the same version of Scarlette — not the tired version, not the frustrated version dressed up as discipline, but the same steady standard. That predictability is what let a house full of kids who’d been let down before start to trust an adult again.',
+        'I’ve carried her standard into locker rooms, coaching staffs, and now into the work I do mentoring young people at Arizona. Nobody in this world ever built real character by being let off the hook. My mother knew that with ten kids and no manual. I try to know it too.'
+      ]
+    },
+    {
+      slug: 'theGame', category: 'The game',
+      title: 'Life after the snap',
+      dek: 'The transition nobody drafts you for, and what athletes should be building long before it arrives.',
+      body: [
+        'Nobody drafts you for this transition. There’s no combine for it, no scouting report, no agent negotiating the terms. One day the game is the organizing principle of your entire life, and the next, it isn’t — and almost nobody prepares an athlete for that particular silence.',
+        'I played this game at the highest level. Two Super Bowls. A first-round life built around being one of the best at something very specific and very physical. And then, like it does for every single player eventually, it ended. Not on my terms. It rarely is on anyone’s terms.',
+        'Here’s what I want young athletes to hear, long before they’re anywhere near that moment: The identity you build now is the one you’ll need later.',
+        'If “athlete” is the only word that describes you, retirement doesn’t just end a career — it ends you, or at least it feels that way. The players I’ve watched struggle most after the game are the ones who never developed a second identity while the first one was still paying the bills. Start building the second one now. Coach a youth team. Learn a trade. Get curious about business, ministry, teaching, whatever pulls at you. Do it while football is still giving you the platform and the resources to explore.',
+        '## Your network shouldn’t be limited to the field.',
+        'Locker rooms are tight-knit for good reason — but they can also become a bubble. The relationships that carry you through transition are the ones you built outside of football while you still had the game as your calling card. Community leaders, mentors, people ten and twenty years older than you who’ve already made a hard transition of their own. Build those bridges early. Don’t wait until you need them.',
+        '## Purpose has to be bigger than performance.',
+        'Performance is intoxicating. The standing ovation, the highlight, the win — none of that translates cleanly to civilian life. What does translate is purpose: who you’re trying to help, what you’re trying to build, what legacy you actually want. Start asking that question at nineteen, not thirty-nine.',
+        'I didn’t have this roadmap when my own transition came. I’ve spent the years since building it — for myself, and now for the young men I get to mentor. The last snap is coming for every single athlete reading this. The only question is whether you’re building something now that will still be standing when it does.'
+      ]
+    },
+    {
+      slug: 'knowing', category: 'Seven lessons',
+      title: 'Knowing is not enough, we must apply',
+      dek: 'You can coast on talent and still look good enough to fool everybody but yourself.',
+      body: [
+        '> Knowing is not enough, we must apply. Willing is not enough, we must do. — Bruce Lee',
+        'When I was coming up, my teammates never knew when I was playing below my max. Nobody could tell. That’s the trap. You can coast on talent and still look good enough to fool everybody but yourself.',
+        'My mom used to say, “What doesn’t kill you only makes you stronger.” I believed her, but believing isn’t the same as living it out on the field, in the classroom, in the office.',
+        'Here’s what I’ve learned: the hard work it takes to be the best at anything shows up disguised as work. It doesn’t announce itself. It just looks like one more rep, one more phone call, one more extra hour when everyone else has gone home. If you’re waiting for it to feel like destiny, you’ll miss it every time.',
+        'I grew up broke and hungry in Petersburg, Virginia. That feeling — the edge, the chip on your shoulder — never fully goes away, and it shouldn’t. Use it. Don’t get comfortable being a minimum-effort person. Your minimum will already look better than a lot of people’s maximum, and that’s exactly the trap that keeps good players from becoming great ones.',
+        'Attack. Be relentless. No exceptions, no excuses. Don’t let “cool with average” become your standard.',
+        'Knowing what to do has never been the hard part. Doing it — especially when nobody’s watching and nobody would ever know — that’s the whole game.'
+      ]
+    },
+    {
+      slug: 'hero', category: 'Seven lessons',
+      title: 'You are only a hero for a moment — invest in yourself',
+      dek: 'The cheering stops. It stops more than once, and every time it does you feel empty if you built your identity on the applause.',
+      body: [
+        'I threw no-hitters in Little League. By high school, I was throwing darts over 90 mph and getting picked up for games in a coach’s air-conditioned Cadillac. People treated me like a rock star. It felt incredible.',
+        'The Pittsburgh Pirates’ GM drafted me my senior year and offered me a contract to play professional baseball. Real money. A real choice. I turned it down to commit to the University of Arizona and play football instead.',
+        'I’ve thought about that decision for decades. Not because it was wrong — my life turned out to be a blessing — but because it taught me something about the nature of being a “hero.” The cheering stops. It stops more than once, and every time it does, you feel empty if you built your identity on the applause instead of on yourself.',
+        'Savor those moments when they come. They’re the best feeling in the world, and they leave as fast as they arrive.',
+        'Here’s the lesson I’d give my younger self: don’t wait for the crowd to tell you who you are. Invest in yourself — your discipline, your character, your relationships — because that’s the only thing still standing when the stadium empties out and everyone goes home.',
+        'Being a hero is a moment. Being a man, a father, a mentor — that’s a lifetime commitment. Choose accordingly.'
+      ]
+    },
+    {
+      slug: 'stayCourse', category: 'Seven lessons',
+      title: 'Those who stay the course will be champions',
+      dek: 'My first day on the Arizona practice field, I was sixth on the depth chart.',
+      body: [
+        'My first day on the University of Arizona practice field, I was sixth on the depth chart. Third and fourth team. Nobody’s future All-American.',
+        'Then a senior linebacker went down, and I got my first start — as a freshman — against the number one team in the country. I didn’t have command of the playbook. I didn’t have the experience. I had a gut full of fear and one thing I could control: effort.',
+        'My head coach told me flatly, “It’s your job to lose, freshman.” So I played like my hair was on fire, technique imperfect, effort maxed out. Twelve tackles, three sacks, Pac-10 Player of the Week. From that game forward, I started every game of my college career.',
+        'That’s the lesson: the difference between school and life is that school teaches you the lesson and then tests you. Life tests you first, and you learn the lesson after — usually the hard way, usually on short notice.',
+        'I went on to become a two-time consensus All-American, the career tackles leader at the University of Arizona with 566 and the first Wildcat inducted into the College Football Hall of Fame. None of it started with confidence. It started with staying in the fight when I had every reason to think I wasn’t ready.',
+        'You will rarely feel ready. Stay the course anyway. Readiness shows up in the doing, not before it.'
+      ]
+    },
+    {
+      slug: 'humble', category: 'Seven lessons',
+      title: 'Humble yourself — your words belong to the world',
+      dek: 'Your thoughts belong to you. Your words belong to everybody else.',
+      body: [
+        'During the 1987 NFL strike, I was one of the youngest Players’ Reps in the league, hand-picked to lead my team. I believed in the cause. I put myself out on a limb for teammates and a union that, looking back, wasn’t always there for me the way I was there for them.',
+        'After the strike ended, our first game back was rough — six weeks with no practice will do that. My head coach mentioned to the press that he’d talked to me, specifically, about the possibility of being benched. The media swarmed. I felt like I’d been thrown under the bus.',
+        'I held my tongue through the questions, but the sting stayed with me. By season’s end, I said something about my coach to the press that I shouldn’t have. It was damning, and it was a no-win move. I got traded to the worst team in the league.',
+        'Here’s the lesson, plain: how you are isn’t always as important as how you’re perceived. Perception is the gatekeeper between your essence and your image, and image is the only thing most people ever see. Changing yourself gives you peace. Changing how you’re perceived gives you power — but only if you’re careful with your words in the moment that matters most.',
+        'When you make your bed, you lay in it. Think before you speak. Every time.'
+      ]
+    },
+    {
+      slug: 'giveBack', category: 'Seven lessons',
+      title: 'Give back',
+      dek: 'Give people your money and you give them something you can replace. Give them your time and you give them a piece of your life.',
+      body: [
+        'My mother, Scarlette, raised ten of her own kids and fostered more than 50 others. She always reminded us: we weren’t just her kids, we were everybody’s kids. So many people had a hand in raising us, and she never let us forget it.',
+        'Rick Warren, the author, wrote something that’s stuck with me for years: “When you give people your money, you give them something you can replace. But when you give people your time, you give them a piece of your life.”',
+        'I’ve had mentors — John McClain, Warren Rustand, Gene Stallings, Larry Smith, Marvin Lewis, Solomon Wilcots, my brother LaMonte — who gave me pieces of their lives without expecting anything back. Every one of those relationships turned out to be mutually beneficial, even when that wasn’t the intention going in.',
+        'My resume speaks for itself. Two-time consensus All-American, first-round draft pick, two Super Bowls, Hall of Fame. But none of that outweighs what I get to share with young players now as a coach and mentor. That feeling — passing it forward — replaced something in me that I lost the day I stopped playing.',
+        'Others will accept the minimum you’re willing to give them. It should never be acceptable to you. Pursue every relationship, every opportunity to mentor, with real intentionality. Give your time. It’s the one thing you can’t get back — and the one thing that actually changes lives.'
+      ]
+    },
+    {
+      slug: 'thinkAct', category: 'Seven lessons',
+      title: 'Think before you act — be all that you can be',
+      dek: 'I had everything I needed heading into the 1984 draft. Then I thought getting there was enough.',
+      body: [
+        'Growing up poor in Petersburg, Virginia, with seven brothers and three sisters, football was my way out. When I signed my first contract, I used part of the bonus to buy my mother a seven-bedroom home. That’s still one of the proudest moments of my life.',
+        'Heading into the 1984 NFL Draft, I’d built my body into a machine — 6’1”, 238 pounds, benching 400, squatting 750, running a 4.55. I was projected as a future Pro Bowler. I had everything I needed.',
+        'Then I thought getting there was enough. It wasn’t. The trappings of money and good times crept in slow, like a quiet cancer, and knocked me off the discipline that got me there in the first place. I made it to Hawaii — but only to party, never as a Pro Bowl player. That’s a regret I still carry.',
+        'My high school baseball coach, Ollie Jarvis, once told me, “You’ve got the rest of your life to work and only a little time to play.” I understood the words. I didn’t live by them when it mattered most.',
+        'Self-discipline is the difference between good and great — the extra reps, the post-practice stretching, the ice tubs, the food choices nobody sees. Those are the “above and beyond” things. Don’t wait until it’s too late to be self-motivated.',
+        'There are no do-overs in life. Get it right the first time.'
+      ]
+    },
+    {
+      slug: 'commonSense', category: 'Perspective',
+      title: 'Common sense ain’t common',
+      dek: 'My mentor John McClain handed me one of the truest things anyone ever told me. It took years to understand it.',
+      body: [
+        'My mentor John McClain used to tell me, “Common sense ain’t common.” I was a young player when I first heard it, and I thought it was just a clever line. It took me years — and a lot of mistakes — to understand he was handing me one of the truest things anyone ever told me.',
+        'Common sense isn’t a gift you’re born with. It’s not intelligence, and it’s not talent. It’s the accumulated wisdom of paying attention — to your coaches, your elders, your own consequences — and actually applying what you learn. That’s why it’s rare. Most people have access to the same lessons I did. Few actually live by them.',
+        'Today’s student athlete has more access to information than any generation before him. Film, data, NIL contracts, agents, advisors, a phone full of opinions. And still — common sense is as scarce as it’s ever been. Maybe more so, because there’s more noise drowning it out.',
+        'The seven lessons I wrote for my younger self were never really seven separate ideas. They were seven versions of the same warning: knowledge without application is worthless, and good judgment has to be practiced like a muscle, not assumed like a birthright.',
+        'John McClain ran circles around the smartest people I ever met, not because he was the smartest man in the room, but because he had something rarer — the sense to actually use what he knew. That’s the standard. Not being the most talented player on the field. Being the one with the sense to make the most of what you’ve got.',
+        'This is the first in a short series applying that lesson to where the game is right now.'
+      ]
+    },
+    {
+      slug: 'redline', category: 'Perspective',
+      title: 'Redline: how Coach Brennan’s standard echoes seven hard lessons',
+      dek: 'Effort, execution, accountability. It’s the standard I was chasing my whole career — I just didn’t have the word for it.',
+      body: [
+        'When Brent Brennan first brought “Redline” to Tucson, he borrowed the term from racing. On a car, redline is the point on the tachometer where the engine is running at its absolute limit — the edge of maximum output before something breaks. Brennan’s version isn’t about breaking anything. It’s about living there anyway: full effort, full execution, full accountability, every single rep. Coach has said it plainly — Redline comes down to effort, execution, and accountability. No more, no less.',
+        'I didn’t have a one-word name for it when I played. But reading back through the seven lessons I wrote for my younger self, I realize Redline was the standard I was reaching for the entire time — I just didn’t have the language for it yet. Here’s how I see the two connect.',
+        '## Lesson 1 — Knowing is not enough, we must apply.',
+        'This is Redline in its purest form. Knowing the playbook, knowing the standard, knowing what’s required — none of it means anything until you apply it at full speed, on every rep, whether anyone’s grading you or not. Redline doesn’t have an off switch for the plays nobody’s watching.',
+        '## Lesson 2 — Embrace coaching.',
+        'Execution and accountability are team words, not individual ones. You can’t hold yourself to Redline in isolation — it requires being coachable enough to hear where you fell short and humble enough to fix it before the next rep. A player who can’t take coaching can’t sustain Redline; he just has good days.',
+        '## Lesson 3 — You are only a hero for a moment.',
+        'Redline isn’t a highlight-reel standard. It’s not one big play — it’s the discipline underneath a hundred quiet ones. The players who chase the “hero moment” instead of the standard will flame out fast. The ones who live at Redline build something that outlasts any single game.',
+        '## Lesson 4 — Those who stay the course will be champions.',
+        'I started sixth on the depth chart and stayed the course until I was starting every game of my career. That’s Redline over time — not one explosive week, but sustained effort until the results catch up to the standard. Coach Brennan’s teams that have found their “Mr. Redlines” are the ones who kept applying the standard through fall camp, through the bye week, through the grind nobody sees on Saturdays.',
+        '## Lesson 5 — Humble yourself, think before you speak.',
+        'Accountability is the third leg of Redline, and accountability starts with how you handle being wrong. It’s owning your mistakes out loud instead of shifting blame, and it’s understanding that your words in the locker room or in front of a microphone reflect on the whole standard, not just you.',
+        '## Lesson 6 — Give back.',
+        'Redline isn’t sustainable as a solo pursuit. The reason a program can hold 105 players to one standard is that the older guys — the Mr. Redlines — pass it down to the young ones. That’s coaching in its truest form, and it’s exactly what my mother taught me about giving your time, not just your talent, to the people coming up behind you.',
+        '## Lesson 7 — Think before you act, be all that you can be.',
+        'This is the lesson I regret not living out fully as a player — the discipline in the weight room, the recovery, the extra rep nobody’s counting. Redline demands exactly that: the “above and beyond” work that separates good from great, applied consistently enough that it becomes who you are, not just how you play on Saturday.',
+        'Redline is a new word for an old truth. Effort, execution, accountability — that’s the standard I was chasing my whole career, whether I had the vocabulary for it or not. What I love about what Coach Brennan has built at Arizona is that it’s not just a slogan on a locker room wall. It’s a shared language for exactly what I was trying to teach my younger self all those years later: the standard doesn’t move. You either rise to meet it, or you don’t.',
+        'Bear Down, and stay at Redline.'
+      ]
+    },
+    {
+      slug: 'roster', category: 'Perspective',
+      title: 'Roster security: nothing is guaranteed, so earn it every day',
+      dek: 'My scholarship was mine for four years. That world is gone.',
+      body: [
+        'I never had to think about a roster limit. My scholarship was mine for four years, and the only thing that could take it away was committing a felony, flunking out of school or just quitting. That world is gone.',
+        'Today’s player operates inside a 105-man roster and a scholarship that resets year to year. Nobody hands you security anymore — you build it, or you don’t. Common sense says: if the guarantee is gone, the work has to fill the gap it left behind.',
+        'I think about Lesson 4 here — those who stay the course will be champions. That lesson meant something different in my day, when staying the course was mostly about patience. Now it also means competing for your own spot every single offseason, whether you’re a fifth-year starter or a true freshman trying to survive a cutdown. The players who treat every year like a tryout, not an entitlement, are the ones who last.',
+        'It also connects straight back to what Coach Brennan’s staff calls Redline — effort, execution, accountability, applied without a break. In a world with no guaranteed four years, Redline isn’t just a slogan anymore. It’s the actual math of staying on the roster. The guys living at that standard every single day are the ones a staff protects when hard roster decisions come. The guys coasting on potential are the ones who find out the hard way that potential doesn’t fill out a depth chart.',
+        'John McClain’s line fits perfectly here: common sense ain’t common. Everybody on a roster knows, in theory, that nothing is promised. Very few players actually train, study, and carry themselves like they understand that in their bones. That gap — between knowing it and living like it’s true — is exactly where roster spots get decided now.',
+        'Don’t wait for a guarantee that isn’t coming. Earn the spot like it’s temporary, because honestly, it is.'
+      ]
+    }
+  ];
+  article() {
+    const src = this.posts.filter(x => x.slug === this.state.post)[0];
+    if (!src) return { title: '', dek: '', category: '', paras: [] };
+    return {
+      title: src.title, dek: src.dek, category: src.category,
+      paras: src.body.map(t => {
+        if (t.slice(0, 3) === '## ') return { text: t.slice(3), isSub: true, isQuote: false, isBody: false };
+        if (t.slice(0, 2) === '> ') return { text: t.slice(2), isSub: false, isQuote: true, isBody: false };
+        return { text: t, isSub: false, isQuote: false, isBody: true };
+      })
+    };
+  }
+  openMap() {
+    const m = {};
+    this.posts.forEach(p => { m[p.slug] = this.goPost(p.slug); });
+    return m;
   }
   heroVideoRef = (el) => {
     if (!el) return;
@@ -852,12 +1184,8 @@ class Component extends DCLogic {
   }
   renderVals() {
     const p = this.state.page;
-    const showBlog = this.props.showBlog ?? false;
-    const A = this.slides(0), B = this.slides(1), C = this.slides(2);
+    const showBlog = this.props.showBlog ?? true;
     return {
-      a0: A[0], a1: A[1], a2: A[2],
-      b0: B[0], b1: B[1], b2: B[2],
-      c0: C[0], c1: C[1], c2: C[2],
       accent: this.props.accentColor ?? '#AB0520',
       menuOpen: this.state.menuOpen,
       menuClosed: !this.state.menuOpen,
@@ -874,7 +1202,10 @@ class Component extends DCLogic {
       isHuddle: p === 'huddle',
       isNews: p === 'news',
       showBlog: showBlog,
-      isBlog: p === 'blog' && showBlog,
+      isBlog: p === 'blog' && showBlog && !this.state.post,
+      isPost: p === 'blog' && showBlog && !!this.state.post,
+      article: this.article(),
+      open: this.openMap(),
       isCommunity: p === 'community',
       isContact: p === 'contact',
       nav: {

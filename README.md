@@ -1,6 +1,7 @@
 # rickyhunley.com
 
-The Ricky Hunley website: seven static pages, no build step, no framework.
+The Ricky Hunley website: eight static pages plus twelve blog articles, no
+build step, no framework.
 
 Open `index.html` in a browser and it works. Push to the `main` branch and
 Netlify publishes it. That is the whole deployment story for now.
@@ -11,8 +12,10 @@ Netlify publishes it. That is the whole deployment story for now.
 
 ```
 index.html  about.html  speaking.html  huddle.html
-news.html   community.html  contact.html
+news.html   blog.html   community.html  contact.html
 404.html
+
+blog/            generated: one page per article in the design
 
 css/site.<hash>.css   generated: the design's global rules + hover states
 js/site.<hash>.js     generated from tools/site.js
@@ -54,7 +57,9 @@ node tools/check.js          # structural check on what came out
 | `menuOpen` / `toggleMenu` | `data-menu-toggle`, driven by `js/site.js` |
 | `showBlog`, `showFoundation` | resolved from their prop defaults |
 | `{{ eventbriteUrl }}` | the real URL, or the whole link dropped if unset |
-| `{{ a0 }}`…`{{ c2 }}` carousel | opening opacities + `data-slide`, ditto |
+| `onClick="{{ open.roster }}"` | `href="/blog/roster.html"` |
+| the `isPost` template + `posts` | one page per article under `blog/` |
+| `src="assets/x.jpg"` | `src="/assets/x.jpg"`, so nested pages resolve |
 
 Every inline style value is carried across untouched — the generator never
 adjusts spacing, size or colour. Read it before changing it; the transforms are
@@ -69,6 +74,13 @@ entire mobile layout silently does nothing. `build-static.js` rewrites them to
 the authored spelling when it emits `css/site.css`. If mobile ever looks
 untouched after a design update, check that first.
 
+The photo columns on the About and Speaking pages used to crossfade on a
+timer in `js/site.js`. The design now does it with a CSS `@keyframes` in its
+`<helmet>`, so nothing in `site.js` drives them any more. That animation does
+not honour `prefers-reduced-motion`, and it runs forever, so `build-static.js`
+appends a rule to `css/site.css` that stops it on its first frame for readers
+who ask for less motion.
+
 ### Hidden pages
 
 `HIDDEN_PAGES` in `build-static.js` lists pages that exist in the design but are
@@ -79,9 +91,26 @@ link to it stripped from the header, mobile drawer and footer.
 `SHOW_BLOG` mirrors the design's own `showBlog` prop, so the two agree without
 either needing to know about the other.
 
-The **blog** is currently hidden. Its three posts are the design's samples — the
-page says so on its face — and the content now lives in Sanity. `/blog`,
-`/blog.html` and the old Squarespace blog URLs all 301 to the home page.
+The blog was hidden while it held only sample copy. It now holds twelve real
+articles and is published; nothing is hidden at present.
+
+### The blog
+
+The design carries the articles as one `posts = [...]` array and renders
+whichever one `state.post` names through a single `isPost` template.
+`build-static.js` reads that array straight out of the source and renders the
+template once per article into `blog/<slug>.html` — so the copy has exactly one
+home, and an edit in the design lands on the next build with nothing restated
+here. Paragraph kinds follow the design's own convention: a `## ` prefix is a
+subheading, `> ` a pull quote, anything else body text.
+
+Slugs are kebab-cased from the design's camelCase (`stayCourse` ->
+`/blog/stay-course.html`). An article dropped from the design has its page
+deleted on the next build rather than left on disk.
+
+`/blog` needs its own redirect in `netlify.toml`. Netlify serves `/about` for
+`about.html` unasked, but `/blog` is now also a directory: Netlify looks for
+`blog/index.html`, finds none, and would 404.
 
 ## Images
 
@@ -107,21 +136,17 @@ Photographs the design stored as PNG are written as JPEG instead (a few hundred
 KB rather than several MB, and none of them has transparency). `build-static.js`
 rewrites those references via `ASSET_RENAMES`.
 
-`assets/favicon.png` is the brand favicon (the "89" jersey mark), copied
-byte-for-byte from `Ricky Hunley Logo/Ricky Hunley Logotype/`. It is listed
-under `COPIES` rather than `IMAGES` because it has an alpha channel and is
-already small — re-encoding it would risk flattening the transparency for no
-gain.
+The three brand SVGs (`rh-logo-horizontal`, `rh-logo-vertical`, `rh-autograph`)
+are listed under `COPIES` rather than `IMAGES`: they are vector, already small,
+and copied byte-for-byte from `Ricky Hunley Logo/SVG/` rather than pushed
+through ffmpeg. The autograph is used twice — masked in white across the blog
+header, and as a signature at the foot of every article.
 
-Two things about it that were not chosen here and are worth a conversation
-rather than a silent fix:
-
-- **Its background is `#1C0B36`, a dark purple — not the site's navy `#0C234B`.**
-  The rest of the brand is navy, so the tab icon is the one place the two
-  diverge.
-- **Its corners are fully transparent**, and iOS composites `apple-touch-icon`
-  transparency onto black. That lands very close to the artwork's own dark
-  purple, so it reads fine — but it is luck rather than design.
+`assets/favicon-rh-bleed.png` is the tab icon: a 512×512 variant of the brand
+favicon with the mark bled to the edges so it reads at 16px. It was drawn in a
+design session and exists nowhere else, so it is listed under
+`FROM_DESIGN_PROJECT` — small enough that DesignSync serves it intact, with no
+Dropbox original to rebuild it from.
 
 Worth knowing generally: the generator writes its own `<head>` rather than
 copying the design's `<helmet>`, so **anything new added to the helmet is

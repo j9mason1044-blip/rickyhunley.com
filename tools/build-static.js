@@ -28,11 +28,10 @@ const ACCENT = '#AB0520';
 const REEL_URL = 'https://youtu.be/tGlJqTsDWkE';
 const HAS_HERO_VIDEO = false; // heroVideoId defaults to '' -> the iframe branch is dead
 const SHOW_FOUNDATION = true;
-const CAROUSEL_SECONDS = 4.5;
 
-// The design now owns the blog toggle. Its default is false, so the design and
-// this generator agree without either having to be told about the other.
-const SHOW_BLOG = false;
+// The design owns the blog toggle, and its default is now true — so the blog
+// index and the twelve article pages behind it are built and linked.
+const SHOW_BLOG = true;
 
 // Empty in the design, which falls back to '#'. A CTA linking to '#' is a dead
 // button on a live site, so the whole link is dropped until there is a real URL.
@@ -41,11 +40,9 @@ const EVENTBRITE_URL = '';
 /**
  * Pages built but not linked, or not built at all.
  *
- * The blog is hidden for now: its three posts are the design's samples and the
- * page says so. Hiding it means the page is not generated, it is dropped from
- * the sitemap, and every navigation link to it is removed — header, mobile
- * drawer and footer. The old Squarespace /blog URLs are redirected to the home
- * page in netlify.toml rather than to a page that no longer exists.
+ * Hiding a page means it is not generated, it is dropped from the sitemap, and
+ * every navigation link to it is removed — header, mobile drawer and footer.
+ * Hiding the blog also deletes the article pages under blog/.
  */
 const HIDDEN_PAGES = SHOW_BLOG ? [] : ['blog'];
 
@@ -59,10 +56,8 @@ const SITE_URL = 'https://rickyhunley.com';
  */
 const ASSET_RENAMES = {
   'assets/speaking-glendale.png': 'assets/speaking-glendale.jpg',
-  'assets/huddle-prescott.png': 'assets/huddle-prescott.jpg',
   'assets/contact-nogales.png': 'assets/contact-nogales.jpg',
   'assets/denver.png': 'assets/denver.jpg',
-  'assets/hunley-portrait-2013.png': 'assets/hunley-portrait-2013.jpg',
 };
 
 /**
@@ -101,7 +96,7 @@ const PAGES = [
     title: 'Speaking',
     description:
       'Book Ricky Hunley for keynotes, team talks and banquets. Leadership, resilience and service, drawn from a career in college and professional football.',
-    image: 'assets/speaking-2.jpg',
+    image: 'assets/huddle-prescott-sm.jpg',
   },
   {
     key: 'huddle',
@@ -110,7 +105,7 @@ const PAGES = [
     title: 'The Hunley Huddle',
     description:
       'The radio show, live events and podcast where football, brotherhood and community converge.',
-    image: 'assets/huddle-prescott.jpg',
+    image: 'assets/huddle-header-sm.jpg',
   },
   {
     key: 'news',
@@ -128,7 +123,7 @@ const PAGES = [
     title: 'Blog',
     description:
       'Insights from Ricky Hunley on leadership, the game and the work that follows it.',
-    image: 'assets/headshot.jpg',
+    image: 'assets/blog-header-sm.jpg',
   },
   {
     key: 'community',
@@ -163,6 +158,47 @@ const HREF_FOR = {
 
 const src = fs.readFileSync(SRC, 'utf8');
 
+/** `stayCourse` -> `stay-course`. The design's slugs are camelCase; URLs are not. */
+const kebab = (name) => name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+
+/**
+ * The blog's articles.
+ *
+ * In the design these are a single `posts = [...]` array on the component, and
+ * the one `isPost` block is a template rendering whichever article
+ * `state.post` names. Static HTML has no state, so the array is read out of
+ * the source and the template is rendered once per article into
+ * blog/<slug>.html.
+ *
+ * Reading the literal rather than restating it here is the point: the copy
+ * keeps exactly one home, and an edit in the design lands on the next build.
+ */
+function readPosts() {
+  const open = src.indexOf('  posts = [');
+  if (open === -1) throw new Error('could not find the posts array');
+  const close = src.indexOf("\n  ];", open);
+  if (close === -1) throw new Error('unterminated posts array');
+  const literal = src.slice(open + '  posts = '.length, close + 4);
+
+  // eslint-disable-next-line no-eval -- an array literal out of a file we own.
+  const posts = eval('(' + literal + ')');
+  if (!Array.isArray(posts) || !posts.length) throw new Error('no posts parsed');
+  return posts.map((p) => ({ ...p, url: `/blog/${kebab(p.slug)}.html` }));
+}
+
+const POSTS = SHOW_BLOG ? readPosts() : [];
+
+/**
+ * The three articles the index gives a photographic card to. A card's own
+ * image is the better og:image for the article behind it, so it is reused
+ * rather than defaulted to the page header.
+ */
+const POST_IMAGE = {
+  leadership: 'assets/coaching-sm.jpg',
+  mentorship: 'assets/community-sm.jpg',
+  theGame: 'assets/practice-sm.jpg',
+};
+
 // Filled in once the hashed files are written; page() reads them.
 let cssUrl;
 let jsUrl;
@@ -186,7 +222,11 @@ const iconLinks = (src.match(/<link\b[^>]*>/g) || [])
     if (!href || /^https?:/.test(href)) return true;
     return fs.existsSync(path.join(ROOT, href.replace(/^\//, '')));
   })
-  .map((tag) => tag.replace(/\s*\/>$/, '>'));
+  .map((tag) => tag.replace(/\s*\/>$/, '>'))
+  // Root-absolute, for the same reason the body's asset paths are: an icon
+  // written as "assets/favicon.png" resolves to "blog/assets/favicon.png" on
+  // an article page, and the tab silently loses its icon.
+  .map((tag) => tag.replace(/href="(assets\/)/, 'href="/$1'));
 
 // ---------------------------------------------------------------------------
 // 1. Carve the source into shared chrome + one block per page.
@@ -286,6 +326,18 @@ function transform(html) {
     }
   );
 
+  // The blog index links each article with open.<slug>, which in the design
+  // sets state.post and re-renders the isPost block. Here every article is
+  // its own page, so the call becomes that page's URL.
+  out = out.replace(
+    /href="#"\s+onClick="\{\{ open\.(\w+) \}\}"/g,
+    (_, slug) => {
+      const post = POSTS.find((p) => p.slug === slug);
+      if (!post) throw new Error(`blog link to an unknown post: ${slug}`);
+      return `href="${post.url}"`;
+    }
+  );
+
   // Interpolated props.
   out = out.replace(/\{\{ accent \}\}/g, ACCENT);
   out = out.replace(/\{\{ reelUrl \}\}/g, REEL_URL);
@@ -297,26 +349,6 @@ function transform(html) {
   out = out.replace(/\s+muted="\{\{ true \}\}"/g, ' muted');
   out = out.replace(/\s+loop="\{\{ true \}\}"/g, ' loop');
   out = out.replace(/\s+playsInline="\{\{ true \}\}"/g, ' playsinline');
-
-  // --- the About page carousel ---------------------------------------------
-  // Three columns of three stacked images, crossfading on a timer. In the
-  // design a `tick` in component state drives nine opacity values; here the
-  // opacities are baked in at tick 0 and js/site.js advances them.
-  //
-  // Column A starts on its first image, B on its second, C on its third — the
-  // stagger comes from the design's slides(offset) and is preserved by
-  // computing the same thing rather than by copying the numbers out.
-  out = out.replace(
-    /<img\b[^>]*opacity:\s*\{\{ ([abc])([0-2]) \}\}[^>]*>/g,
-    (tag, col, idx) => {
-      const offset = { a: 0, b: 1, c: 2 }[col];
-      const active = offset % 3; // tick starts at 0
-      const opacity = Number(idx) === active ? 0.94 : 0;
-      return tag
-        .replace(`{{ ${col}${idx} }}`, String(opacity))
-        .replace('<img ', `<img data-slide="${col}${idx}" `);
-    }
-  );
 
   // --- the mobile menu -------------------------------------------------------
   // The burger holds both icons; the design switches between them on state.
@@ -347,6 +379,14 @@ function transform(html) {
   for (const [from, to] of Object.entries(ASSET_RENAMES)) {
     out = out.split(from).join(to);
   }
+
+  // The design writes asset paths relative to the document, which is fine only
+  // while every page sits at the root. The article pages do not: from
+  // blog/roster.html, "assets/x.jpg" resolves to "blog/assets/x.jpg" and 404s.
+  // Root-absolute paths work at any depth, so the shared header and footer can
+  // still be rendered once and used by every page.
+  out = out.replace(/(src|href)="(assets|uploads)\//g, '$1="/$2/');
+  out = out.replace(/url\((assets|uploads)\//g, 'url(/$1/');
 
   if (!heroVideoPresent) {
     out = out.replace(/<video\b[^>]*data-hero-video[\s\S]*?<\/video>\s*/g, '');
@@ -384,6 +424,10 @@ function transform(html) {
 
 const headerHtml = transform(header);
 const footerHtml = transform(footer);
+
+/** Article copy is plain text in the design's data; here it becomes markup. */
+const escapeText = (s) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 const escapeAttr = (s) =>
   s
@@ -434,6 +478,53 @@ ${footerHtml}
 `;
 }
 
+/**
+ * Render the design's single `isPost` block for one article.
+ *
+ * The block holds an `sc-for` over `article.paras` wrapping three mutually
+ * exclusive `sc-if` variants — body, subheading, pull quote. The design
+ * decides between them in article(), by looking for a `## ` or `> ` prefix on
+ * each paragraph; this does the same and picks the matching variant, so the
+ * markup for each kind comes from the design rather than from here.
+ */
+function renderPost(post) {
+  const tpl = extractBlock('isPost');
+
+  const loop = tpl.match(/<sc-for list="\{\{ article\.paras \}\}"[^>]*>([\s\S]*?)<\/sc-for>/);
+  if (!loop) throw new Error('no sc-for over article.paras');
+
+  const variant = (flag) => {
+    const re = new RegExp(
+      '<sc-if value="\\{\\{ para\\.' + flag + ' \\}\\}"[^>]*>([\\s\\S]*?)</sc-if>'
+    );
+    const m = loop[1].match(re);
+    if (!m) throw new Error(`no para variant for ${flag}`);
+    return m[1].trim();
+  };
+
+  const body = variant('isBody');
+  const sub = variant('isSub');
+  const quote = variant('isQuote');
+
+  const paras = post.body
+    .map((text) => {
+      const [tpl_, plain] =
+        text.startsWith('## ') ? [sub, text.slice(3)]
+        : text.startsWith('> ') ? [quote, text.slice(2)]
+        : [body, text];
+      return tpl_.split('{{ para.text }}').join(escapeText(plain));
+    })
+    .join("\n      ");
+
+  return tpl
+    // A function replacement: article copy is arbitrary text, and a bare $&
+    // inside it would otherwise be read as a backreference.
+    .replace(/<sc-for[\s\S]*?<\/sc-for>/, () => '      ' + paras)
+    .split('{{ article.category }}').join(escapeText(post.category))
+    .split('{{ article.title }}').join(escapeText(post.title))
+    .split('{{ article.dek }}').join(escapeText(post.dek));
+}
+
 const BUILT = PAGES.filter((p) => !HIDDEN_PAGES.includes(p.key));
 
 // Remove any page that has since been hidden. Without this the last build's
@@ -447,6 +538,20 @@ for (const meta of PAGES.filter((p) => HIDDEN_PAGES.includes(p.key))) {
   }
 }
 
+// Article pages the design no longer has. A renamed or deleted post would
+// otherwise keep its old file on disk — unlinked and out of the sitemap, but
+// still served.
+const blogDir = path.join(ROOT, 'blog');
+if (fs.existsSync(blogDir)) {
+  const wanted = new Set(POSTS.map((p) => path.basename(p.url)));
+  for (const name of fs.readdirSync(blogDir)) {
+    if (name.endsWith('.html') && !wanted.has(name)) {
+      fs.unlinkSync(path.join(blogDir, name));
+      console.log(`removed blog/${name} (no longer in the design)`);
+    }
+  }
+}
+
 // Transform every page first. This populates `hoverRules`, which the stylesheet
 // is built from — and the stylesheet has to exist before any page can be
 // written, because its filename carries a content hash that goes in the <head>.
@@ -455,10 +560,25 @@ const rendered = BUILT.map((meta) => ({
   content: transform(extractBlock(meta.flag)),
 }));
 
+// One page per article, under blog/. Each takes its dek as the meta
+// description and, where the index gave it a card, that card's photograph.
+for (const post of POSTS) {
+  rendered.push({
+    meta: {
+      key: `post:${post.slug}`,
+      file: post.url.slice(1), // "/blog/x.html" -> "blog/x.html"
+      title: post.title,
+      description: post.dek,
+      image: POST_IMAGE[post.slug] || 'assets/blog-header-sm.jpg',
+    },
+    content: transform(renderPost(post)),
+  });
+}
+
 // A 404 in the site's own clothes, using the same hero treatment as the
 // interior pages so a mistyped URL still looks like the site.
 const notFound = `    <section style="position:relative; background:#0C234B; color:#fff; overflow:hidden; min-height:520px; box-sizing:border-box; display:flex; align-items:center">
-      <img src="assets/hunley-ricky-3.jpg" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:58% 44%; filter:grayscale(1) contrast(1.1) brightness(1.02); mix-blend-mode:screen; opacity:0.55" />
+      <img src="/assets/hunley-ricky-3.jpg" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:58% 44%; filter:grayscale(1) contrast(1.1) brightness(1.02); mix-blend-mode:screen; opacity:0.55" />
       <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(12,35,75,.55) 0%, rgba(12,35,75,.72) 60%, rgba(12,35,75,.94) 100%)"></div>
       <div style="position:relative; width:100%; max-width:1280px; margin:0 auto; padding:72px 40px">
         <div style="font-family:Archivo, sans-serif; font-size:11.5px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#93A0B6">Error 404</div>
@@ -483,15 +603,16 @@ rendered.push({
   content: notFound,
 });
 
-// sitemap.xml — the eight real pages, 404 excluded.
+// sitemap.xml — the real pages and every article, 404 excluded.
+const sitemapUrls = [
+  ...BUILT.map((p) =>
+    p.key === 'home' ? `${SITE_URL}/` : `${SITE_URL}/${p.file}`
+  ),
+  ...POSTS.map((p) => `${SITE_URL}${p.url}`),
+];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${BUILT.map(
-  (p) =>
-    `  <url><loc>${
-      p.key === 'home' ? `${SITE_URL}/` : `${SITE_URL}/${p.file}`
-    }</loc></url>`
-).join('\n')}
+${sitemapUrls.map((loc) => `  <url><loc>${loc}</loc></url>`).join('\n')}
 </urlset>
 `;
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
@@ -566,6 +687,15 @@ ${helmetCss}
 
 :focus-visible { outline: 2px solid #AB0520; outline-offset: 3px; }
 
+/* The photo columns on the About and Speaking pages crossfade with a CSS
+   animation the design declares in its <helmet>. Nothing there honours a
+   reduced-motion preference, and the animation runs forever, so it is stopped
+   here — on its first frame, which is what the column would show anyway. */
+@media (prefers-reduced-motion: reduce) {
+  [style*="animation:rhFade"] { animation: none !important; }
+  [style*="animation:rhFade"]:first-of-type { opacity: 0.94 !important; }
+}
+
 /* Hover states, lifted from the design's style-hover attributes. */
 ${hoverCss}
 
@@ -615,9 +745,12 @@ const jsSource = fs.readFileSync(path.join(__dirname, 'site.js'), 'utf8');
 jsUrl = writeHashed('js', 'site', 'js', jsSource);
 
 for (const { meta, content } of rendered) {
-  fs.writeFileSync(path.join(ROOT, meta.file), page(meta, content), 'utf8');
+  const dest = path.join(ROOT, meta.file);
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, page(meta, content), 'utf8');
 }
 
 console.log(
-  `wrote ${rendered.length} pages, ${cssUrl} (${hoverRules.size} hover rules), ${jsUrl}`
+  `wrote ${rendered.length} pages (${POSTS.length} articles), ` +
+    `${cssUrl} (${hoverRules.size} hover rules), ${jsUrl}`
 );

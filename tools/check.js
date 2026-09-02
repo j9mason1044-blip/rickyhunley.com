@@ -17,7 +17,17 @@ const VOID = new Set([
   'link', 'meta', 'param', 'source', 'track', 'wbr',
 ]);
 
-const pages = fs.readdirSync(ROOT).filter((f) => f.endsWith('.html'));
+// The root pages plus the article pages under blog/. `studio/` is a checkout of
+// something else entirely and is deliberately not walked.
+const pages = [
+  ...fs.readdirSync(ROOT).filter((f) => f.endsWith('.html')),
+  ...(fs.existsSync(path.join(ROOT, 'blog'))
+    ? fs
+        .readdirSync(path.join(ROOT, 'blog'))
+        .filter((f) => f.endsWith('.html'))
+        .map((f) => `blog/${f}`)
+    : []),
+];
 let failures = 0;
 
 function fail(file, msg) {
@@ -92,7 +102,8 @@ for (const file of pages) {
   }
 
   // --- internal page links must exist -----------------------------------
-  for (const link of html.match(/href="\/[a-z0-9-]*\.html"/g) || []) {
+  // Nested too: the blog index links twelve pages under /blog/.
+  for (const link of html.match(/href="\/(?:[a-z0-9-]+\/)*[a-z0-9-]*\.html"/g) || []) {
     const target = link.slice(7, -1).replace(/^\//, '');
     if (!fs.existsSync(path.join(ROOT, target))) fail(file, `dead link: ${target}`);
   }
