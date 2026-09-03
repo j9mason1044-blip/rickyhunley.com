@@ -9,3 +9,8 @@ dns-snapshot.md
 studio/dist/
 studio/.sanity/
 studio/schema.json
+
+# Written by build-static.js on every build, so committing it would churn a
+# timestamp on each run. Netlify regenerates it during the deploy and publishes
+# it from the working directory, which is the only copy that matters.
+build-info.json

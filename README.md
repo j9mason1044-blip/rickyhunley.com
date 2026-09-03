@@ -242,6 +242,13 @@ renderer. The Studio is in `studio/`; publishing there fires a webhook at a
 Netlify build hook, and the build command runs the same two commands you would
 run locally. See "The blog comes from Sanity" in `netlify.toml`.
 
+Every build writes `/build-info.json`: when it ran, when the content was
+fetched, how many posts, and Netlify's commit and deploy ID. The pages are
+deterministic, so a successful deploy and a failed one that left the previous
+deploy standing serve identical bytes — this is how you tell them apart, and how
+you answer "did Ricky's publish actually reach the site?" without a Netlify
+login. Absent Netlify fields mean the files were built on someone's machine.
+
 **Only the blog is wired.** `blogPost` and `series` reach the site. The
 `newsItem`, `episode`, `talk` and eight page singletons are modelled and
 populated, but `build-static.js` still takes that copy from the design, so

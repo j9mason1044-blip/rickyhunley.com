@@ -228,6 +228,7 @@ function readContent() {
         posts: content.posts.map((p) => ({ ...p, url: `/blog/${p.slug}.html` })),
         series: content.series || [],
         fetchedAt: content.fetchedAt,
+        source: content.source,
         fromSanity: true,
       };
     }
@@ -818,4 +819,40 @@ for (const { meta, content } of rendered) {
 console.log(
   `wrote ${rendered.length} pages (${POSTS.length} articles), ` +
     `${cssUrl} (${hoverRules.size} hover rules), ${jsUrl}`
+);
+
+// ---------------------------------------------------------------------------
+// Build provenance.
+//
+// Every other output of this build is deterministic: the same content produces
+// byte-identical pages, which is what makes `git diff` after a rebuild mean
+// something. It also makes a deploy impossible to verify from the outside —
+// a successful build and a failed one that left the previous deploy in place
+// serve exactly the same bytes.
+//
+// So the build states, once, when it ran and what it built from. Ricky presses
+// Publish, and this file answers "did that actually reach the site?" without a
+// Netlify login and without editing content to see whether the edit lands.
+//
+// The Netlify fields are absent in a local build, which is the tell that a page
+// was built on someone's machine rather than by a deploy.
+// ---------------------------------------------------------------------------
+
+fs.writeFileSync(
+  path.join(ROOT, 'build-info.json'),
+  JSON.stringify(
+    {
+      builtAt: new Date().toISOString(),
+      contentFetchedAt: CONTENT.fetchedAt || null,
+      contentSource: CONTENT.fromSanity ? CONTENT.source || 'sanity' : 'design fallback',
+      posts: POSTS.length,
+      pages: rendered.length,
+      commit: process.env.COMMIT_REF || null,
+      deployId: process.env.DEPLOY_ID || null,
+      context: process.env.CONTEXT || null,
+    },
+    null,
+    2
+  ) + '\n',
+  'utf8'
 );
