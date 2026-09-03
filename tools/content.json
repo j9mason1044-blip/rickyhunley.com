@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-03T19:04:19.590Z",
+  "fetchedAt": "2026-09-03T23:23:06.372Z",
   "source": "0m77etlx/production",
   "series": [
     {
@@ -1110,9 +1110,16 @@
       "dek": "Effort, execution, accountability. It’s the standard I was chasing my whole career — I just didn’t have the word for it.",
       "category": "Perspective",
       "publishedAt": "2026-08-22T17:00:00.000Z",
-      "seriesId": "series-common-sense-ain-t-common",
+      "seriesId": null,
       "numberInSeries": null,
-      "cover": null,
+      "cover": {
+        "url": "https://cdn.sanity.io/images/0m77etlx/production/f86d8d819bfe3cba66ed35a5ecdeeed8662865e5-6000x4000.jpg",
+        "alt": "Ricky Hunley speaking from the podium at an Arizona football awards banquet",
+        "hotspot": {
+          "x": 0.47,
+          "y": 0.46
+        }
+      },
       "body": [
         {
           "kind": "normal",
@@ -1194,9 +1201,16 @@
       "dek": "My scholarship was mine for four years. That world is gone.",
       "category": "Perspective",
       "publishedAt": "2026-08-21T17:00:00.000Z",
-      "seriesId": "series-common-sense-ain-t-common",
+      "seriesId": null,
       "numberInSeries": null,
-      "cover": null,
+      "cover": {
+        "url": "https://cdn.sanity.io/images/0m77etlx/production/3ea7519cc3ac817877f428b2eeaddc0dc86e8513-1500x1581.jpg",
+        "alt": "Ricky Hunley, No. 89, closing on the play during his Arizona playing days",
+        "hotspot": {
+          "x": 0.42,
+          "y": 0.33
+        }
+      },
       "body": [
         {
           "kind": "normal",
