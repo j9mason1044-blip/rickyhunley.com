@@ -1,4 +1,4 @@
-import { defineType, defineField } from 'sanity'
+import { defineType, defineField, defineArrayMember } from 'sanity'
 import { HomeIcon } from '@sanity/icons/Home'
 import { photoField, photoMember } from '../shared/fields'
 
@@ -24,6 +24,8 @@ export const homePage = defineType({
     { name: 'about', title: 'About teaser' },
     { name: 'talks', title: 'Speaking teaser' },
     { name: 'huddle', title: 'Huddle teaser' },
+    { name: 'f101', title: 'Football 101 teaser' },
+    { name: 'community', title: 'Community teaser' },
   ],
   fields: [
     defineField({
@@ -41,6 +43,38 @@ export const homePage = defineType({
       description: 'The two buttons under the opening paragraph.',
       of: [{ type: 'linkCta' }],
       validation: (rule) => rule.max(2).warning('A third button crowds the hero.'),
+    }),
+    defineField({
+      name: 'stats',
+      title: 'The record',
+      type: 'array',
+      group: 'hero',
+      description:
+        'The band of figures under the header: the number, then what it is. Five fits the row.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'stat',
+          fields: [
+            defineField({
+              name: 'value',
+              title: 'Figure',
+              type: 'string',
+              description: 'Short and bold, e.g. "2×", "No. 7", "1998".',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'label',
+              title: 'What it is',
+              type: 'string',
+              description: 'e.g. "Consensus All-American".',
+              validation: (rule) => rule.required(),
+            }),
+          ],
+          preview: { select: { title: 'value', subtitle: 'label' } },
+        }),
+      ],
+      validation: (rule) => rule.max(5).warning('A sixth wraps onto its own line.'),
     }),
 
     defineField({
@@ -137,13 +171,68 @@ export const homePage = defineType({
       group: 'huddle',
     }),
     defineField({
+      name: 'f101Eyebrow',
+      title: 'Small label',
+      type: 'string',
+      group: 'f101',
+      description: 'Currently "Event Series".',
+    }),
+    defineField({
+      name: 'f101Heading',
+      title: 'Heading',
+      type: 'string',
+      group: 'f101',
+    }),
+    defineField({
+      name: 'f101Body',
+      title: 'Text',
+      type: 'text',
+      rows: 4,
+      group: 'f101',
+      description:
+        'The Huddle page describes Football 101 too, in its own words. Changing this does not change that.',
+    }),
+    defineField({
       name: 'f101Photos',
       title: 'Football 101 photographs',
       type: 'array',
-      group: 'huddle',
+      group: 'f101',
       description:
         'The grid of four under the Football 101 heading. These are the home page’s own copies — the Huddle page has its own set, so changing one does not change the other.',
       of: [photoMember()],
+    }),
+
+    defineField({
+      name: 'communityEyebrow',
+      title: 'Small label',
+      type: 'string',
+      group: 'community',
+      description: 'Currently "Community".',
+    }),
+    defineField({
+      name: 'communityHeading',
+      title: 'Heading',
+      type: 'string',
+      group: 'community',
+    }),
+    defineField({
+      name: 'communitySections',
+      title: 'The three strands',
+      type: 'array',
+      group: 'community',
+      description:
+        'The Foundation, the Tucson partners, the education work — a heading and a line each. The Community page lists these too, and the two have already drifted apart: the home page says “the Arizona Diaper Bank, the American Heart Association”, Community says “American Heart Association, Arizona Diaper Bank”. Worth reconciling; they are separate fields until someone decides which is right.',
+      of: [{ type: 'contentSection' }],
+      validation: (rule) => rule.max(3).warning('The row fits three across.'),
+    }),
+
+    defineField({
+      name: 'pressHeading',
+      title: 'Heading over the press mentions',
+      type: 'string',
+      group: 'community',
+      description:
+        'Currently "In the press". The mentions themselves come from News Items — the three most recent appear here.',
     }),
   ],
   preview: { prepare: () => ({ title: 'Home Page' }) },

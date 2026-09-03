@@ -1,13 +1,19 @@
-# The blog comes from Sanity; every other page is generated from the design.
-# fetch-content.js writes tools/content.json, build-static.js renders it — the
-# same two commands you would run locally, so a deploy cannot drift from a
-# local build.
+# The blog, the page copy and the photographs come from Sanity; the design
+# supplies the layout. fetch-content.js writes tools/content.json,
+# build-static.js renders it — the same commands you would run locally, so a
+# deploy cannot drift from a local build.
+#
+# check.js runs last and its exit code fails the deploy. That is the point: the
+# page copy is bound to the design by position (`s3.p[1]`), so editing the
+# design can move a binding and leave a heading rendering the wrong sentence
+# while the build still reports success. A failed deploy keeps the previous
+# site up, which is much the better of the two bad outcomes.
 #
 # build-assets.js is deliberately absent: it needs ffmpeg and the Dropbox
 # masters, neither of which exist here, and assets/ is committed.
 [build]
   publish = "."
-  command = "node tools/fetch-content.js && node tools/build-static.js"
+  command = "node tools/fetch-content.js && node tools/build-static.js && node tools/check.js"
 
 [build.environment]
   # fetch-content.js uses global fetch, so anything below Node 18 fails at the

@@ -22,9 +22,11 @@ const crypto = require('crypto');
 const { renderBlogIndex, coverUrl } = require('./blog-index');
 const dc = require('./dc-paths');
 const { PHOTOS, PAGE_TYPES, applyPhotos, readField } = require('./page-photos');
+const { TEXT, applyText } = require('./page-text');
 
 /** Counted across the page loop, and reported so a build log says what landed. */
 let photoCount = 0;
+let textCount = 0;
 
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(__dirname, 'RickyHunley.com.dc.html');
@@ -237,6 +239,7 @@ function readContent() {
         // The page singletons, keyed by _type. Absent on an older content.json,
         // which simply means every page still renders the design's own copy.
         pages: content.pages || {},
+        siteSettings: content.siteSettings || null,
         fromSanity: true,
       };
     }
@@ -613,6 +616,27 @@ if (fs.existsSync(blogDir)) {
   }
 }
 
+/**
+ * The anchor the design wraps the booking email in, borrowed as a template.
+ *
+ * The Speaking page's booking sentence has the address inside a styled link.
+ * Ricky edits that sentence as plain prose — the address comes from Site
+ * Settings, so it is written once — which means the build has to put the link
+ * back. Lifting the anchor from the design rather than writing one here keeps
+ * its styling wherever the design takes it.
+ */
+const EMAIL_ANCHOR = (() => {
+  // Read it out of the booking sentence itself, not out of the page. The
+  // Speaking hero's "Book Ricky" button is also a mailto: link and comes first,
+  // so searching the whole block borrows a 38px-tall uppercase button and drops
+  // it into the middle of a paragraph.
+  const binding = (TEXT.speakingPage || []).find((b) => b.html);
+  if (!binding) return null;
+  const sentence = dc.get(extractBlock('isSpeaking'), binding.path);
+  const m = /<a\b[\s\S]*?<\/a>/.exec(sentence);
+  return m ? m[0] : null;
+})();
+
 // Transform every page first. This populates `hoverRules`, which the stylesheet
 // is built from — and the stylesheet has to exist before any page can be
 // written, because its filename carries a content hash that goes in the <head>.
@@ -638,6 +662,18 @@ const rendered = BUILT.map((meta) => {
     const { html, applied } = applyPhotos(block, PHOTOS[type], pageDoc, dc);
     block = html;
     photoCount += applied.length;
+  }
+
+  // The words. Same rule as the photographs: each binding is independent and
+  // skipped when its field is empty, so a page Sanity has nothing to say about
+  // renders the design's own copy rather than a blank heading.
+  if (pageDoc && TEXT[type]) {
+    const { html, applied } = applyText(block, TEXT[type], pageDoc, dc, {
+      email: CONTENT.siteSettings && CONTENT.siteSettings.email,
+      emailAnchor: EMAIL_ANCHOR,
+    });
+    block = html;
+    textCount += applied.length;
   }
 
   // The share image follows the header photograph, rather than being a second
@@ -851,7 +887,7 @@ for (const { meta, content } of rendered) {
 
 console.log(
   `wrote ${rendered.length} pages (${POSTS.length} articles), ` +
-    `${photoCount} page photographs from Sanity, ` +
+    `${textCount} fields and ${photoCount} photographs from Sanity, ` +
     `${cssUrl} (${hoverRules.size} hover rules), ${jsUrl}`
 );
 

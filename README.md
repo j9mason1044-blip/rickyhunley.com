@@ -251,18 +251,38 @@ deploy standing serve identical bytes — this is how you tell them apart, and h
 you answer "did Ricky's publish actually reach the site?" without a Netlify
 login. Absent Netlify fields mean the files were built on someone's machine.
 
-**Only the blog is wired.** `blogPost` and `series` reach the site. The
-`newsItem`, `episode`, `talk` and eight page singletons are modelled and
-populated, but `build-static.js` still takes that copy from the design, so
-editing them changes nothing. The page singletons are hidden from the Studio for
-exactly that reason — `PAGES_ARE_LIVE` in `studio/structure/index.ts` — and the
-Sanity webhook filters to `blogPost` and `series` so a news edit does not fire a
-build that cannot change anything.
+**What Sanity owns:** the blog, all eight pages' copy (125 fields) and every
+photograph on them (32), plus Site Settings. **What it does not:** `newsItem`,
+`episode` and `talk` are modelled and populated but `build-static.js` still
+renders those lists from the design, so editing them changes nothing yet. They
+are the remaining work, and the Sanity webhook deliberately excludes them — a
+build they triggered could not change anything, and a deploy notification that
+usually means nothing is one nobody reads.
+
+**How page copy is bound.** The design is one file of inline styles with no
+classes or ids, so fields are bound to it *by position* —
+`tools/page-text.js` maps `homePage.hero.heading` to `s0.h1[0]`, meaning the
+first `<h1>` of the first `<section>`. `tools/dc-paths.js` does the
+addressing. That is fragile in one specific way: editing the design can move an
+element and leave a binding pointing at the wrong one, with the build still
+succeeding. Three checks guard it and `tools/check.js` runs them, which is why
+`check.js` is in the Netlify build command — a failed deploy keeps the previous
+site up, and that beats a page that has quietly lost its copy.
+
+- `verify-paths.js` — `set(get(x)) === x` for all 498 addressable nodes.
+- `verify-text-map.js` — every binding resolves, to copy rather than markup,
+  and nothing is bound twice.
+- `verify-text-roundtrip.js` — seed the documents from the design, render them
+  back, require byte-identical pages. This is the one that proved the migration
+  changed not a single word.
+
+**If you edit the design**, re-run `node tools/check.js` before pushing. If a
+binding has slipped, it will say which.
 
 Known gaps to close before calling it finished:
 
-- News, episodes, talks and the page singletons are in Sanity but unread by the
-  build. Each is the same shape of work the blog already went through.
+- News items, episodes and talks are in Sanity but still rendered from the
+  design. Each is the same shape of work the blog and the pages went through.
 - The booking CTAs are `mailto:` links, not a form. No submission log, and no
   `source_page` field, so there is no record of which page produced an inquiry.
 - The meta descriptions in `tools/build-static.js` are placeholders

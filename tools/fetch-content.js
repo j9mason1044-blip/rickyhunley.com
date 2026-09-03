@@ -140,6 +140,10 @@ const PAGES = `*[_type in [
   "newsPage", "blogPage", "communityPage", "contactPage"
 ]]`;
 
+const SITE_SETTINGS = `*[_type == "siteSettings"][0]{
+  email, footerBlurb, location, socials
+}`;
+
 const IMAGE_ASSETS = `*[_type == "sanity.imageAsset"]{
   _id, url, "width": metadata.dimensions.width, "height": metadata.dimensions.height
 }`;
@@ -174,11 +178,12 @@ function resolveImages(node, assets) {
 }
 
 async function main() {
-  const [posts, series, pageDocs, imageAssets] = await Promise.all([
+  const [posts, series, pageDocs, imageAssets, siteSettings] = await Promise.all([
     query(POSTS),
     query(SERIES),
     query(PAGES),
     query(IMAGE_ASSETS),
+    query(SITE_SETTINGS),
   ]);
 
   if (!Array.isArray(posts) || !posts.length) {
@@ -202,6 +207,9 @@ async function main() {
     source: `${PROJECT_ID}/${DATASET}`,
     series: series || [],
     pages,
+    // Written once, used in several places — the booking sentence on Speaking
+    // links whichever address is here, rather than repeating it in the copy.
+    siteSettings: siteSettings || null,
     posts: posts.map((p) => ({
       slug: p.slug,
       title: p.title,

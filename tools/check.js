@@ -159,8 +159,36 @@ for (const cls of used) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// The design <-> Sanity binding contract.
+//
+// The page copy lives in Sanity now and is put back into the design's markup by
+// path — `s3.p[1]` and the like. Those paths are positional, so editing the
+// design can move one without anyone noticing: the build still succeeds, and a
+// heading quietly renders the wrong sentence, or nothing at all.
+//
+// Running them here means a deploy fails instead. Keeping the previous deploy
+// up is the better outcome; a page that has silently lost its copy is not.
+// ---------------------------------------------------------------------------
+const { spawnSync } = require('child_process');
+
+for (const script of [
+  'verify-paths.js',
+  'verify-text-map.js',
+  'verify-text-roundtrip.js',
+]) {
+  const run = spawnSync(process.execPath, [path.join(__dirname, script)], {
+    encoding: 'utf8',
+  });
+  if (run.status !== 0) {
+    failures++;
+    console.error(`\n${script} FAILED:`);
+    console.error((run.stdout || '') + (run.stderr || ''));
+  }
+}
+
 console.log(
-  `\nchecked ${pages.length} pages, ${used.size} hover classes — ${
+  `\nchecked ${pages.length} pages, ${used.size} hover classes, 3 binding checks — ${
     failures ? `${failures} failure(s)` : 'all clear'
   }`
 );

@@ -69,6 +69,13 @@ export const huddlePage = defineType({
       validation: (rule) => rule.max(3).warning('The row fits three across.'),
     }),
     defineField({
+      name: 'episodesHeading',
+      title: 'Heading over the episodes',
+      type: 'string',
+      group: 'strands',
+      description: 'Currently "Episodes". The episodes themselves are edited under Episodes.',
+    }),
+    defineField({
       name: 'episodesNote',
       title: 'Note under the episodes',
       type: 'string',

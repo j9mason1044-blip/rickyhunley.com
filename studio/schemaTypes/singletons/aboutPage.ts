@@ -48,6 +48,13 @@ export const aboutPage = defineType({
     }),
 
     defineField({
+      name: 'honoursHeading',
+      title: 'Heading over the list',
+      type: 'string',
+      group: 'honours',
+      description: 'Currently "Achievements & honors".',
+    }),
+    defineField({
       name: 'honours',
       title: 'Achievements & honours',
       type: 'array',

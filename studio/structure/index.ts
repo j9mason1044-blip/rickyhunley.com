@@ -35,10 +35,15 @@ const singleton = (
     .child(S.document().schemaType(type).documentId(type).title(title))
 
 /**
- * Whether the page singletons are shown to Ricky. See the note beside them.
- * They are built and valid; the site just does not read them yet.
+ * Whether the page singletons are shown to Ricky.
+ *
+ * True since the page copy and photographs moved into Sanity: build-static.js
+ * now reads 125 text fields and 32 photographs out of these documents, so every
+ * control behind this flag changes the site. Verified by rendering the seeded
+ * documents back into the design and getting byte-identical pages — see
+ * tools/verify-text-roundtrip.js.
  */
-const PAGES_ARE_LIVE = false
+const PAGES_ARE_LIVE = true
 
 /** Types given an explicit item below, so the catch-all must skip them. */
 const HANDLED = [
