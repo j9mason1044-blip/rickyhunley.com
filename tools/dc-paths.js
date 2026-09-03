@@ -22,8 +22,17 @@
  * every page. Everything else here is built on that.
  */
 
-/** Tags whose text content is page copy. `span` carries the small eyebrow labels. */
-const TEXT_TAGS = ['h1', 'h2', 'h3', 'h4', 'p', 'span', 'a', 'li'];
+/**
+ * Tags whose text content is page copy.
+ *
+ * `div` is here because the design writes the small uppercase eyebrow labels as
+ * bare divs — there is no semantic element for them and no class to select on.
+ * It makes the addressable set much larger and most of those nodes are pure
+ * layout wrappers, which is harmless: nothing is bound to a path unless a map
+ * names it, and findTags counts nesting so a wrapper and its contents stay
+ * distinct.
+ */
+const TEXT_TAGS = ['h1', 'h2', 'h3', 'h4', 'p', 'span', 'a', 'li', 'div'];
 
 /** Split a page block into its top-level sections, keeping every byte. */
 function splitSections(html) {
