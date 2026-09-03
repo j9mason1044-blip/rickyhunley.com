@@ -233,15 +233,27 @@ verified live on the domain.
 
 ## What this is not, yet
 
-`HANDOFF-PLAN.md` in the design project describes the intended end state:
-Astro for the templates, Sanity as the CMS Ricky actually logs into, Netlify
-Forms for booking inquiries, and JSON-LD `Person` markup for the knowledge
-panel. None of that is here. This is the design, faithfully, as files that
-deploy — the foundation that migration starts from, and a site that is live in
-the meantime.
+`HANDOFF-PLAN.md` in the design project describes the intended end state: Astro
+for the templates, Sanity as the CMS Ricky actually logs into, Netlify Forms for
+booking inquiries, and JSON-LD `Person` markup for the knowledge panel.
+
+Sanity is now live, and there is no Astro — `build-static.js` stays the
+renderer. The Studio is in `studio/`; publishing there fires a webhook at a
+Netlify build hook, and the build command runs the same two commands you would
+run locally. See "The blog comes from Sanity" in `netlify.toml`.
+
+**Only the blog is wired.** `blogPost` and `series` reach the site. The
+`newsItem`, `episode`, `talk` and eight page singletons are modelled and
+populated, but `build-static.js` still takes that copy from the design, so
+editing them changes nothing. The page singletons are hidden from the Studio for
+exactly that reason — `PAGES_ARE_LIVE` in `studio/structure/index.ts` — and the
+Sanity webhook filters to `blogPost` and `series` so a news edit does not fire a
+build that cannot change anything.
 
 Known gaps to close before calling it finished:
 
+- News, episodes, talks and the page singletons are in Sanity but unread by the
+  build. Each is the same shape of work the blog already went through.
 - The booking CTAs are `mailto:` links, not a form. No submission log, and no
   `source_page` field, so there is no record of which page produced an inquiry.
 - The meta descriptions in `tools/build-static.js` are placeholders

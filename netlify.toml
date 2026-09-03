@@ -1,7 +1,19 @@
-# The site is plain static files at the repo root — nothing to build.
+# The blog comes from Sanity; every other page is generated from the design.
+# fetch-content.js writes tools/content.json, build-static.js renders it — the
+# same two commands you would run locally, so a deploy cannot drift from a
+# local build.
+#
+# build-assets.js is deliberately absent: it needs ffmpeg and the Dropbox
+# masters, neither of which exist here, and assets/ is committed.
 [build]
   publish = "."
-  command = ""
+  command = "node tools/fetch-content.js && node tools/build-static.js"
+
+[build.environment]
+  # fetch-content.js uses global fetch, so anything below Node 18 fails at the
+  # first query. Pinned rather than left to Netlify's default, which has moved
+  # before and would take the blog down when it moves again.
+  NODE_VERSION = "22"
 
 # Netlify serves /about for /about.html on its own; nothing to configure.
 

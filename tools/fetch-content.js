@@ -9,9 +9,10 @@
  *     that has to stay readable; threading async through it to save a file
  *     would be a poor trade.
  *   - The build works offline. Fetch once, rebuild as often as you like.
- *   - `content.json` is committed, so `git diff` shows exactly what Ricky
- *     changed between two deploys. That is worth more than it sounds the first
- *     time something on the live site looks wrong.
+ *   - `content.json` is committed, so a checkout builds the real blog with no
+ *     network at all. It is a fallback, not a record: Netlify re-fetches on
+ *     every deploy, so the committed copy goes stale the moment Ricky
+ *     publishes. Sanity's own document history is the audit trail.
  *
  *   node tools/fetch-content.js && node tools/build-static.js
  *
