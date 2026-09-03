@@ -152,6 +152,46 @@ function card(exemplar, post, hrefFor) {
   return html;
 }
 
+/**
+ * The lone post of a one-post series.
+ *
+ * A series list is a run of rows separated by hairlines; with one member it
+ * renders as a heading, an intro, and a single rule with a title floating over
+ * it — which reads as a list that failed to load rather than as a deliberate
+ * one. So a series of one is presented as a feature panel instead: the card
+ * treatment from "Latest posts", minus the photograph, at the full width of the
+ * section.
+ *
+ * Built from the card exemplar rather than written out here, for the same
+ * reason as everything else in this file — the design keeps deciding what a
+ * card looks like. Dropping the image block is the one liberty taken, because a
+ * 16:10 photograph across the full 1280px would tower over the three cards
+ * above it, and the posts that end up alone in a series are the ones least
+ * likely to have a photograph of their own.
+ */
+function feature(cardExemplar, post, hrefFor) {
+  // The image sits in a wrapper div of its own, identified by the aspect ratio
+  // only it carries. Matching the wrapper rather than the <img> takes the
+  // 16:10 box with it; leaving the box behind would reserve the space.
+  const withoutImage = cardExemplar.replace(
+    /\s*<div\b[^>]*aspect-ratio:16 \/ 10[^>]*>[\s\S]*?<\/div>/,
+    ''
+  );
+  if (withoutImage === cardExemplar) {
+    throw new Error('the blog card exemplar no longer has an image block to drop');
+  }
+
+  // Standing on its own, the panel needs the hairline the cards get from their
+  // grid — the three cards are separated by a 1px gap over a #E6E2DA ground,
+  // which a single card outside that grid does not inherit.
+  const bordered = withoutImage.replace(
+    /(<a href="#" onClick="\{\{ open\.\w+ \}\}" style="[^"]*)"/,
+    '$1; border:1px solid #E6E2DA"'
+  );
+
+  return card(bordered, post, hrefFor);
+}
+
 /** One row in a series list. */
 function row(exemplar, post, hrefFor, { isLast }) {
   let html = linkTo(exemplar, hrefFor(post));
@@ -220,6 +260,24 @@ function renderBlogIndex(blogHtml, content, hrefFor) {
 
   // --- the cards: every post that is not part of a series ------------------
   const standalone = content.posts.filter((p) => !p.seriesId);
+
+  // A card without a cover image keeps the exemplar's — which is the blog
+  // header photograph, so the new post would silently appear wearing the same
+  // picture as the page it sits on. Every other missing field degrades safely,
+  // this one does not, so it stops the build instead. Failing the deploy leaves
+  // the previous site up; shipping it puts a duplicate photograph in front of
+  // the client. (Series rows carry no photograph, so this applies to the cards
+  // only — moving a post out of a series is what turns it into a card.)
+  const coverless = standalone.filter((p) => !p.cover);
+  if (coverless.length) {
+    throw new Error(
+      `blog post(s) with no cover image would render as cards: ${coverless
+        .map((p) => p.slug)
+        .join(', ')}.\n` +
+        'Add a Cover image to each in the Studio, or give the post a series.'
+    );
+  }
+
   parts[cardsIndex] = replaceLinks(
     parts[cardsIndex],
     standalone.map((p) => card(cardExemplar, p, hrefFor))
@@ -238,14 +296,23 @@ function renderBlogIndex(blogHtml, content, hrefFor) {
         );
       if (!members.length) return '';
 
+      let html = seriesExemplar;
+      html = setInner(html, 'h2', escapeHtml(s.title));
+      html = setInner(html, 'p', escapeHtml(s.intro || ''));
+
+      // A series of one is a feature panel, not a list with a single item. Note
+      // this runs after the heading and the intro are set: `setInner` takes the
+      // first <h2> and the first <p> it finds, and the panel brings an <h2> and
+      // a <p> of its own.
+      if (members.length === 1) {
+        return replaceLinks(html, [feature(cardExemplar, members[0], hrefFor)]);
+      }
+
       const numbered = members.some((p) => p.numberInSeries != null);
       const exemplar = numbered
         ? rowExemplars.numbered ?? rowExemplars.plain
         : rowExemplars.plain ?? rowExemplars.numbered;
 
-      let html = seriesExemplar;
-      html = setInner(html, 'h2', escapeHtml(s.title));
-      html = setInner(html, 'p', escapeHtml(s.intro || ''));
       return replaceLinks(
         html,
         members.map((p, i) =>
