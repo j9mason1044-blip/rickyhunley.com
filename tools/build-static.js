@@ -20,6 +20,11 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { renderBlogIndex, coverUrl } = require('./blog-index');
+const dc = require('./dc-paths');
+const { PHOTOS, PAGE_TYPES, applyPhotos, readField } = require('./page-photos');
+
+/** Counted across the page loop, and reported so a build log says what landed. */
+let photoCount = 0;
 
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(__dirname, 'RickyHunley.com.dc.html');
@@ -229,6 +234,9 @@ function readContent() {
         series: content.series || [],
         fetchedAt: content.fetchedAt,
         source: content.source,
+        // The page singletons, keyed by _type. Absent on an older content.json,
+        // which simply means every page still renders the design's own copy.
+        pages: content.pages || {},
         fromSanity: true,
       };
     }
@@ -619,7 +627,32 @@ const rendered = BUILT.map((meta) => {
     block = renderBlogIndex(block, CONTENT, (post) => post.url);
   }
 
-  return { meta, content: transform(block) };
+  // Photographs Ricky owns. Applied to the design's markup before transform(),
+  // so the Sanity URL is already absolute when the assets/ -> /assets/ rewrite
+  // runs and is left alone by it. A photograph missing from Sanity leaves the
+  // design's own file in place rather than blanking the image, which is what
+  // lets this ship page by page.
+  const type = PAGE_TYPES[meta.flag];
+  const pageDoc = CONTENT.pages && CONTENT.pages[type];
+  if (pageDoc && PHOTOS[type]) {
+    const { html, applied } = applyPhotos(block, PHOTOS[type], pageDoc, dc);
+    block = html;
+    photoCount += applied.length;
+  }
+
+  // The share image follows the header photograph, rather than being a second
+  // filename to remember. Without this, changing a page's header in the Studio
+  // leaves every link to it on Facebook and iMessage showing the old picture —
+  // the kind of wrong that nobody sees until a client does.
+  //
+  // Sanity crops to Open Graph's 1.91:1 around the hotspot Ricky set, which is
+  // the one place a server-side crop is safe: the ratio is fixed and known.
+  const heroImage = readField(pageDoc || {}, 'hero.image');
+  const shareMeta = heroImage
+    ? { ...meta, image: coverUrl(heroImage, { width: 600, height: 315 }) }
+    : meta;
+
+  return { meta: shareMeta, content: transform(block) };
 });
 
 // One page per article, under blog/. Each takes its dek as the meta
@@ -818,6 +851,7 @@ for (const { meta, content } of rendered) {
 
 console.log(
   `wrote ${rendered.length} pages (${POSTS.length} articles), ` +
+    `${photoCount} page photographs from Sanity, ` +
     `${cssUrl} (${hoverRules.size} hover rules), ${jsUrl}`
 );
 

@@ -1,6 +1,6 @@
 import { defineType, defineField } from 'sanity'
 import { HomeIcon } from '@sanity/icons/Home'
-import { photoField } from '../shared/fields'
+import { photoField, photoMember } from '../shared/fields'
 
 /**
  * The home page. The most bespoke of the singletons, because it is the only
@@ -135,6 +135,15 @@ export const homePage = defineType({
       type: 'text',
       rows: 4,
       group: 'huddle',
+    }),
+    defineField({
+      name: 'f101Photos',
+      title: 'Football 101 photographs',
+      type: 'array',
+      group: 'huddle',
+      description:
+        'The grid of four under the Football 101 heading. These are the home page’s own copies — the Huddle page has its own set, so changing one does not change the other.',
+      of: [photoMember()],
     }),
   ],
   preview: { prepare: () => ({ title: 'Home Page' }) },

@@ -122,11 +122,77 @@ const SERIES = `*[_type == "series"] | order(order asc) {
   "id": _id, title, intro, order
 }`;
 
+/**
+ * The eight page singletons, whole.
+ *
+ * Projected raw rather than field by field. The pages carry dozens of fields
+ * between them and the set grows whenever the design does; a hand-written
+ * projection would be a second schema to keep in step, and the failure when it
+ * fell behind would be a field quietly missing from the site.
+ *
+ * Image assets are not resolved in the query for the same reason — a generic
+ * projection cannot say where a document's images are. Every asset is fetched
+ * alongside instead and the references resolved below, which keeps working for
+ * any field added later without touching this.
+ */
+const PAGES = `*[_type in [
+  "homePage", "aboutPage", "speakingPage", "huddlePage",
+  "newsPage", "blogPage", "communityPage", "contactPage"
+]]`;
+
+const IMAGE_ASSETS = `*[_type == "sanity.imageAsset"]{
+  _id, url, "width": metadata.dimensions.width, "height": metadata.dimensions.height
+}`;
+
+/**
+ * Walk a document and inline every image reference, so build-static.js never
+ * has to know that Sanity stores images by reference into a separate document.
+ *
+ * An image whose asset has vanished resolves to null rather than to a broken
+ * reference: the renderer then leaves the design's own photograph in place,
+ * which is the same fallback the whole page migration uses.
+ */
+function resolveImages(node, assets) {
+  if (Array.isArray(node)) return node.map((n) => resolveImages(n, assets));
+  if (!node || typeof node !== 'object') return node;
+
+  if (node._type === 'image' && node.asset && node.asset._ref) {
+    const asset = assets[node.asset._ref];
+    if (!asset) return null;
+    return {
+      url: asset.url,
+      width: asset.width,
+      height: asset.height,
+      alt: node.alt || '',
+      hotspot: node.hotspot ? { x: node.hotspot.x, y: node.hotspot.y } : null,
+    };
+  }
+
+  const out = {};
+  for (const [k, v] of Object.entries(node)) out[k] = resolveImages(v, assets);
+  return out;
+}
+
 async function main() {
-  const [posts, series] = await Promise.all([query(POSTS), query(SERIES)]);
+  const [posts, series, pageDocs, imageAssets] = await Promise.all([
+    query(POSTS),
+    query(SERIES),
+    query(PAGES),
+    query(IMAGE_ASSETS),
+  ]);
 
   if (!Array.isArray(posts) || !posts.length) {
     throw new Error('Sanity returned no blog posts — refusing to write an empty content.json');
+  }
+
+  // Keyed by _type: each page is a singleton, so its type names it. Images are
+  // inlined here so content.json is readable on its own and build-static.js
+  // stays free of Sanity's storage model.
+  const assets = Object.fromEntries((imageAssets || []).map((a) => [a._id, a]));
+  const pages = {};
+  for (const doc of pageDocs || []) {
+    const { _id, _rev, _createdAt, _updatedAt, ...fields } = doc;
+    pages[doc._type] = resolveImages(fields, assets);
   }
 
   const content = {
@@ -135,6 +201,7 @@ async function main() {
     fetchedAt: new Date().toISOString(),
     source: `${PROJECT_ID}/${DATASET}`,
     series: series || [],
+    pages,
     posts: posts.map((p) => ({
       slug: p.slug,
       title: p.title,
@@ -164,8 +231,9 @@ async function main() {
   fs.writeFileSync(OUT, JSON.stringify(content, null, 2) + '\n', 'utf8');
 
   console.log(
-    `fetched ${content.posts.length} posts and ${content.series.length} series ` +
-      `from ${content.source} -> tools/content.json`
+    `fetched ${content.posts.length} posts, ${content.series.length} series and ` +
+      `${Object.keys(content.pages).length} pages from ${content.source} ` +
+      `-> tools/content.json`
   );
 }
 
