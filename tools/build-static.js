@@ -41,6 +41,20 @@ const SHOW_FOUNDATION = true;
 // index and the twelve article pages behind it are built and linked.
 const SHOW_BLOG = true;
 
+// The News page is off until its links are repaired. Of its nine press links,
+// five 404 (the National Football Foundation honoree page, AZ Desert Swarm, two
+// Greg Hansen pieces carrying the same invented tucson.com article id, and the
+// Wildcat Report Substack), one resolves to an unrendered CMS template
+// (arizonawildcats.com, which serves a literal '@fullname'), and one points at
+// the wrong article. Two of the nine are correct. Publishing a page of dead
+// links reads worse than not having the page.
+//
+// Turning this back to true restores the page, its navigation links and the
+// home page's "In the press" row in one move — so fix the URLs in
+// tools/RickyHunley.com.dc.html first, and drop the temporary /news redirects
+// from netlify.toml in the same commit.
+const SHOW_NEWS = false;
+
 // Empty in the design, which falls back to '#'. A CTA linking to '#' is a dead
 // button on a live site, so the whole link is dropped until there is a real URL.
 const EVENTBRITE_URL = '';
@@ -48,11 +62,24 @@ const EVENTBRITE_URL = '';
 /**
  * Pages built but not linked, or not built at all.
  *
- * Hiding a page means it is not generated, it is dropped from the sitemap, and
- * every navigation link to it is removed — header, mobile drawer and footer.
- * Hiding the blog also deletes the article pages under blog/.
+ * Hiding a page means it is not generated, it is dropped from the sitemap,
+ * every navigation link to it is removed — header, mobile drawer and footer —
+ * and any section elsewhere that exists only to advertise it goes too (see
+ * PROMO_SECTIONS). Hiding the blog also deletes the article pages under blog/.
  */
-const HIDDEN_PAGES = SHOW_BLOG ? [] : ['blog'];
+const HIDDEN_PAGES = [
+  ...(SHOW_BLOG ? [] : ['blog']),
+  ...(SHOW_NEWS ? [] : ['news']),
+];
+
+/**
+ * How many sections on *other* pages exist only to promote each page — the
+ * home page's "In the press" row is the News page's one. Hiding a page drops
+ * these along with its navigation links; the count is asserted after rendering
+ * so a restructured design fails the build instead of shipping a headed row of
+ * links to nowhere.
+ */
+const PROMO_SECTIONS = { news: 1, blog: 0 };
 
 const SITE_URL = 'https://rickyhunley.com';
 
@@ -338,6 +365,53 @@ function extractBlock(flag) {
 
 const hoverRules = new Map(); // css text -> class name
 
+/**
+ * Sections dropped for pointing at a hidden page, counted so the emit step can
+ * insist the removal actually happened. A regex that silently matched nothing
+ * would leave the dead press links on the home page and still build green.
+ */
+const droppedSections = new Map();
+
+/**
+ * Remove every <section> whose subtree contains a link to `href`.
+ *
+ * Written as a scan rather than a regex because <section> can nest, and a lazy
+ * `[\s\S]*?</section>` would stop at the first inner close tag — leaving a
+ * stray `</section>` behind and unbalancing the page. check.js would report
+ * that as a tag-balance failure several steps away from its cause.
+ */
+function dropSectionsLinkingTo(html, href, key) {
+  if (!href) return html;
+  const needle = `href="${href}"`;
+  const opens = /<section\b/g;
+  const tags = /<(\/?)section\b/g;
+  let out = '';
+  let cursor = 0;
+  let m;
+  while ((m = opens.exec(html))) {
+    if (m.index < cursor) continue;
+    tags.lastIndex = m.index;
+    let depth = 0;
+    let end = -1;
+    let t;
+    while ((t = tags.exec(html))) {
+      depth += t[1] ? -1 : 1;
+      if (depth === 0) {
+        end = html.indexOf('>', t.index) + 1;
+        break;
+      }
+    }
+    if (end === -1) break; // unbalanced markup: leave the remainder alone
+    if (html.slice(m.index, end).includes(needle)) {
+      out += html.slice(cursor, m.index).replace(/[ \t]+$/, '');
+      cursor = end;
+      droppedSections.set(key, (droppedSections.get(key) || 0) + 1);
+      opens.lastIndex = end;
+    }
+  }
+  return out + html.slice(cursor);
+}
+
 function transform(html) {
   let out = html;
 
@@ -465,6 +539,17 @@ function transform(html) {
 
   // Fold the data-hv marker into a real class attribute.
   out = out.replace(/ data-hv="([^"]+)"/g, ' class="$1"');
+
+  // A whole section that exists only to promote a hidden page goes with it.
+  // The home page's "In the press" row is three cards plus an "All news →"
+  // link; strip only the link and what is left is a headed, empty-looking row
+  // of the same dead press links the News page was hidden for. The section is
+  // identified by the navigation link it contains rather than by its heading,
+  // because the heading is Sanity copy (homePage.pressHeading) and can be
+  // renamed in the Studio at any time.
+  for (const key of HIDDEN_PAGES) {
+    out = dropSectionsLinkingTo(out, HREF_FOR[key], key);
+  }
 
   // Navigation links to hidden pages, wherever they appear.
   for (const key of HIDDEN_PAGES) {
@@ -737,6 +822,24 @@ rendered.push({
   },
   content: notFound,
 });
+
+// Every hidden page's promo section has to have actually been found. Hiding a
+// page is a two-part edit — the nav links go, and so does the block on another
+// page that advertises it — and only the first half announces itself. If the
+// design is restructured so the home page's press row is no longer a <section>,
+// this stops the build rather than shipping a row of dead links under a heading.
+for (const key of HIDDEN_PAGES) {
+  const found = droppedSections.get(key) || 0;
+  const expected = PROMO_SECTIONS[key];
+  if (expected === undefined) continue;
+  if (found !== expected) {
+    console.error(
+      `hidden page "${key}": expected to drop ${expected} promo section(s), dropped ${found}.\n` +
+        'The design has moved; find what now promotes the page and update PROMO_SECTIONS.'
+    );
+    process.exit(1);
+  }
+}
 
 // sitemap.xml — the real pages and every article, 404 excluded.
 const sitemapUrls = [

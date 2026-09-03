@@ -12,8 +12,10 @@ Netlify publishes it. That is the whole deployment story for now.
 
 ```
 index.html  about.html  speaking.html  huddle.html
-news.html   blog.html   community.html  contact.html
+blog.html   community.html  contact.html
 404.html
+
+news.html is not built at present — see Hidden pages.
 
 blog/            generated: one page per article in the design
 
@@ -89,10 +91,34 @@ previous build made it, is dropped from the sitemap, and has every navigation
 link to it stripped from the header, mobile drawer and footer.
 
 `SHOW_BLOG` mirrors the design's own `showBlog` prop, so the two agree without
-either needing to know about the other.
+either needing to know about the other. `SHOW_NEWS` has no counterpart in the
+design; it exists only to take the News page down.
 
-The blog was hidden while it held only sample copy. It now holds twelve real
-articles and is published; nothing is hidden at present.
+Hiding a page also drops any section on *another* page that exists only to
+advertise it — the home page's "In the press" row is the News page's one.
+`PROMO_SECTIONS` records how many of those each page has, and the build fails if
+it cannot find them, because that half of the job is the half that fails
+quietly: strip the "All news →" link on its own and what remains is a heading
+over three links to the same dead articles.
+
+**The blog** was hidden while it held only sample copy. It now holds twelve real
+articles and is published.
+
+**The News page is hidden as of 2026-09-03.** Seven of its nine press links are
+wrong: five 404 outright (the National Football Foundation honoree page, AZ
+Desert Swarm, both Greg Hansen pieces — which carry the *same* tucson.com
+article id under different slugs, the tell that the URLs were invented rather
+than copied — and the Wildcat Report Substack), `arizonawildcats.com` serves an
+unrendered CMS template that reads `@fullname (@induction)`, and the first card
+points at the Hall of Fame article the seventh card claims. Only the YouTube
+feature and Greg Hansen's Mount Rushmore column resolve correctly. The same
+three bad links sat on the home page's press row.
+
+The URLs are hard-coded `<a href>` rows in the design (`tools/RickyHunley.com.dc.html`,
+the `data-r="newsrow"` block), so fixing them means editing the design, not
+Sanity — see the note on `newsItem` below. To bring the page back: correct the
+URLs, set `SHOW_NEWS = true`, and drop the temporary `/news`, `/news.html`,
+`/press` and `/eventsblog` redirects from `netlify.toml` in the same commit.
 
 ### The blog
 
@@ -215,9 +241,10 @@ TXT record is recreated first, his email stops. Change only the website's
 A/CNAME records at GoDaddy and leave the rest alone.
 
 The Squarespace site uses completely different paths, so `netlify.toml` 301s
-them to their equivalents here (`/story` → `/about.html`, `/press` →
-`/news.html`, `/hunley-huddle` → `/huddle.html`, and so on, taken from its
-sitemap). Two of its pages have no equivalent and are deliberately **not**
+them to their equivalents here (`/story` → `/about.html`, `/hunley-huddle` →
+`/huddle.html`, and so on, taken from its sitemap). `/press` and `/eventsblog`
+pointed at `/news.html` and go to the home page for as long as that page is
+hidden. Two of its pages have no equivalent and are deliberately **not**
 redirected:
 
 - `/privacypolicy` and `/terms`. Sending them somewhere wrong is worse than a
@@ -283,6 +310,11 @@ Known gaps to close before calling it finished:
 
 - News items, episodes and talks are in Sanity but still rendered from the
   design. Each is the same shape of work the blog and the pages went through.
+  For `newsItem` this is now blocking rather than cosmetic: the News page is
+  hidden because its URLs are wrong, and they cannot be corrected in the Studio
+  until the build reads them. The nine documents also have `source`, `order`
+  and `date` all unset, so wiring them up means backfilling those first or the
+  page loses its "Tucson.com" labels and its ordering.
 - The booking CTAs are `mailto:` links, not a form. No submission log, and no
   `source_page` field, so there is no record of which page produced an inquiry.
 - The meta descriptions in `tools/build-static.js` are placeholders

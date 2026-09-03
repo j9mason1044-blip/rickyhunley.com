@@ -78,20 +78,46 @@
   to = "/huddle.html"
   status = 301
 
+# The News page is hidden while its links are repaired (see SHOW_NEWS in
+# tools/build-static.js), so news.html is no longer generated. These three rules
+# and the two Squarespace ones below are temporary and come out together with
+# that flag.
+#
+# 302, not 301: this is a page coming back, and a 301 would be cached by
+# browsers for as long as they like — including after the page returns.
+#
+# /news.html matters even though nothing links to it any more. It was live and
+# indexed, /press and /eventsblog issued a *301* to it that visitors have
+# already cached, and Netlify only falls through to a redirect because the file
+# is genuinely gone.
+[[redirects]]
+  from = "/news.html"
+  to = "/"
+  status = 302
+
+[[redirects]]
+  from = "/news"
+  to = "/"
+  status = 302
+
+# /press and /eventsblog pointed at the News page; while it is hidden they go to
+# the home page instead, so a Squarespace-era link lands somewhere real rather
+# than chaining through a page that is no longer there. Restore the /news.html
+# targets and the 301s when SHOW_NEWS goes back to true.
 [[redirects]]
   from = "/press"
-  to = "/news.html"
-  status = 301
+  to = "/"
+  status = 302
 
 [[redirects]]
   from = "/eventsblog"
-  to = "/news.html"
-  status = 301
+  to = "/"
+  status = 302
 
 [[redirects]]
   from = "/eventsblog/*"
-  to = "/news.html"
-  status = 301
+  to = "/"
+  status = 302
 
 # The blog is live now, so its URLs point at it rather than at the home page.
 #
