@@ -153,6 +153,35 @@ function card(exemplar, post, hrefFor) {
 }
 
 /**
+ * A series section stripped back to its container — heading and intro dropped.
+ *
+ * Used for a series of one, where the feature panel below carries the post's
+ * own category, title and standfirst. The section heading would repeat that
+ * title word for word, and the intro would say what the standfirst already
+ * says; two lines of the same thing stacked on each other reads as a mistake.
+ *
+ * Everything between the <section> tag and the first row is the preamble, so
+ * that is what goes. Written as "drop the preamble" rather than "drop an <h2>
+ * and a <p>" because the design wraps its heading in a flex row today and may
+ * wrap it in something else tomorrow — but whatever it wraps it in still sits
+ * between the section tag and the first link.
+ */
+function stripSectionPreamble(html) {
+  const open = /^<section\b[^>]*>/.exec(html);
+  const firstRow = html.search(/<a href="#" onClick="\{\{ open\./);
+  if (!open || firstRow === -1) {
+    throw new Error('the blog series exemplar is no longer <section> … rows');
+  }
+  // Guard rather than trust: if the preamble has no heading in it, the section
+  // is not shaped the way this assumes and silently dropping whatever is there
+  // instead would be worse than stopping.
+  if (!/<h2\b/.test(html.slice(open[0].length, firstRow))) {
+    throw new Error('no heading found in the blog series section to drop');
+  }
+  return `${open[0]}\n      ${html.slice(firstRow)}`;
+}
+
+/**
  * The lone post of a one-post series.
  *
  * A series list is a run of rows separated by hairlines; with one member it
@@ -296,17 +325,21 @@ function renderBlogIndex(blogHtml, content, hrefFor) {
         );
       if (!members.length) return '';
 
+      // A series of one is a feature panel, not a list with a single item — and
+      // it stands on its own, without the section's heading and intro. The
+      // panel already carries the post's title and standfirst, so the heading
+      // would repeat the title exactly and the intro would restate the
+      // standfirst. Hence no setInner calls on this path: there is nothing left
+      // to fill in.
+      if (members.length === 1) {
+        return replaceLinks(stripSectionPreamble(seriesExemplar), [
+          feature(cardExemplar, members[0], hrefFor),
+        ]);
+      }
+
       let html = seriesExemplar;
       html = setInner(html, 'h2', escapeHtml(s.title));
       html = setInner(html, 'p', escapeHtml(s.intro || ''));
-
-      // A series of one is a feature panel, not a list with a single item. Note
-      // this runs after the heading and the intro are set: `setInner` takes the
-      // first <h2> and the first <p> it finds, and the panel brings an <h2> and
-      // a <p> of its own.
-      if (members.length === 1) {
-        return replaceLinks(html, [feature(cardExemplar, members[0], hrefFor)]);
-      }
 
       const numbered = members.some((p) => p.numberInSeries != null);
       const exemplar = numbered
