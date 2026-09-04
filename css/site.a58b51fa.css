@@ -78,9 +78,8 @@ html, body { margin:0; padding:0; background:#FBFAF8; -webkit-font-smoothing:ant
 .hv-9:hover { filter:none !important; mix-blend-mode:normal !important; opacity:1 !important; }
 .hv-10:hover { border-color:#0C234B !important; color:var(--accent, #AB0520) !important; }
 .hv-11:hover { background:rgba(255,255,255,.06) !important; color:#EF6275 !important; padding-left:22px !important; box-shadow:inset 3px 0 0 #EF6275 !important; }
-.hv-12:hover { background:#fff !important; color:var(--accent, #AB0520) !important; }
+.hv-12:hover { background:#fff !important; transform:translateY(-6px) !important; box-shadow:0 24px 48px rgba(12,35,75,.16) !important; z-index:2 !important; }
 .hv-13:hover { background:#fff !important; color:var(--accent, #AB0520) !important; padding-left:22px !important; box-shadow:inset 3px 0 0 var(--accent, #AB0520) !important; }
-.hv-14:hover { background:#fff !important; transform:translateY(-6px) !important; box-shadow:0 24px 48px rgba(12,35,75,.16) !important; z-index:2 !important; }
 
 /* The mobile menu's drawer and icons carry inline display values, which beat
    the [hidden] rule in the user-agent stylesheet. This puts it back. */
