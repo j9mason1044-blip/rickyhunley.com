@@ -123,6 +123,20 @@ const SERIES = `*[_type == "series"] | order(order asc) {
 }`;
 
 /**
+ * The press links on /news and in the home page's "In the press" row.
+ *
+ * Newest first, which is how both places render them and the only ordering the
+ * schema offers Ricky — `publishedAt` is never printed, so its whole job is to
+ * say what comes first.
+ *
+ * An item with no link is dropped rather than rendered as a link to nowhere,
+ * which is the failure this page was taken down for.
+ */
+const NEWS = `*[_type == "newsItem" && defined(url)] | order(publishedAt desc) {
+  outlet, title, url, kind, publishedAt
+}`;
+
+/**
  * The eight page singletons, whole.
  *
  * Projected raw rather than field by field. The pages carry dozens of fields
@@ -178,13 +192,15 @@ function resolveImages(node, assets) {
 }
 
 async function main() {
-  const [posts, series, pageDocs, imageAssets, siteSettings] = await Promise.all([
-    query(POSTS),
-    query(SERIES),
-    query(PAGES),
-    query(IMAGE_ASSETS),
-    query(SITE_SETTINGS),
-  ]);
+  const [posts, series, news, pageDocs, imageAssets, siteSettings] =
+    await Promise.all([
+      query(POSTS),
+      query(SERIES),
+      query(NEWS),
+      query(PAGES),
+      query(IMAGE_ASSETS),
+      query(SITE_SETTINGS),
+    ]);
 
   if (!Array.isArray(posts) || !posts.length) {
     throw new Error('Sanity returned no blog posts — refusing to write an empty content.json');
@@ -206,6 +222,7 @@ async function main() {
     fetchedAt: new Date().toISOString(),
     source: `${PROJECT_ID}/${DATASET}`,
     series: series || [],
+    news: news || [],
     pages,
     // Written once, used in several places — the booking sentence on Speaking
     // links whichever address is here, rather than repeating it in the copy.
@@ -239,9 +256,9 @@ async function main() {
   fs.writeFileSync(OUT, JSON.stringify(content, null, 2) + '\n', 'utf8');
 
   console.log(
-    `fetched ${content.posts.length} posts, ${content.series.length} series and ` +
-      `${Object.keys(content.pages).length} pages from ${content.source} ` +
-      `-> tools/content.json`
+    `fetched ${content.posts.length} posts, ${content.series.length} series, ` +
+      `${content.news.length} news items and ${Object.keys(content.pages).length} ` +
+      `pages from ${content.source} -> tools/content.json`
   );
 }
 

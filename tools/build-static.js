@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { renderBlogIndex, coverUrl } = require('./blog-index');
+const { renderNewsRows, renderPressCards } = require('./news-index');
 const dc = require('./dc-paths');
 const { PHOTOS, PAGE_TYPES, applyPhotos, readField } = require('./page-photos');
 const { TEXT, applyText } = require('./page-text');
@@ -41,19 +42,17 @@ const SHOW_FOUNDATION = true;
 // index and the twelve article pages behind it are built and linked.
 const SHOW_BLOG = true;
 
-// The News page is off until its links are repaired. Of its nine press links,
-// five 404 (the National Football Foundation honoree page, AZ Desert Swarm, two
-// Greg Hansen pieces carrying the same invented tucson.com article id, and the
-// Wildcat Report Substack), one resolves to an unrendered CMS template
-// (arizonawildcats.com, which serves a literal '@fullname'), and one points at
-// the wrong article. Two of the nine are correct. Publishing a page of dead
-// links reads worse than not having the page.
+// The News page is back, and its links now come from Sanity.
 //
-// Turning this back to true restores the page, its navigation links and the
-// home page's "In the press" row in one move — so fix the URLs in
-// tools/RickyHunley.com.dc.html first, and drop the temporary /news redirects
-// from netlify.toml in the same commit.
-const SHOW_NEWS = false;
+// It was hidden on 2026-09-03 because seven of its nine press links did not go
+// where they said — and could not be fixed in the Studio, because the URLs were
+// written into the design and nothing read `newsItem`. tools/news-index.js is
+// what closed that gap: the rows and the home page's press cards are rebuilt
+// from the documents, so a bad link is now an edit rather than a deploy.
+//
+// Turning this back to false hides the page, its navigation links and the home
+// page's "In the press" row in one move — see HIDDEN_PAGES and PROMO_SECTIONS.
+const SHOW_NEWS = true;
 
 // Empty in the design, which falls back to '#'. A CTA linking to '#' is a dead
 // button on a live site, so the whole link is dropped until there is a real URL.
@@ -253,7 +252,7 @@ function readDesignPosts() {
 }
 
 function readContent() {
-  if (!SHOW_BLOG) return { posts: [], series: [], fromSanity: false };
+  if (!SHOW_BLOG) return { posts: [], series: [], news: [], fromSanity: false };
 
   if (fs.existsSync(CONTENT_FILE)) {
     const content = JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8'));
@@ -261,6 +260,10 @@ function readContent() {
       return {
         posts: content.posts.map((p) => ({ ...p, url: `/blog/${p.slug}.html` })),
         series: content.series || [],
+        // Absent on an older content.json, which simply means the press links
+        // still come from the design — the same fallback everything else here
+        // has.
+        news: content.news || [],
         fetchedAt: content.fetchedAt,
         source: content.source,
         // The page singletons, keyed by _type. Absent on an older content.json,
@@ -276,11 +279,20 @@ function readContent() {
     'tools/content.json is absent or empty — building the blog from the ' +
       "design's sample posts. Run `node tools/fetch-content.js` for the real ones."
   );
-  return { posts: readDesignPosts(), series: [], fromSanity: false };
+  return { posts: readDesignPosts(), series: [], news: [], fromSanity: false };
 }
 
 const CONTENT = readContent();
 const POSTS = CONTENT.posts;
+
+/**
+ * The press links, newest first, as tools/fetch-content.js ordered them.
+ *
+ * Empty when there is no content.json — and then the design's own links
+ * ship, unchanged. That is deliberate: the fallback has to be the design, or the
+ * file stops being a working preview of itself.
+ */
+const NEWS = SHOW_NEWS ? CONTENT.news || [] : [];
 
 // Filled in once the hashed files are written; page() reads them.
 let cssUrl;
@@ -734,6 +746,15 @@ const rendered = BUILT.map((meta) => {
   // as drawn — see tools/blog-index.js.
   if (meta.key === 'blog' && CONTENT.fromSanity) {
     block = renderBlogIndex(block, CONTENT, (post) => post.url);
+  }
+
+  // The press links, in both places they appear. Same rule as the blog index:
+  // the design draws one row and one card, Sanity says how many there are and
+  // where they point. With nothing in Sanity the design's own links ship, which
+  // is what keeps the file previewable in Claude Design.
+  if (NEWS.length) {
+    if (meta.key === 'news') block = renderNewsRows(block, NEWS);
+    if (meta.key === 'home') block = renderPressCards(block, NEWS);
   }
 
   // Photographs Ricky owns. Applied to the design's markup before transform(),

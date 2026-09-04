@@ -5,6 +5,10 @@ import { LinkIcon } from '@sanity/icons/Link'
  * A press mention on /news. Every one of these links straight out to the
  * publication — there are no detail pages, by design — so the only thing that
  * matters is that the outlet, the headline and the link are right.
+ *
+ * These are live: tools/news-index.js rebuilds the /news rows and the home
+ * page's "In the press" cards from them on every deploy. Publishing here
+ * changes the site, and so does deleting.
  */
 export const newsItem = defineType({
   name: 'newsItem',
@@ -52,7 +56,9 @@ export const newsItem = defineType({
       name: 'publishedAt',
       title: 'Date',
       type: 'datetime',
-      description: 'Newest appears first on the news page.',
+      description:
+        'Only used for ordering — it is never shown. Newest first on the News ' +
+        'page, and the newest three are the cards on the home page.',
       initialValue: () => new Date().toISOString(),
       validation: (rule) => rule.required(),
     }),

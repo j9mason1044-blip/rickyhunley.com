@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-03T23:23:06.372Z",
+  "fetchedAt": "2026-09-04T17:23:22.940Z",
   "source": "0m77etlx/production",
   "series": [
     {
@@ -13,6 +13,50 @@
       "intro": "A short series applying John McClain’s favorite line to the game as it stands today.",
       "order": 2,
       "title": "Common sense ain’t common"
+    }
+  ],
+  "news": [
+    {
+      "kind": "article",
+      "outlet": "Tucson.com",
+      "publishedAt": "2026-07-04T18:00:00.000Z",
+      "title": "Greg Hansen's picks for Mount Rushmore of Arizona football",
+      "url": "https://tucson.com/sports/subscriber/article_157336e4-f37c-4292-9a4d-afe42d116237.html"
+    },
+    {
+      "kind": "video",
+      "outlet": "Life Along the Streetcar",
+      "publishedAt": "2025-08-25T16:34:52.000Z",
+      "title": "From Petersburg to the Pac-10: Ricky Hunley's Journey to Greatness",
+      "url": "https://www.youtube.com/watch?v=RK45X4F-g9o"
+    },
+    {
+      "kind": "article",
+      "outlet": "Tucson.com",
+      "publishedAt": "2025-04-11T12:00:00.000Z",
+      "title": "Arizona legends Ricky Hunley, Mike Bibby inducted into Arizona Sports Hall of Fame",
+      "url": "https://tucson.com/sports/arizonawildcats/football/article_a61f0047-da5e-40ac-9208-745d46d73aee.html"
+    },
+    {
+      "kind": "article",
+      "outlet": "AZ Desert Swarm",
+      "publishedAt": "2021-01-14T12:00:00.000Z",
+      "title": "Arizona legends Chuck Cecil, Ricky Hunley bring passion, history, accountability to coaching staff",
+      "url": "https://www.azdesertswarm.com/football/2021/1/14/22231546/chuck-cecil-ricky-hunley-arizona-wildcats-coaching-staff-fisch-tomey-history-nfl-coaching-passion"
+    },
+    {
+      "kind": "article",
+      "outlet": "Arizona Athletics",
+      "publishedAt": "2013-11-12T12:00:00.000Z",
+      "title": "Ricky Hunley HOF",
+      "url": "https://arizonawildcats.com/sports/2013/11/12/209305768"
+    },
+    {
+      "kind": "article",
+      "outlet": "National Football Foundation",
+      "publishedAt": "1997-01-01T12:00:00.000Z",
+      "title": "Ricky Hunley (1997) — Hall of Fame",
+      "url": "https://footballfoundation.org/hof_search.aspx?hof=2034"
     }
   ],
   "pages": {
