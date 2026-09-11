@@ -66,6 +66,13 @@ html, body { margin:0; padding:0; background:#FBFAF8; -webkit-font-smoothing:ant
   [style*="animation:rhFade"]:first-of-type { opacity: 0.94 !important; }
 }
 
+/* Newsletter signup. Three things inline styles in the design cannot reach: a
+   placeholder, a disabled button, and the fact that the footer field sits on
+   navy, where the browser default placeholder is close to unreadable. */
+[data-newsletter] input::placeholder { color: #9B9689; opacity: 1; }
+footer [data-newsletter] input::placeholder { color: #6C7A92; }
+[data-newsletter] button[disabled] { opacity: 0.55; cursor: default; }
+
 /* Hover states, lifted from the design's style-hover attributes. */
 .hv-1:hover { background:var(--accent, #AB0520) !important; }
 .hv-2:hover { color:var(--accent, #AB0520) !important; }

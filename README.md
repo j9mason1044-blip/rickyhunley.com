@@ -257,7 +257,11 @@ for the templates, Sanity as the CMS Ricky actually logs into, Netlify Forms for
 booking inquiries, and JSON-LD `Person` markup for the knowledge panel.
 
 Sanity is now live, and there is no Astro — `build-static.js` stays the
-renderer. The Studio is in `studio/` and is deployed at
+renderer. Booking is not getting a form either: the CTAs stay `mailto:`,
+decided 2026-09-09 — an inquiry then lands in Ricky's own inbox, with his reply
+history, rather than in a submissions list somebody has to remember to check.
+
+The Studio is in `studio/` and is deployed at
 <https://rickyhunley.sanity.studio> — the URL Ricky logs into.
 Publishing there fires a webhook at a Netlify build hook, and the build command
 runs the same two commands you would run locally. See "The blog comes from

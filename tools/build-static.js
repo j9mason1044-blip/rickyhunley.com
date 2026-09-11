@@ -59,6 +59,27 @@ const SHOW_NEWS = true;
 const EVENTBRITE_URL = '';
 
 /**
+ * The newsletter audience, in the client's Mailchimp account.
+ *
+ * All three values come out of the embed code Mailchimp generates under
+ * Audience -> Signup forms -> Embedded form, and none of them is a secret: they
+ * sit in the form action of every Mailchimp-powered page on the web. `host` is
+ * the account's list-manage origin, `u` the account id, `id` the audience id.
+ *
+ * While any of them is empty the two signup blocks are removed from every page
+ * — the same treatment the hero <video> gets when its file is absent, and for
+ * the same reason: a form that posts nowhere is worse than no form at all.
+ * Fill these in and the blocks appear on the next build. Nothing else changes.
+ */
+const MAILCHIMP = {
+  host: '', // e.g. 'https://rickyhunley.us21.list-manage.com'
+  u: '',
+  id: '',
+};
+const MC_ON = Boolean(MAILCHIMP.host && MAILCHIMP.u && MAILCHIMP.id);
+const MC_QUERY = `u=${MAILCHIMP.u}&id=${MAILCHIMP.id}`;
+
+/**
  * Pages built but not linked, or not built at all.
  *
  * Hiding a page means it is not generated, it is dropped from the sitemap,
@@ -392,9 +413,7 @@ const droppedSections = new Map();
  * stray `</section>` behind and unbalancing the page. check.js would report
  * that as a tag-balance failure several steps away from its cause.
  */
-function dropSectionsLinkingTo(html, href, key) {
-  if (!href) return html;
-  const needle = `href="${href}"`;
+function dropSections(html, needle, onDrop) {
   const opens = /<section\b/g;
   const tags = /<(\/?)section\b/g;
   let out = '';
@@ -417,11 +436,25 @@ function dropSectionsLinkingTo(html, href, key) {
     if (html.slice(m.index, end).includes(needle)) {
       out += html.slice(cursor, m.index).replace(/[ \t]+$/, '');
       cursor = end;
-      droppedSections.set(key, (droppedSections.get(key) || 0) + 1);
-      opens.lastIndex = end;
+      // A section on a line of its own takes the line with it. Otherwise the
+      // page ships an empty line wherever a block used to be.
+      if (/(^|\n)$/.test(out)) {
+        const eol = /^\r?\n/.exec(html.slice(end));
+        if (eol) cursor += eol[0].length;
+      }
+      if (onDrop) onDrop();
+      opens.lastIndex = cursor;
     }
   }
   return out + html.slice(cursor);
+}
+
+/** The promo-section case: drop every <section> that links to `href`. */
+function dropSectionsLinkingTo(html, href, key) {
+  if (!href) return html;
+  return dropSections(html, `href="${href}"`, () =>
+    droppedSections.set(key, (droppedSections.get(key) || 0) + 1)
+  );
 }
 
 function transform(html) {
@@ -456,6 +489,29 @@ function transform(html) {
       /\s*<a href="\{\{ eventbriteUrl \}\}"[^>]*>[\s\S]*?<\/a>/g,
       ''
     );
+  }
+
+  // Newsletter signup. Two blocks in the design carry `data-newsletter`: one
+  // at the foot of every article, where a reader who has just finished a piece
+  // is as interested as they are ever going to be, and one in the site footer.
+  //
+  // With no audience configured they are removed outright rather than shipped
+  // posting nowhere. With one, the form gets its action and the honeypot input
+  // gets the name Mailchimp checks, `b_<u>_<id>`: a bot that fills every field
+  // it finds is rejected, and no human ever sees it.
+  if (MC_ON) {
+    const query = MC_QUERY.replace(/&/g, '&amp;');
+    out = out.replace(
+      /<form data-newsletter-form/g,
+      `<form data-newsletter-form action="${MAILCHIMP.host}/subscribe/post?${query}"` +
+        ` data-mc-endpoint="${MAILCHIMP.host}/subscribe/post-json?${query}"`
+    );
+    out = out.replace(
+      /<input data-mc-honeypot/g,
+      `<input name="b_${MAILCHIMP.u}_${MAILCHIMP.id}"`
+    );
+  } else {
+    out = dropSections(out, 'data-newsletter');
   }
 
   // Page-state navigation -> real links. The href is always "#" in the source.
@@ -954,6 +1010,13 @@ ${helmetCss}
   [style*="animation:rhFade"] { animation: none !important; }
   [style*="animation:rhFade"]:first-of-type { opacity: 0.94 !important; }
 }
+
+/* Newsletter signup. Three things inline styles in the design cannot reach: a
+   placeholder, a disabled button, and the fact that the footer field sits on
+   navy, where the browser default placeholder is close to unreadable. */
+[data-newsletter] input::placeholder { color: #9B9689; opacity: 1; }
+footer [data-newsletter] input::placeholder { color: #6C7A92; }
+[data-newsletter] button[disabled] { opacity: 0.55; cursor: default; }
 
 /* Hover states, lifted from the design's style-hover attributes. */
 ${hoverCss}
