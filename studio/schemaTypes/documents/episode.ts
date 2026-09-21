@@ -5,6 +5,8 @@ import { PlayIcon } from '@sanity/icons/Play'
  * A Hunley Huddle podcast episode, as listed on /huddle. Like news items these
  * link straight out to whichever platform hosts the episode, so there is no
  * audio file or detail page to model.
+ *
+ * Each episode belongs to a `season`; the Studio lists them season by season.
  */
 export const episode = defineType({
   name: 'episode',
@@ -12,6 +14,15 @@ export const episode = defineType({
   type: 'document',
   icon: PlayIcon,
   fields: [
+    defineField({
+      name: 'season',
+      title: 'Season',
+      type: 'reference',
+      to: [{ type: 'season' }],
+      description:
+        'Which season this episode belongs to. New seasons are added under Podcast Episodes → Seasons.',
+      validation: (rule) => rule.required(),
+    }),
     defineField({
       name: 'episodeNumber',
       title: 'Episode number',
@@ -37,6 +48,7 @@ export const episode = defineType({
           { title: 'iHeart', value: 'iHeart' },
           { title: 'Listen Notes', value: 'Listen Notes' },
           { title: 'Spotify', value: 'Spotify' },
+          { title: 'Spreaker', value: 'Spreaker' },
           { title: 'YouTube', value: 'YouTube' },
         ],
       },
@@ -57,10 +69,17 @@ export const episode = defineType({
     },
   ],
   preview: {
-    select: { number: 'episodeNumber', title: 'title', subtitle: 'platform' },
-    prepare: ({ number, title, subtitle }) => ({
+    select: {
+      number: 'episodeNumber',
+      title: 'title',
+      platform: 'platform',
+      season: 'season.number',
+    },
+    prepare: ({ number, title, platform, season }) => ({
       title: `EP. ${number} — ${title}`,
-      subtitle,
+      subtitle: [season ? `Season ${season}` : 'No season', platform]
+        .filter(Boolean)
+        .join(' · '),
     }),
   },
 })

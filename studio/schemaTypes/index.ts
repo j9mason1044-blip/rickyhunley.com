@@ -7,6 +7,7 @@ import { linkCta } from './objects/linkCta'
 import { blogPost } from './documents/blogPost'
 import { series } from './documents/series'
 import { newsItem } from './documents/newsItem'
+import { season } from './documents/season'
 import { episode } from './documents/episode'
 import { talk } from './documents/talk'
 
@@ -50,6 +51,7 @@ export const schemaTypes = [
   blogPost,
   series,
   newsItem,
+  season,
   episode,
   talk,
 

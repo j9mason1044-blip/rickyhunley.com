@@ -4,6 +4,7 @@ import { DocumentTextIcon } from '@sanity/icons/DocumentText'
 import { BlockquoteIcon } from '@sanity/icons/Blockquote'
 import { LinkIcon } from '@sanity/icons/Link'
 import { PlayIcon } from '@sanity/icons/Play'
+import { StackCompactIcon } from '@sanity/icons/StackCompact'
 import { PresentationIcon } from '@sanity/icons/Presentation'
 import { DocumentsIcon } from '@sanity/icons/Documents'
 
@@ -51,6 +52,7 @@ const HANDLED = [
   'blogPost',
   'series',
   'newsItem',
+  'season',
   'episode',
   'talk',
 ]
@@ -88,9 +90,63 @@ export const structure: StructureResolver = (S) =>
         .title('Podcast Episodes')
         .icon(PlayIcon)
         .child(
-          S.documentTypeList('episode')
+          // Season by season: pick a season, see its episodes, and the + there
+          // creates an episode already filed under that season.
+          S.list()
             .title('Podcast Episodes')
-            .defaultOrdering([{ field: 'episodeNumber', direction: 'desc' }])
+            .items([
+              S.listItem()
+                .id('bySeason')
+                .title('By season')
+                .icon(StackCompactIcon)
+                .child(
+                  S.documentTypeList('season')
+                    .title('Seasons')
+                    .defaultOrdering([{ field: 'number', direction: 'desc' }])
+                    .child((seasonId) =>
+                      S.documentList()
+                        .id(`season-${seasonId}`)
+                        .title('Episodes')
+                        .schemaType('episode')
+                        .filter('_type == "episode" && season._ref == $seasonId')
+                        .params({ seasonId })
+                        .defaultOrdering([{ field: 'episodeNumber', direction: 'desc' }])
+                        .initialValueTemplates([
+                          S.initialValueTemplateItem('episode-in-season', { seasonId }),
+                        ])
+                    )
+                ),
+              S.listItem()
+                .id('allEpisodes')
+                .title('All episodes')
+                .icon(PlayIcon)
+                .child(
+                  S.documentTypeList('episode')
+                    .title('All episodes')
+                    .defaultOrdering([{ field: 'episodeNumber', direction: 'desc' }])
+                ),
+              S.listItem()
+                .id('noSeason')
+                .title('Not in a season')
+                .icon(PlayIcon)
+                .child(
+                  S.documentList()
+                    .id('episodes-no-season')
+                    .title('Not in a season')
+                    .schemaType('episode')
+                    .filter('_type == "episode" && !defined(season)')
+                ),
+              S.divider(),
+              S.listItem()
+                .id('seasons')
+                .title('Seasons')
+                .icon(StackCompactIcon)
+                .child(
+                  S.documentTypeList('season')
+                    .title('Seasons')
+                    .defaultOrdering([{ field: 'number', direction: 'desc' }])
+                ),
+            ])
         ),
 
       S.listItem()

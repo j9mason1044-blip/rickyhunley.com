@@ -3,6 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 
 import { schemaTypes, SINGLETON_TYPES } from './schemaTypes'
+import { episodeInSeason } from './schemaTypes/documents/season'
 import { structure } from './structure'
 
 const isSingleton = (type?: string) =>
@@ -28,13 +29,20 @@ export default defineConfig({
     // Keep the singletons out of the global "create new" menus. Structure pins
     // each to a fixed document ID; this stops a second one being made from the
     // + button, which would be invisible on the site and confusing in the Studio.
-    templates: (prev) => prev.filter((t) => !isSingleton(t.schemaType)),
+    // The season-scoped episode template is added here and hidden from the menus
+    // below: it only makes sense opened from a season's list in the Studio.
+    templates: (prev) => [
+      ...prev.filter((t) => !isSingleton(t.schemaType)),
+      episodeInSeason,
+    ],
   },
 
   document: {
     // Same reason, for the "Create new document" action list.
     newDocumentOptions: (prev) =>
-      prev.filter((item) => !isSingleton(item.templateId)),
+      prev.filter(
+        (item) => !isSingleton(item.templateId) && item.templateId !== episodeInSeason.id
+      ),
 
     // A page cannot be deleted or unpublished — the site expects it to exist,
     // and a build against a missing About page should not be possible from a
