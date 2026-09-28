@@ -274,14 +274,33 @@ deploy standing serve identical bytes — this is how you tell them apart, and h
 you answer "did Ricky's publish actually reach the site?" without a Netlify
 login. Absent Netlify fields mean the files were built on someone's machine.
 
-**What Sanity owns:** the blog, the press links, all eight pages' copy (125
-fields) and every photograph on them (32), plus Site Settings. **What it does
-not:** `episode` and `talk` are modelled and populated but `build-static.js`
-still renders those lists from the design, so editing them changes nothing yet.
-They are the remaining work, and the Sanity webhook deliberately excludes them —
-a build they triggered could not change anything, and a deploy notification that
-usually means nothing is one nobody reads. Widen the filter in the same commit
-that makes the build read them, which is what wiring `newsItem` did.
+**What Sanity owns:** the blog, the press links, the podcast episodes, all eight
+pages' copy (125 fields) and every photograph on them (32), plus Site Settings.
+**What it does not:** `talk` is modelled and populated but `build-static.js`
+still renders the Football 101 list from the design, so editing it changes
+nothing yet. That is the remaining work, and the Sanity webhook deliberately
+excludes `talk` — a build it triggered could not change anything, and a deploy
+notification that usually means nothing is one nobody reads. Widen the filter in
+the same commit that makes the build read it, which is what wiring `newsItem`
+and then `episode` did.
+
+**The episode list is grouped by season.** `tools/episode-index.js` refills the
+design's own rows once per `episode` and puts a heading above each season,
+newest first — so "view by season" is the page's normal state rather than a
+control to operate. With only one season the headings are dropped and the page
+is the plain list it has always been, the same judgement that renders a blog
+series of one as a feature panel. Each season's last row carries the bottom
+hairline the design gave the list's last row, which is what closes one season
+before the next begins. `tools/exemplar.js` holds the refill primitives it
+shares with `news-index.js`.
+
+One trap worth knowing, because it bit while this was being built:
+`renderEpisodes()` has to run **after** `applyText()`. The note under the list is
+bound positionally as "the 28th span of this section", which is only true while
+the section holds the nine rows the design drew — rebuild the rows first and that
+sentence lands inside the last episode instead, with the build still succeeding.
+The renderer now asserts that its exemplars still start with an `EP. n` label, so
+the mistake stops the build rather than shipping.
 
 **How page copy is bound.** The design is one file of inline styles with no
 classes or ids, so fields are bound to it *by position* —
@@ -305,8 +324,8 @@ binding has slipped, it will say which.
 
 Known gaps to close before calling it finished:
 
-- Episodes and talks are in Sanity but still rendered from the design. Each is
-  the same shape of work the blog, the pages and the press links went through.
+- Talks are in Sanity but still rendered from the design — the same shape of
+  work the blog, the pages, the press links and the episodes went through.
 - The booking CTAs are `mailto:` links, not a form. No submission log, and no
   `source_page` field, so there is no record of which page produced an inquiry.
 - The meta descriptions in `tools/build-static.js` are placeholders

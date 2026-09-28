@@ -21,6 +21,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { renderBlogIndex, coverUrl } = require('./blog-index');
 const { renderNewsRows, renderPressCards } = require('./news-index');
+const { renderEpisodes } = require('./episode-index');
 const dc = require('./dc-paths');
 const { PHOTOS, PAGE_TYPES, applyPhotos, readField } = require('./page-photos');
 const { TEXT, applyText } = require('./page-text');
@@ -285,6 +286,9 @@ function readContent() {
         // still come from the design — the same fallback everything else here
         // has.
         news: content.news || [],
+        // Absent on an older content.json, which simply means the episode list
+        // still comes from the design — the same fallback again.
+        episodes: content.episodes || [],
         fetchedAt: content.fetchedAt,
         source: content.source,
         // The page singletons, keyed by _type. Absent on an older content.json,
@@ -314,6 +318,16 @@ const POSTS = CONTENT.posts;
  * file stops being a working preview of itself.
  */
 const NEWS = SHOW_NEWS ? CONTENT.news || [] : [];
+
+/**
+ * The podcast episodes, grouped into seasons on the page by
+ * tools/episode-index.js.
+ *
+ * Empty when there is no content.json, and then the design's own nine rows ship
+ * unchanged — the same fallback the press links have, and for the same reason:
+ * the design file has to stay a working preview of itself.
+ */
+const EPISODES = CONTENT.episodes || [];
 
 // Filled in once the hashed files are written; page() reads them.
 let cssUrl;
@@ -836,6 +850,21 @@ const rendered = BUILT.map((meta) => {
     });
     block = html;
     textCount += applied.length;
+  }
+
+  // The podcast episodes, grouped by season — the last list on the site that
+  // was still rendered from the design, so adding an episode in the Studio now
+  // actually reaches the page.
+  //
+  // After applyText(), and that order matters. This page's copy is bound to the
+  // design by position: the note under the list is "the 28th span of this
+  // section", which is only true while the section holds the nine rows the
+  // design drew. Rebuilding them first moves that sentence into the last row,
+  // and the build still succeeds. renderEpisodes() asserts that it is looking
+  // at untouched rows, which is what makes the mistake loud if this is ever
+  // reordered.
+  if (EPISODES.length && meta.key === 'huddle') {
+    block = renderEpisodes(block, EPISODES);
   }
 
   // The share image follows the header photograph, rather than being a second

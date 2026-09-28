@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-09-04T17:23:22.940Z",
+  "fetchedAt": "2026-09-28T18:59:43.458Z",
   "source": "0m77etlx/production",
   "series": [
     {
@@ -57,6 +57,108 @@
       "publishedAt": "1997-01-01T12:00:00.000Z",
       "title": "Ricky Hunley (1997) — Hall of Fame",
       "url": "https://footballfoundation.org/hof_search.aspx?hof=2034"
+    }
+  ],
+  "episodes": [
+    {
+      "episodeNumber": 1,
+      "platform": "iHeart",
+      "season": {
+        "number": 2,
+        "title": null
+      },
+      "title": "John Kaiser",
+      "url": "https://www.iheart.com/podcast/1333-hunley-huddle-345801694/episode/john-kaiser-345801695"
+    },
+    {
+      "episodeNumber": 1,
+      "platform": "Listen Notes",
+      "season": {
+        "number": 1,
+        "title": null
+      },
+      "title": "Brent Brennan & Randy Robbins",
+      "url": "https://www.listennotes.com/de/podcasts/eye-on-the-ball/hunley-huddle-brent-brennan-K2PUv5DkRAE/"
+    },
+    {
+      "episodeNumber": 2,
+      "platform": "iHeart",
+      "season": {
+        "number": 1,
+        "title": null
+      },
+      "title": "Chuck Cecil",
+      "url": "https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-2-chuck-cecil-292648226"
+    },
+    {
+      "episodeNumber": 3,
+      "platform": "iHeart",
+      "season": {
+        "number": 1,
+        "title": null
+      },
+      "title": "Tom Tunnicliffe",
+      "url": "https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-3-tom-tunnicliffe-294108683"
+    },
+    {
+      "episodeNumber": 4,
+      "platform": "iHeart",
+      "season": {
+        "number": 1,
+        "title": null
+      },
+      "title": "Ricky Hunley from Ames, Iowa",
+      "url": "https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-4-297093109"
+    },
+    {
+      "episodeNumber": 5,
+      "platform": "iHeart",
+      "season": {
+        "number": 1,
+        "title": null
+      },
+      "title": "Lance Briggs",
+      "url": "https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-5-lance-briggs-298567369/"
+    },
+    {
+      "episodeNumber": 6,
+      "platform": "iHeart",
+      "season": {
+        "number": 1,
+        "title": null
+      },
+      "title": "Brad Anderson",
+      "url": "https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-6-brad-anderson-299997314/"
+    },
+    {
+      "episodeNumber": 7,
+      "platform": "iHeart",
+      "season": {
+        "number": 1,
+        "title": null
+      },
+      "title": "Rob Gronkowski",
+      "url": "https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-7-rob-gronkowski-305800453"
+    },
+    {
+      "episodeNumber": 8,
+      "platform": "iHeart",
+      "season": {
+        "number": 1,
+        "title": null
+      },
+      "title": "Nick Foles & Willie Tuitama",
+      "url": "https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-8-nick-foles-and-willie-tuitama-308610405"
+    },
+    {
+      "episodeNumber": 9,
+      "platform": "iHeart",
+      "season": {
+        "number": 1,
+        "title": null
+      },
+      "title": "Holiday Bowl",
+      "url": "https://www.iheart.com/podcast/1248-eye-on-the-ball-70788317/episode/hunley-huddle-ep-9-314856565"
     }
   ],
   "pages": {
@@ -545,6 +647,12 @@
       "talksIntro": "Ricky Hunley brings decades of experience on the field, in the locker room, and in the boardroom to every stage he steps on. Each talk is shaped to fit the room."
     },
     "huddlePage": {
+      "_system": {
+        "base": {
+          "id": "huddlePage",
+          "rev": "cTTaZWJ62gbrIu7RroAJyP"
+        }
+      },
       "_type": "huddlePage",
       "episodesHeading": "Episodes",
       "episodesNote": "New episodes and behind-the-scenes on Instagram.",
@@ -617,8 +725,8 @@
         {
           "_key": "strands0",
           "_type": "strand",
-          "body": "Tune in before every University of Arizona football game as UA legends Ricky and LaMonte Hunley team up with veteran Arizona sports journalist Steve Rivera to break down the matchup and share stories from decades in the game.",
-          "eyebrow": "Every game day",
+          "body": "Tune in on Fridays at 5 pm on Fox Sports 1450 AM as UA legends Ricky and LaMonte Hunley team up with veteran Arizona sports journalist Steve Rivera to break down the University of Arizona Football matchups and share stories from decades in the game.",
+          "eyebrow": "Fridays 5 pm 1450 AM",
           "heading": "UA Pregame Radio Show"
         },
         {

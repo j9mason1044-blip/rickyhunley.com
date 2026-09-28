@@ -154,6 +154,18 @@ const PAGES = `*[_type in [
   "newsPage", "blogPage", "communityPage", "contactPage"
 ]]`;
 
+/**
+ * The podcast episodes on /huddle, with the season each belongs to.
+ *
+ * Ordered in tools/episode-index.js rather than here — see the note there. An
+ * episode with no link, or none filed under a season, is dropped rather than
+ * rendered as a row that goes nowhere, the same rule the press links follow.
+ */
+const EPISODES = `*[_type == "episode" && defined(url) && defined(season)] {
+  episodeNumber, title, platform, url,
+  "season": season->{number, title}
+}`;
+
 const SITE_SETTINGS = `*[_type == "siteSettings"][0]{
   email, footerBlurb, location, socials
 }`;
@@ -192,11 +204,12 @@ function resolveImages(node, assets) {
 }
 
 async function main() {
-  const [posts, series, news, pageDocs, imageAssets, siteSettings] =
+  const [posts, series, news, episodes, pageDocs, imageAssets, siteSettings] =
     await Promise.all([
       query(POSTS),
       query(SERIES),
       query(NEWS),
+      query(EPISODES),
       query(PAGES),
       query(IMAGE_ASSETS),
       query(SITE_SETTINGS),
@@ -223,6 +236,7 @@ async function main() {
     source: `${PROJECT_ID}/${DATASET}`,
     series: series || [],
     news: news || [],
+    episodes: episodes || [],
     pages,
     // Written once, used in several places — the booking sentence on Speaking
     // links whichever address is here, rather than repeating it in the copy.
@@ -257,7 +271,8 @@ async function main() {
 
   console.log(
     `fetched ${content.posts.length} posts, ${content.series.length} series, ` +
-      `${content.news.length} news items and ${Object.keys(content.pages).length} ` +
+      `${content.news.length} news items, ${content.episodes.length} episodes ` +
+      `and ${Object.keys(content.pages).length} ` +
       `pages from ${content.source} -> tools/content.json`
   );
 }

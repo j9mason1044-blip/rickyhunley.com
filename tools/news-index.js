@@ -16,73 +16,10 @@
  * Claude Design with no CMS to ask.
  */
 
-const escapeHtml = (s) =>
-  String(s ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-
-const escapeAttr = (s) => escapeHtml(s).replace(/"/g, '&quot;');
+const { escapeHtml, setNth, linkTo, replaceRun } = require('./exemplar');
 
 /** How many cards the home page's press row has room for. */
 const HOME_CARDS = 3;
-
-/**
- * Replace the contents of the `index`-th `<tag>` in a chunk of markup.
- *
- * Deliberately naive: it pairs an opening tag with the *next* closing one, so
- * it is only correct where the tag does not nest. That holds for both things it
- * is used on — a news row is three flat `<span>`s, a press card is a `<div>`
- * and an `<h3>` — and the exemplar shape is asserted before either is filled,
- * so a redesign that nests them stops the build rather than producing nonsense.
- */
-function setNth(html, tag, index, value) {
-  const openRe = new RegExp(`<${tag}\\b[^>]*>`, 'g');
-  let seen = 0;
-  let m;
-  while ((m = openRe.exec(html))) {
-    if (seen++ !== index) continue;
-    const start = m.index + m[0].length;
-    const end = html.indexOf(`</${tag}>`, start);
-    if (end === -1) break;
-    return html.slice(0, start) + value + html.slice(end);
-  }
-  throw new Error(`no <${tag}> #${index} in the press exemplar to fill`);
-}
-
-/** Point an exemplar at a different article. */
-const linkTo = (html, url) =>
-  html.replace(/^<a href="[^"]*"/, `<a href="${escapeAttr(url)}"`);
-
-/**
- * Swap a run of links for a new one, in place — so whatever wraps them (the
- * grid, the hairlines, the padding) is left exactly as drawn.
- *
- * The whole span from the first link to the last is replaced in one go, rather
- * than each link being deleted in turn. Deleting them one at a time leaves the
- * whitespace that indented each behind, so a run that shrinks from nine links
- * to six ships three blank lines — harmless, but the generated HTML is what you
- * read when something looks wrong on the page.
- *
- * Only whitespace may separate the links, and that is asserted rather than
- * assumed: anything else between them is markup this would throw away.
- */
-function replaceRun(html, existing, rebuilt, indent) {
-  const start = html.indexOf(existing[0]);
-  const tail = existing[existing.length - 1];
-  const end = html.lastIndexOf(tail) + tail.length;
-
-  let cursor = start;
-  for (const link of existing) {
-    const at = html.indexOf(link, cursor);
-    if (at === -1 || html.slice(cursor, at).trim()) {
-      throw new Error('the press links are no longer a contiguous run');
-    }
-    cursor = at + link.length;
-  }
-
-  return html.slice(0, start) + rebuilt.join(`\n${indent}`) + html.slice(end);
-}
 
 /**
  * The rows on /news.
