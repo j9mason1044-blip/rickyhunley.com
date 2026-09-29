@@ -2,6 +2,7 @@
 import { pageHero } from './objects/pageHero'
 import { contentSection } from './objects/contentSection'
 import { linkCta } from './objects/linkCta'
+import { eventBanner } from './objects/eventBanner'
 
 // Collections — the things Ricky adds to over time.
 import { blogPost } from './documents/blogPost'
@@ -47,6 +48,7 @@ export const schemaTypes = [
   pageHero,
   contentSection,
   linkCta,
+  eventBanner,
 
   blogPost,
   series,

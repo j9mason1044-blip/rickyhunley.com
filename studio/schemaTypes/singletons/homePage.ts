@@ -19,6 +19,7 @@ export const homePage = defineType({
   type: 'document',
   icon: HomeIcon,
   groups: [
+    { name: 'banner', title: 'Event banner' },
     { name: 'hero', title: 'Top of the page', default: true },
     { name: 'reel', title: 'The film' },
     { name: 'about', title: 'About teaser' },
@@ -28,6 +29,25 @@ export const homePage = defineType({
     { name: 'community', title: 'Community teaser' },
   ],
   fields: [
+    /**
+     * First in the list and, for most of the year, switched off — it is the one
+     * field on this page that decides whether a whole block of the page exists.
+     *
+     * The band is not in the design. This page's copy is bound to the design by
+     * position (see tools/page-text.js), so a new section at the top of it would
+     * move every binding below onto its neighbour. tools/event-banner.js draws
+     * it instead, after those bindings are resolved, out of the design's own
+     * colours and type.
+     */
+    defineField({
+      name: 'eventBanner',
+      title: 'Event banner',
+      type: 'eventBanner',
+      group: 'banner',
+      description:
+        'A band across the very top of the home page, above the photograph. Use it for the next Football 101 — and switch it off once the event has been and gone.',
+    }),
+
     defineField({
       name: 'hero',
       title: 'Top of the page',

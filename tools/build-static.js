@@ -22,6 +22,7 @@ const crypto = require('crypto');
 const { renderBlogIndex, coverUrl } = require('./blog-index');
 const { renderNewsRows, renderPressCards } = require('./news-index');
 const { renderEpisodes } = require('./episode-index');
+const { renderEventBanner } = require('./event-banner');
 const dc = require('./dc-paths');
 const { PHOTOS, PAGE_TYPES, applyPhotos, readField } = require('./page-photos');
 const { TEXT, applyText } = require('./page-text');
@@ -29,6 +30,7 @@ const { TEXT, applyText } = require('./page-text');
 /** Counted across the page loop, and reported so a build log says what landed. */
 let photoCount = 0;
 let textCount = 0;
+let bannerState = 'off';
 
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(__dirname, 'RickyHunley.com.dc.html');
@@ -867,6 +869,25 @@ const rendered = BUILT.map((meta) => {
     block = renderEpisodes(block, EPISODES);
   }
 
+  // The event banner across the top of the home page. Same ordering rule as the
+  // episodes above and for the same reason: this page's copy is bound to the
+  // design by position, so an element added before applyText() would push every
+  // binding under it onto its neighbour. Added after, nothing moves.
+  if (meta.key === 'home') {
+    const banner = renderEventBanner(block, pageDoc);
+    block = banner.html;
+    bannerState = banner.state;
+    if (banner.state === 'incomplete') {
+      console.warn(
+        "  ! the home page's event banner is switched on but has no " +
+          banner.missing.join(' and no ') +
+          ' — it has been left off the page.
+' +
+          '    Fill it in under Home Page -> Event banner in the Studio, or switch it off.'
+      );
+    }
+  }
+
   // The share image follows the header photograph, rather than being a second
   // filename to remember. Without this, changing a page's header in the Studio
   // leaves every link to it on Facebook and iMessage showing the old picture —
@@ -1104,7 +1125,8 @@ for (const { meta, content } of rendered) {
 console.log(
   `wrote ${rendered.length} pages (${POSTS.length} articles), ` +
     `${textCount} fields and ${photoCount} photographs from Sanity, ` +
-    `${cssUrl} (${hoverRules.size} hover rules), ${jsUrl}`
+    `${cssUrl} (${hoverRules.size} hover rules), ${jsUrl}` +
+    (bannerState === 'on' ? ', event banner ON' : '')
 );
 
 // ---------------------------------------------------------------------------
@@ -1133,6 +1155,11 @@ fs.writeFileSync(
       contentSource: CONTENT.fromSanity ? CONTENT.source || 'sanity' : 'design fallback',
       posts: POSTS.length,
       pages: rendered.length,
+      // 'on', 'off' or 'incomplete'. The banner is the one thing on the site
+      // that is meant to appear and disappear on its own, so "is it up right
+      // now?" is a question the live site should be able to answer without
+      // anybody reading the home page's markup.
+      eventBanner: bannerState,
       commit: process.env.COMMIT_REF || null,
       deployId: process.env.DEPLOY_ID || null,
       context: process.env.CONTEXT || null,

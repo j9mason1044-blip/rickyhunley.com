@@ -132,6 +132,39 @@ deleted on the next build rather than left on disk.
 `about.html` unasked, but `/blog` is now also a directory: Netlify looks for
 `blog/index.html`, finds none, and would 404.
 
+### The event banner
+
+The red band across the top of the home page — "the next Football 101 is on the
+8th, here are the tickets" — is **Home Page → Event banner** in the Studio: a
+switch, a small label, a sentence, button text and a link. Switch it on and it
+appears on the next build; switch it off after the event and it is gone. No
+deploy either way, which is the point: the band has to be as easy to take down
+as it is to put up.
+
+It is the one renderer on the site that draws its own markup rather than
+refilling markup from the design (`tools/event-banner.js`), and the reason is
+worth knowing before anybody moves it. **The home page's copy is bound to the
+design by position** — `homePage.reelHeading` is "the first `h2` of the third
+section", see `tools/page-text.js`. A new `<section>` at the top of that block
+renumbers every binding beneath it, and the failure is not a crash: it is a
+heading quietly rendering the wrong sentence. So the band is added in the page
+loop *after* `applyText()`, exactly like `renderEpisodes()` and for the same
+reason, and the design is left alone.
+
+It still goes through `transform()`, so its `style-hover` becomes a real `.hv-N`
+rule in `css/site.css` alongside every other hover on the site. That does mean
+switching the banner on adds a hover rule and renumbers the ones after it —
+harmless, because the stylesheet and the pages are emitted together by the same
+build and `check.js` verifies every class a page references, but it is why
+toggling the banner shows as a one-line diff on all 21 pages.
+
+A banner switched on with no message, no button text or no link is **dropped
+rather than half drawn**, and the build says which part is missing. The Studio
+refuses to publish that combination too (`eventBanner` validates the fields
+together), so the build-time guard is the second line rather than the first.
+`build-info.json` carries `eventBanner: "on" | "off" | "incomplete"`, so whether
+the band is currently up is a question the live site can answer.
+
 ## Images
 
 `assets/` is generated too:
