@@ -56,7 +56,6 @@ node tools/check.js          # structural check on what came out
 | `{{ accent }}`, `{{ reelUrl }}` | their default prop values |
 | `menuOpen` / `toggleMenu` | `data-menu-toggle`, driven by `js/site.js` |
 | `showBlog`, `showFoundation` | resolved from their prop defaults |
-| `{{ eventbriteUrl }}` | the real URL, or the whole link dropped if unset |
 | `onClick="{{ open.roster }}"` | `href="/blog/roster.html"` |
 | the `isPost` template + `posts` | one page per article under `blog/` |
 | `src="assets/x.jpg"` | `src="/assets/x.jpg"`, so nested pages resolve |
@@ -164,6 +163,46 @@ refuses to publish that combination too (`eventBanner` validates the fields
 together), so the build-time guard is the second line rather than the first.
 `build-info.json` carries `eventBanner: "on" | "off" | "incomplete"`, so whether
 the band is currently up is a question the live site can answer.
+
+### The Football 101 tickets button
+
+The design draws that spot on /huddle as a dead end: a grey, unclickable
+`<span aria-disabled="true">Tickets coming soon</span>`. For most of the year
+that is the truth, but it was the *only* thing the page could show —
+`huddlePage.f101Button` had existed in the Studio since the migration,
+promising in its own description that a filled-in address would appear as a
+button, and **nothing read it**. On 2026-09-29 the document held a real
+Eventbrite link for a real dated session while the live page said "Tickets
+coming soon" beside it.
+
+`tools/f101-cta.js` wires it up, under **Huddle Page → Football 101**:
+
+- **Show the tickets button** (`f101ButtonEnabled`) — the switch.
+- **Tickets button** (`f101Button`) — the label and the address, as before.
+- **Wording when the button is off** (`f101ButtonPlaceholder`) — the grey text.
+
+The switch is separate from the link deliberately. Between sessions the last
+Eventbrite URL is the most useful thing to keep, and "delete the address to hide
+the button" means finding it again in an email six months later.
+
+The live button is the placeholder's **own markup, recoloured** — only the three
+colour declarations change, so the type, the tracking, the 18px/30px padding and
+the 1px border that is part of the box's width all stay exactly as drawn and the
+button cannot come out a different size from the placeholder it replaces. Those
+three greys are asserted before anything is swapped, so a restyled placeholder
+stops the build rather than shipping grey text on navy.
+
+**It runs after `applyText()`, and that matters more here than anywhere else.**
+The two spans in that row are bound as `s3.span[0]` (the placeholder) and
+`s3.span[1]` (the note beside it). Replace the span with an `<a>` first and the
+note slides one element left and renders *inside the button* — and the build
+succeeds, and `check.js` passes, because its verifiers run against the design
+rather than the built page. Exactly the `renderEpisodes()` trap, one element
+closer together.
+
+Switched on with no label or no address, the placeholder stays and the build
+says which half is missing. `build-info.json` carries `f101Cta` alongside
+`eventBanner`.
 
 ## Images
 

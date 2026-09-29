@@ -23,6 +23,7 @@ const { renderBlogIndex, coverUrl } = require('./blog-index');
 const { renderNewsRows, renderPressCards } = require('./news-index');
 const { renderEpisodes } = require('./episode-index');
 const { renderEventBanner } = require('./event-banner');
+const { renderF101Cta } = require('./f101-cta');
 const dc = require('./dc-paths');
 const { PHOTOS, PAGE_TYPES, applyPhotos, readField } = require('./page-photos');
 const { TEXT, applyText } = require('./page-text');
@@ -31,6 +32,7 @@ const { TEXT, applyText } = require('./page-text');
 let photoCount = 0;
 let textCount = 0;
 let bannerState = 'off';
+let f101CtaState = 'off';
 
 const ROOT = path.join(__dirname, '..');
 const SRC = path.join(__dirname, 'RickyHunley.com.dc.html');
@@ -57,9 +59,13 @@ const SHOW_BLOG = true;
 // page's "In the press" row in one move — see HIDDEN_PAGES and PROMO_SECTIONS.
 const SHOW_NEWS = true;
 
-// Empty in the design, which falls back to '#'. A CTA linking to '#' is a dead
-// button on a live site, so the whole link is dropped until there is a real URL.
-const EVENTBRITE_URL = '';
+// The Football 101 tickets link used to be a build constant here, dropped
+// entirely while it was empty so the page never shipped a button pointing at
+// '#'. The design has since replaced that <a> with a grey "Tickets coming soon"
+// placeholder, and the link itself now lives in Sanity as
+// huddlePage.f101Button, with a switch beside it — see tools/f101-cta.js. The
+// constant and the code that read it are gone; nothing in the design referenced
+// `eventbriteUrl` any more, so it had quietly become dead code.
 
 /**
  * The newsletter audience, in the client's Mailchimp account.
@@ -495,18 +501,6 @@ function transform(html) {
     ? out.replace(/<sc-if value="\{\{ showBlog \}\}"[^>]*>([\s\S]*?)<\/sc-if>/g, '$1')
     : out.replace(/<sc-if value="\{\{ showBlog \}\}"[\s\S]*?<\/sc-if>/g, '');
 
-  // The Eventbrite CTA. With no URL set the design falls back to '#', which on
-  // a live site is a button that does nothing — so the link is removed instead,
-  // leaving the copy around it ("Dates … are announced each season") intact.
-  if (EVENTBRITE_URL) {
-    out = out.replace(/\{\{ eventbriteUrl \}\}/g, EVENTBRITE_URL);
-  } else {
-    out = out.replace(
-      /\s*<a href="\{\{ eventbriteUrl \}\}"[^>]*>[\s\S]*?<\/a>/g,
-      ''
-    );
-  }
-
   // Newsletter signup. Two blocks in the design carry `data-newsletter`: one
   // at the foot of every article, where a reader who has just finished a piece
   // is as interested as they are ever going to be, and one in the site footer.
@@ -869,6 +863,24 @@ const rendered = BUILT.map((meta) => {
     block = renderEpisodes(block, EPISODES);
   }
 
+  // The Football 101 tickets button, in the same section. Also after
+  // applyText(), and for a sharper version of the same reason: the two spans it
+  // sits between are bound as s3.span[0] and s3.span[1], so swapping the
+  // placeholder for a link first would render the note inside the button.
+  if (meta.key === 'huddle') {
+    const cta = renderF101Cta(block, pageDoc);
+    block = cta.html;
+    f101CtaState = cta.state;
+    if (cta.state === 'incomplete') {
+      console.warn(
+        '  ! the Football 101 tickets button is switched on but has no ' +
+          cta.missing.join(' and no ') +
+          ' — the "coming soon" wording has been left in its place.\n' +
+          '    Fill it in under Huddle Page -> Football 101, or switch it off.'
+      );
+    }
+  }
+
   // The event banner across the top of the home page. Same ordering rule as the
   // episodes above and for the same reason: this page's copy is bound to the
   // design by position, so an element added before applyText() would push every
@@ -1125,7 +1137,8 @@ console.log(
   `wrote ${rendered.length} pages (${POSTS.length} articles), ` +
     `${textCount} fields and ${photoCount} photographs from Sanity, ` +
     `${cssUrl} (${hoverRules.size} hover rules), ${jsUrl}` +
-    (bannerState === 'on' ? ', event banner ON' : '')
+    (bannerState === 'on' ? ', event banner ON' : '') +
+    (f101CtaState === 'on' ? ', F101 tickets ON' : '')
 );
 
 // ---------------------------------------------------------------------------
@@ -1159,6 +1172,8 @@ fs.writeFileSync(
       // now?" is a question the live site should be able to answer without
       // anybody reading the home page's markup.
       eventBanner: bannerState,
+      // Same three states, for the tickets button on /huddle.
+      f101Cta: f101CtaState,
       commit: process.env.COMMIT_REF || null,
       deployId: process.env.DEPLOY_ID || null,
       context: process.env.CONTEXT || null,

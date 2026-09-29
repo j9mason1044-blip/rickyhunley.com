@@ -96,13 +96,37 @@ export const huddlePage = defineType({
       rows: 4,
       group: 'f101',
     }),
+    /**
+     * The switch, and it is a switch rather than "is the URL filled in?" on
+     * purpose: between sessions the Eventbrite link is still the most recent
+     * one, and deleting it to hide the button means pasting it back in from an
+     * email six months later. Off keeps the link where it is and shows the
+     * placeholder below instead.
+     */
+    defineField({
+      name: 'f101ButtonEnabled',
+      title: 'Show the tickets button',
+      type: 'boolean',
+      group: 'f101',
+      description:
+        'On: the button appears with the text and link below. Off: the grey "coming soon" wording appears instead and the link is kept for next time.',
+      initialValue: false,
+    }),
     defineField({
       name: 'f101Button',
       title: 'Tickets button',
       type: 'linkCta',
       group: 'f101',
       description:
-        'The Eventbrite link. Leave the address empty between sessions and the button is hidden rather than shown pointing nowhere.',
+        'The Eventbrite link, and what the button says. It only appears when the switch above is on — and if either the text or the address is missing it stays hidden rather than shown pointing nowhere.',
+    }),
+    defineField({
+      name: 'f101ButtonPlaceholder',
+      title: 'Wording when the button is off',
+      type: 'string',
+      group: 'f101',
+      description:
+        'The grey, unclickable wording where the button would be. Currently "Tickets coming soon".',
     }),
     defineField({
       name: 'f101Note',

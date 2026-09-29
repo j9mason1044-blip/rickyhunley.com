@@ -166,6 +166,11 @@ const TEXT = {
     { path: 's3.div[3]', field: 'f101Eyebrow' },
     { path: 's3.h2[0]', field: 'f101Heading' },
     { path: 's3.p[0]', field: 'f101Body' },
+    // span[0] is the grey "Tickets coming soon" placeholder, span[1] the note
+    // beside it. tools/f101-cta.js may replace span[0] outright with a real
+    // ticket link — which is why it has to run after applyText(), or this
+    // binding and the note's would both slide one element to the left.
+    { path: 's3.span[0]', field: 'f101ButtonPlaceholder' },
     { path: 's3.span[1]', field: 'f101Note' },
   ],
 
