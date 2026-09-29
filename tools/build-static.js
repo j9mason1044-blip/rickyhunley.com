@@ -881,8 +881,7 @@ const rendered = BUILT.map((meta) => {
       console.warn(
         "  ! the home page's event banner is switched on but has no " +
           banner.missing.join(' and no ') +
-          ' — it has been left off the page.
-' +
+          ' — it has been left off the page.\n' +
           '    Fill it in under Home Page -> Event banner in the Studio, or switch it off.'
       );
     }
